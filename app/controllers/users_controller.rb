@@ -16,6 +16,8 @@ class UsersController < ApplicationController
 
   end
 
+  
+
   private
     def secure_user_infomation
       params.require(:user).permit(:name,:email,:password,:password_confirmation)
