@@ -1,0 +1,14 @@
+<h1>Users#new</h1>
+<div id="signup-form">
+  <%= form_for(@user) do |f| %>
+    <p>user name</p>
+    <%= f.text_field :name %>
+    <p>email</p>
+    <%= f.text_field :email %>
+    <p>password</p>
+    <%= f.password_field :password %>
+    <p>password_confirmation</p>
+    <%= f.password_field :password_confirmation %>
+    <%= f.submit id: "signup-button"%>
+  <%end%>  
+</div>
