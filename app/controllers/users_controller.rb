@@ -13,10 +13,15 @@ class UsersController < ApplicationController
   end
 
   def show
-
+    if logged_in?
+      @user = current_user()
+    else
+      redirect_to login_page_path
+    end
   end
 
-  
+
+
 
   private
     def secure_user_infomation

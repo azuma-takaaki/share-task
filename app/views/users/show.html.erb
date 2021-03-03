@@ -1,1 +1,10 @@
 <h1>This is show page!</h1>
+<div >
+  <% if session[:user_id] %>
+    <div >user_id: <%= @user.id%> </div>
+    <div >user_name: <%= @user.name%> </div>
+    <div >user_email: <%= @user.email%> </div>
+  <% else %>
+    <div >ログインしてください</div>
+  <% end %>
+</div>
