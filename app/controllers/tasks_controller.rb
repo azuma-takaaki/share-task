@@ -5,9 +5,10 @@ class TasksController < ApplicationController
 
   def create
 
-    @task = Task.new(strong_parameters)
+    @task = current_user.tasks.build(strong_parameters)
+
     if @task.save
-      redirect_to @task
+      redirect_to current_user
     else
       redirect_to User.find_by(id: sessions[:user_id])
     end
