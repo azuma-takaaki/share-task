@@ -4,6 +4,7 @@
     <div >user_id: <%= @user.id%> </div>
     <div >user_name: <%= @user.name%> </div>
     <div >user_email: <%= @user.email%> </div>
+    <%= link_to 'ユーザー情報の編集', edit_user_path(@user)%>
   <% else %>
     <div >ログインしてください</div>
   <% end %>
