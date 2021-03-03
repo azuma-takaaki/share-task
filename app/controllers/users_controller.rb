@@ -29,7 +29,9 @@ class UsersController < ApplicationController
 
   def update
     if logged_in?
+
       @user = User.find_by(id: params[:id])
+      #if @user.update(secure_user_infomation)
       if @user.update(update_params)
         redirect_to @user
       else
