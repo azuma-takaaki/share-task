@@ -8,3 +8,18 @@
     <div >ログインしてください</div>
   <% end %>
 </div>
+
+<br><br>
+
+<div>
+  <% Task.all.each do |task|%>
+    <%= link_to task.content, edit_task_path(task), method: :get %>
+    <br>
+  <% end %>
+</div>
+
+<br><br>
+
+<div>
+  <%= link_to 'タスクを作成する', new_task_path %>
+</div>
