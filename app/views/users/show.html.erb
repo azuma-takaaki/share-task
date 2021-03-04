@@ -13,7 +13,7 @@
 <br><br>
 
 <div>
-  <% Task.all.each do |task|%>
+  <% Task.where(user_id: @user.id).each do |task|%>
     <%= link_to task.content, edit_task_path(task), method: :get %>
     <br>
   <% end %>
