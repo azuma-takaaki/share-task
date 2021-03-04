@@ -2,6 +2,13 @@
   グループ名: <%= @group.name%>
 </div>
 
+<h3>グループメンバー</h3>
+<div >
+  <% @group.users.each do |user|%>
+    <%= link_to user.name, user %><br>
+  <% end %>
+</div>
+
 <h1>タスク一覧</h1>
 <div >
   <% @group.tasks.each do |task|%>
@@ -14,7 +21,9 @@
   <%= link_to 'タスクを作成する', new_task_path(group_id: @group.id)%>
 </div>
 
-<br><br><br>
+<br><br>
+<%= link_to "グループに招待する", new_group_user_path(group_id: @group.id)%>
+<br>
 <%= link_to "グループ名を編集する", edit_group_path(@group)%>
 <%= link_to "このグループを削除する", group_path(@group), method: :delete%>
 <br>
