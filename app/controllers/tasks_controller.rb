@@ -26,7 +26,7 @@ class TasksController < ApplicationController
   def update
     @task = Task.find_by(id: params[:id])
     if @task.update(strong_parameters)
-      redirect_to current_user
+      redirect_to @task.group
    else
      redirect_to task_path(@task)
    end

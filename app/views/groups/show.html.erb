@@ -5,15 +5,16 @@
 <h1>タスク一覧</h1>
 <div >
   <% @group.tasks.each do |task|%>
-    <%= task.content %><br>
+    <%= link_to task.content, edit_task_path(task) %><br>
   <% end %>
 </div>
 
+<br><br>
 <div>
   <%= link_to 'タスクを作成する', new_task_path(group_id: @group.id)%>
 </div>
 
-<br><br><br><br><br>
+<br><br><br>
 <%= link_to "グループ名を編集する", edit_group_path(@group)%>
 <%= link_to "このグループを削除する", group_path(@group), method: :delete%>
 <br>
