@@ -43,6 +43,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def logout
+    log_out
+    redirect_to top_path
+  end
+
   def destroy
     @user = User.find_by(id: params[:id])
     if @user.destroy
