@@ -12,6 +12,16 @@
 
 <br><br>
 
+
+<div>
+  <% @user.groups.each do |group|%>
+    <br>
+    <%= link_to group.name, group_path(group)%>
+  <% end %>
+</div>
+
+<br><br>
+
 <div>
   <% Task.where(user_id: @user.id).each do |task|%>
     <%= link_to task.content, edit_task_path(task), method: :get %>
@@ -23,4 +33,7 @@
 
 <div>
   <%= link_to 'タスクを作成する', new_task_path %>
+</div>
+<div>
+  <%= link_to 'グループを作成する', new_group_path %>
 </div>

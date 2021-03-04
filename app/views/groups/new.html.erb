@@ -1,0 +1,10 @@
+<h1>Groups#new</h1>
+<p>Find me in app/views/groups/new.html.erb</p>
+
+<div>
+  <%= form_for @group do |f| %>
+    <p>group name</p>
+    <%= f.text_field :name %>
+    <%= f.submit %>
+  <% end %>
+</div>

@@ -1,6 +1,9 @@
 class User < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
+  has_many :group_users
+  has_many :groups, through: :group_users
+
 
   validates :name, presence: true
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i

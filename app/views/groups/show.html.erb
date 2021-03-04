@@ -1,0 +1,9 @@
+<div >
+  グループ名: <%= @group.name%>
+</div>
+
+<br>
+<%= link_to "編集する", edit_group_path(@group)%>
+<%= link_to "削除する", group_path(@group), method: :delete%>
+<br>
+<%= link_to "戻る", current_user%>

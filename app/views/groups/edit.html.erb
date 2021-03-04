@@ -1,0 +1,11 @@
+<h1>Groups#edit</h1>
+<p>Find me in app/views/groups/edit.html.erb</p>
+<br><br>
+<%= form_for @group do |f| %>
+  <p>group_name</p>
+  <%= f.text_field :name%>
+  <%= f.submit %>
+<% end %>
+
+<br>
+<%= link_to "戻る", group_path(@group)%>
