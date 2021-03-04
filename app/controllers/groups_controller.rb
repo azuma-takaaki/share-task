@@ -40,7 +40,7 @@ class GroupsController < ApplicationController
   def destroy
     @group = Group.find_by(id: params[:id])
     if @group.destroy
-      flash[:danger]="グループ名を削除しました．"
+      flash[:danger]="グループを削除しました．"
       redirect_to current_user
     else
       flash[:danger]= @group.errors.full_messages

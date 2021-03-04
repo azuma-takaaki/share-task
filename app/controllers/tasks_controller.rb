@@ -1,14 +1,15 @@
 class TasksController < ApplicationController
   def new
     @task = Task.new
+    @group = Group.find_by(id: params[:group_id])
   end
 
   def create
-
-    @task = current_user.tasks.build(strong_parameters)
+    @group = Group.find_by(id: params[:task][:group_id])
+    @task = @group.tasks.build(strong_parameters)
 
     if @task.save
-      redirect_to current_user
+      redirect_to @group
     else
       redirect_to User.find_by(id: sessions[:user_id])
     end
