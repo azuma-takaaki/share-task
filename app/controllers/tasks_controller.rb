@@ -31,6 +31,17 @@ class TasksController < ApplicationController
    end
   end
 
+  def destroy
+    @task = Task.find_by(id: params[:id])
+    if @task.destroy
+      flash[:danger] = 'タスクを削除しました'
+      redirect_to current_user
+   else
+     flash[:danger] = @task.errors.full_messages
+     redirect_to task_path(@task)
+   end
+ end
+
   private
     def strong_parameters
       params.require(:task).permit(:content)

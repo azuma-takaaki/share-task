@@ -4,5 +4,13 @@
   <%= f.text_field :content%>
   <%= f.submit %>
 <% end %>
+
 <br><br>
-<% link_to '戻る', current_user%>
+<div >
+  <%= link_to 'タスクを削除する', task_path(@task), method: :delete %>
+</div>
+
+<br><br>
+<div class="">
+  <%= link_to '戻る', current_user%>
+</div>
