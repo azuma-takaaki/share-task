@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_04_091504) do
+ActiveRecord::Schema.define(version: 2021_03_05_025723) do
 
   create_table "group_users", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "group_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["group_id", "user_id"], name: "index_group_users_on_group_id_and_user_id", unique: true
     t.index ["group_id"], name: "index_group_users_on_group_id"
     t.index ["user_id"], name: "index_group_users_on_user_id"
   end
