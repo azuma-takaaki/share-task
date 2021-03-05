@@ -11,12 +11,20 @@
   </head>
 
   <body>
-    
+
+
+
+
     <div id="error messages">
       <% flash.each do |message_type, message| %>
         <%= message %>
       <% end %>
     </div>
+
+
+
+    <%= react_component("HelloWorld", { greeting: "こんにちは！" }) %>
+    <%= react_component("hello_react",  name: "bob！" ) %>
 
     <%= yield %>
   </body>
