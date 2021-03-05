@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe User , type: :model do
   describe 'unit test of User model' do
       before(:each) do
-        @user = create(:user) #DB登録
+        @user = FactoryBot.build(:user) #DB登録
       end
 
 
