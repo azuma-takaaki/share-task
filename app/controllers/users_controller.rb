@@ -7,9 +7,10 @@ class UsersController < ApplicationController
     @user = User.new(secure_user_infomation)
     if @user.save
       log_in(@user)
+      flash[:danger] = 'アカウントを登録しました'
       redirect_to @user
     else
-      flash[:danger] = @user.errors.full_messages
+      flash[:danger] = ['アカウント登録できませんでした'].push(@user.errors.full_messages)
       redirect_to new_user_path
     end
   end

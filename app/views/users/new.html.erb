@@ -2,13 +2,13 @@
 <div id="signup-form">
   <%= form_for(@user) do |f| %>
     <p>user name</p>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, id: "signup-form-name" %>
     <p>email</p>
-    <%= f.text_field :email %>
+    <%= f.text_field :email, id: "signup-form-email"%>
     <p>password</p>
-    <%= f.password_field :password %>
+    <%= f.password_field :password, id: "signup-form-password" %>
     <p>password_confirmation</p>
-    <%= f.password_field :password_confirmation %>
-    <%= f.submit id: "signup-button"%>
+    <%= f.password_field :password_confirmation, id: "signup-form-password-confirmation" %>
+    <%= f.submit value: "アカウント登録", id: "signup-button"%>
   <%end%>
 </div>
