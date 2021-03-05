@@ -25,9 +25,5 @@ RSpec.describe User , type: :model do
         @user.password = @user.password_confirmation = 'short'
         expect(@user).not_to be_valid
       end
-
-
   end
-
-
 end
