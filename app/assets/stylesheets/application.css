@@ -13,3 +13,19 @@
  *= require_tree .
  *= require_self
  */
+
+body{
+  margin: 0;
+}
+
+#header-login-button{
+  float: right;
+}
+
+.title{
+  padding: 20px;
+  font-size: 40px;
+  color: white;
+  background-color: #0000AA;
+  font-family: serif;
+}

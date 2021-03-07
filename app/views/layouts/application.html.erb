@@ -11,8 +11,9 @@
   </head>
 
   <body>
-
-
+    <header>
+      <div class="title">ShareTask</div>
+    </header>
 
 
     <div id="error messages">
@@ -22,10 +23,11 @@
     </div>
 
 
+    <%= yield %>
+
+    <br><br><br><br><br><br><br><br>
 
     <%= react_component("HelloWorld", { greeting: "こんにちは！" }) %>
     <%= react_component("hello_react",  name: "bob！" ) %>
-
-    <%= yield %>
   </body>
 </html>

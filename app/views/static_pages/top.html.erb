@@ -1,3 +1,9 @@
+
+<% if current_user.nil?%>
+  <%= link_to "ログイン" , login_page_path, class: "btn btn--orange btn--cubic btn--shadow" , id: 'header-login-button'%>
+<% end %>
+
+
 <%= stylesheet_link_tag 'static_pages' %>
 
 
