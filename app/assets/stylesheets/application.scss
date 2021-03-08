@@ -21,6 +21,9 @@ header{
   height: 100px;
   background-color: #0000AA;
 }
+#content-wrapper{
+  margin:30px;
+}
 
 #header-login-button{
   color: white;
@@ -28,12 +31,12 @@ header{
   float: right;
   padding-left: 20px;
   padding-right: 20px;
-  margin: auto;
+  margin-right: 100px;
   display: inline-block;
   line-height: 100px;
   height: 100%;
   &:hover {
-  background-color: #00ced1;
+  background-color: #00ffff;
   }
 }
 

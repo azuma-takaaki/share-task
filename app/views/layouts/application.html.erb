@@ -24,19 +24,22 @@
       <% end %>
     </header>
 
+    <div id="content-wrapper">
+      <div id="error messages">
+        <% flash.each do |message_type, message| %>
+          <%= message %>
+        <% end %>
+      </div>
 
-    <div id="error messages">
-      <% flash.each do |message_type, message| %>
-        <%= message %>
-      <% end %>
+
+      <%= yield %>
+
+      <br><br><br><br><br><br><br><br>
+
+      <%= react_component("HelloWorld", { greeting: "こんにちは！" }) %>
+      <%= react_component("hello_react",  name: "bob！" ) %>
+
     </div>
 
-
-    <%= yield %>
-
-    <br><br><br><br><br><br><br><br>
-
-    <%= react_component("HelloWorld", { greeting: "こんにちは！" }) %>
-    <%= react_component("hello_react",  name: "bob！" ) %>
   </body>
 </html>
