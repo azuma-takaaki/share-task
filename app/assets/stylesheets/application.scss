@@ -17,15 +17,30 @@
 body{
   margin: 0;
 }
+header{
+  height: 100px;
+  background-color: #0000AA;
+}
 
 #header-login-button{
+  color: white;
+  font-size: 20px;
   float: right;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: auto;
+  display: inline-block;
+  line-height: 100px;
+  height: 100%;
+  &:hover {
+  background-color: #00ced1;
+  }
 }
 
 .title{
   padding: 20px;
   font-size: 40px;
   color: white;
-  background-color: #0000AA;
   font-family: serif;
+  display: inline-block;
 }

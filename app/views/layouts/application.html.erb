@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ShareTask</title>
+    <title>
+      <% if @page_title.nil?%>
+        <%= full_title() %>
+      <% else %>
+        <%= full_title(@page_title) %>
+      <%end%>
+    </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -13,6 +19,9 @@
   <body>
     <header>
       <div class="title">ShareTask</div>
+      <% if @page_title == 'top'%>
+        <%= link_to "ログイン" , login_page_path, id: 'header-login-button'%>
+      <% end %>
     </header>
 
 
