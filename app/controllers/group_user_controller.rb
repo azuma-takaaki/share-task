@@ -6,11 +6,11 @@ class GroupUserController < ApplicationController
   def create
     @group_user = GroupUser.new(group_user_parameters)
     if @group_user.save
-      flash[:danger] = "招待しました！"
-      redirect_to Group.find_by(params[:group_id])
+      flash[:danger] = "招待しました！#{group_user_parameters}  #{params[:group_id]}"
+      redirect_to Group.find_by(id: params[:group_id])
     else
-      flash[:danger] = "招待できませんでした！"
-      redirect_to Group.find_by(params[:group_id])
+      flash[:danger] = "招待できませんでした！#{group_user_parameters}"
+      redirect_to Group.find_by(id: params[:group_id])
     end
   end
 

@@ -35,3 +35,12 @@
 <div>
   <%= link_to 'グループを作成する', new_group_path %>
 </div>
+
+
+<br><br><br><br>
+<h3>グループ一覧</h3>
+<div >
+  <% Group.all.each do |group|%>
+    <%= "id: #{group.id} #{group.name} "%><br>
+  <% end %>
+</div>

@@ -18,14 +18,26 @@ class GroupsController < ApplicationController
   end
 
   def edit
+    if !group_member?
+      flash[:danger] = "その操作は実行できません#{params}"
+      redirect_to current_user
+    end
     @group = Group.find_by(id: params[:id])
   end
 
   def show
+    if !group_member?
+      flash[:danger] = "その操作は実行できません#{params}"
+      redirect_to current_user
+    end
     @group = Group.find_by(id: params[:id])
   end
 
   def update
+    if !group_member?
+      flash[:danger] = "その操作は実行できません#{params}"
+      redirect_to current_user
+    end
     @group = Group.find_by(id: params[:id])
     if @group.update(group_update_parameters)
       flash[:danger]="グループ名を変更しました．"
@@ -38,6 +50,10 @@ class GroupsController < ApplicationController
 
 
   def destroy
+    if !group_member?
+      flash[:danger] = "その操作は実行できません#{params}"
+      redirect_to current_user
+    end
     @group = Group.find_by(id: params[:id])
     if @group.destroy
       flash[:danger]="グループを削除しました．"
@@ -48,7 +64,7 @@ class GroupsController < ApplicationController
     end
   end
 
-  
+
 
   private
     def group_parameters
@@ -61,6 +77,10 @@ class GroupsController < ApplicationController
 
     def group_user_parameters
       p = {group_id: @group.id, user_id: current_user.id}
+    end
+
+    def group_member?
+      GroupUser.exists?(group_id: params[:id], user_id: current_user.id)
     end
 
 
