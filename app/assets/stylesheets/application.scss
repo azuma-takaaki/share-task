@@ -16,10 +16,13 @@
 
 body{
   margin: 0;
+  background-image: image-url('sky.jpg');
+  background-size: cover;
 }
 header{
   height: 100px;
   background-color: #0000AA;
+
 }
 #content-wrapper{
   margin:30px;
