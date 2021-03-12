@@ -1,11 +1,9 @@
 <h1>Sessions#login</h1>
 <p>Find me in app/views/sessions/login.html.erb</p>
-<div >
-  <%= form_for(:session, url: login_path, id: "login-form") do |f| %>
-  <p>email</p>
-  <%= f.text_field :email, id: 'login-form-email'%>
-  <p>password</p>
-  <%= f.password_field :password, id: 'login-form-password'%>
+<div id=  "login-form" >
+  <%= form_for(:session, url: login_path) do |f| %>
+  <%= f.text_field :email, id: 'login-form-email', placeholder: "メールアドレス"%>
+  <%= f.password_field :password, id: 'login-form-password', placeholder: "パスワード"%>
   <%= f.submit value: 'ログイン', id: "login-button" %>
   <% end %>
 </div>
