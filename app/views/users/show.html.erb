@@ -44,3 +44,7 @@
     <%= "id: #{group.id} #{group.name} "%><br>
   <% end %>
 </div>
+
+
+<h1>以下react component</h1>
+<%= react_component("GroupsList", { groups: Group.all }) %>
