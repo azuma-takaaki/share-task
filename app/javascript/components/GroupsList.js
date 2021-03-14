@@ -12,7 +12,9 @@ class GroupsList extends React.Component {
   }
 }
 
+//reactに組み込まれた型指定方法で， 意図しない型の変数が入らないように指定している
 GroupsList.propTypes = {
   groups: PropTypes.string
 };
+
 export default GroupsList
