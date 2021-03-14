@@ -5,7 +5,7 @@ class GroupsList extends React.Component {
     return (
       <React.Fragment>
         {this.props.groups.map((group) => {
-          return <a href={"/groups/1" + group.id }>{group.name + '\n'}</a>;
+          return <a href={"/groups/" + group.id }>{group.name}</a>;
         })}
       </React.Fragment>
     );
