@@ -5,13 +5,14 @@ class GroupsList extends React.Component {
     return (
       <React.Fragment>
         {this.props.groups.map((group) => {
-          return <a href="/">{group.name}</a>;
+          return <a href={"/groups/1" + group.id }>{group.name + '\n'}</a>;
         })}
       </React.Fragment>
     );
   }
 }
 
+//return <a href={"/groups/" + {group.id}}>{group.name}</a>;
 //reactに組み込まれた型指定方法で， 意図しない型の変数が入らないように指定している
 GroupsList.propTypes = {
   groups: PropTypes.string
