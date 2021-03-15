@@ -12,13 +12,8 @@
 
 <br><br>
 
+<%= react_component("GroupsList", { groups: @user.groups }) %>
 
-<div>
-  <% @user.groups.each do |group|%>
-    <br>
-    <%= link_to group.name, group_path(group)%>
-  <% end %>
-</div>
 
 <br><br>
 
@@ -44,7 +39,3 @@
     <%= "id: #{group.id} #{group.name} "%><br>
   <% end %>
 </div>
-
-
-<h1>以下react component</h1>
-<%= react_component("GroupsList", { groups: Group.all }) %>
