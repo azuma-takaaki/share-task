@@ -33,6 +33,12 @@
 
 
 <br><br><br><br>
+<h3>ランダムな数字を取得</h3>
+<%= react_component("RandomNumber", { random_number: @random_number }) %>
+
+<br><br>
+
+
 <h3>グループ一覧</h3>
 <div >
   <% Group.all.each do |group|%>

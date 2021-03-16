@@ -61,6 +61,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def random_number
+    @random_number = rand(1000)
+    render json: {"random_number ": "#{rand(1000)}"}
+  end
+
 
 
   private

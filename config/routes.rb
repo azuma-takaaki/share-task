@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'render_random_number', to: 'users#random_number', as: 'random_number'
+
   get 'group_user/new'
   root to: 'static_pages#top', as: 'top'
   get 'sessions/login', to: 'sessions#login_page', as: 'login_page'
