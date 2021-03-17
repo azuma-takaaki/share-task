@@ -5,7 +5,7 @@ class RandomNumber extends React.Component {
     return (
       <React.Fragment>
         <div>
-          <a onClick={this.handleClick} href = "/render_random_number">ランダムナンバーを取得</a>
+          <a onClick={this.handleClick} href = "/render_random_number">{this.state}</a>
 
         </div>
       </React.Fragment>
