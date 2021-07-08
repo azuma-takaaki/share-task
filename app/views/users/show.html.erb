@@ -15,6 +15,7 @@
 <%= react_component("GroupsList", { groups: @user.groups }) %>
 
 
+
 <br><br>
 
 <div>
@@ -34,7 +35,7 @@
 
 <br><br><br><br>
 <h3>ランダムな数字を取得</h3>
-<%= react_component("RandomNumber", { random_number: @random_number }) %>
+<%= react_component("RandomNumber", url: "/api/v1/hello") %>
 
 <br><br>
 

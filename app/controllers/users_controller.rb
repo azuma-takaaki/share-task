@@ -1,4 +1,12 @@
 class UsersController < ApplicationController
+
+
+  def react_test
+    react_message =[{message: 'Hi! i am form react!'}]
+    
+  end
+
+
   def new
     @user = User.new()
   end
@@ -63,7 +71,7 @@ class UsersController < ApplicationController
 
   def random_number
     @random_number = rand(1000)
-    
+
   end
 
 

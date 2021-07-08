@@ -30,8 +30,10 @@ class GroupsController < ApplicationController
       flash[:danger] = "その操作は実行できません#{params}"
       redirect_to current_user
     end
-    @group = Group.find_by(id: params[:id])
+    #@group = Group.find_by(id: params[:id])
+    render :json => Group.find_by(id: params[:id])
   end
+
 
   def update
     if !group_member?
