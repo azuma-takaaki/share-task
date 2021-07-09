@@ -39,6 +39,7 @@ class Group extends React.Component {
             {this.props.group.name}
           </button>
           {this.state.group_members}
+          {this.state.group_tasks}
         </div>
 
     );
@@ -48,13 +49,22 @@ class Group extends React.Component {
       .then(res => res.json())
       .then(
         (result) => {
+          var user_list = []
+          for(var i in result[0]){
+            user_list.push(<a href="">{result[0][i].name} </a>)
+          }
           this.setState({
-            group_members: result.name
+            group_members: user_list
+          });
+
+          var task_list = []
+          for(var i in result[1]){
+            task_list.push(<p><a href={"/tasks/"+ result[1][i].id +"/edit"}>{result[1][i].content} </a></p>)
+          }
+          this.setState({
+            group_tasks: task_list
           });
         }
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
       )
   }
 }

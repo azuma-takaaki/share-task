@@ -31,8 +31,11 @@ class GroupsController < ApplicationController
       redirect_to current_user
     end
     #@group = Group.find_by(id: params[:id])
-    render :json => Group.find_by(id: params[:id])
+    group = Group.find_by(id: params[:id])
+    render :json => [group.users, group.tasks]
   end
+
+
 
 
   def update
