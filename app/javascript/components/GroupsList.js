@@ -1,5 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
+import Modal from 'react-modal';
+
+
 class GroupsList extends React.Component {
   constructor(props) {
     super(props);
@@ -30,23 +33,26 @@ class Group extends React.Component {
       group_members:[] ,
       group_tasks: []
     }
-    this.handleClick = this.handleClick.bind(this);
+    this.getGroupInfo = this.getGroupInfo.bind(this);
   }
   render () {
     return (
         <div>
-          <button onClick={ () => this.handleClick(this.props.group.id)}>
+          <button onClick={ () => this.getGroupInfo(this.props.group.id)}>
             {this.props.group.name}
           </button>
           {this.state.group_members}
           {this.state.group_tasks}
+          <p><a href={"/tasks/new?group_id="+this.props.group.id}>新しいタスクを追加する</a></p>
+          <InputTaskModal group_id={this.props.group.id}/>
         </div>
 
     );
   }
-  handleClick(id) {
-    fetch("/groups/"+id)
-      .then(res => res.json())
+  getGroupInfo(id) {
+    fetch("/groups/"+id,{
+      method: 'GET'
+      }).then(res => res.json())
       .then(
         (result) => {
           var user_list = []
@@ -69,6 +75,88 @@ class Group extends React.Component {
   }
 }
 
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+ }
+};
+
+
+//任意のアプリを設定する　create-react-appなら#root
+class InputTaskModal extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      modalIsOpen: false
+    };
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.postData = this.postData.bind(this);
+  }
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+  afterOpenModal() {
+    this.subtitle.style.color = '#fff000';
+  }
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+  postData(){
+    const data = { task: {content: 'example_task', group_id: '18'} };
+
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
+      }
+      return '';
+  }
+    fetch("/tasks", {
+      method: 'POST', // or 'PUT'
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data),
+    })
+    this.setState({modalIsOpen: false});
+  }
+
+
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.openModal}>新しいタスクを追加する</button>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <h2>新しいタスクを追加</h2>
+          <form>
+            <textarea />
+            <input type="submit" value="Submit" />
+          </form>
+          <button onClick={this.postData}>追加</button>
+        </Modal>
+      </div>
+    );
+  }
+}
 
 //return <a href={"/groups/" + {group.id}}>{group.name}</a>;
 //reactに組み込まれた型指定方法で， 意図しない型の変数が入らないように指定している
