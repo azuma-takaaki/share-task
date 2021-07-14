@@ -43,7 +43,6 @@ class Group extends React.Component {
           </button>
           {this.state.group_members}
           {this.state.group_tasks}
-          <p><a href={"/tasks/new?group_id="+this.props.group.id}>新しいタスクを追加する</a></p>
           <InputTaskModal group_id={this.props.group.id}/>
         </div>
 
@@ -93,12 +92,14 @@ class InputTaskModal extends React.Component {
   constructor() {
     super();
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      input_value: ''
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.postData = this.postData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
   openModal() {
     this.setState({modalIsOpen: true});
@@ -110,7 +111,7 @@ class InputTaskModal extends React.Component {
     this.setState({modalIsOpen: false});
   }
   postData(){
-    const data = { task: {content: 'example_task', group_id: '18'} };
+    const data = { task: {content: this.state.input_value, group_id: '18'} };
 
     const getCsrfToken = () => {
       const metas = document.getElementsByTagName('meta');
@@ -121,16 +122,21 @@ class InputTaskModal extends React.Component {
           }
       }
       return '';
+    }
+      fetch("/tasks", {
+        method: 'POST', // or 'PUT'
+        headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': getCsrfToken()
+        },
+        body: JSON.stringify(data),
+      })
+      this.setState({modalIsOpen: false});
+      this.setState({input_value: ""});
   }
-    fetch("/tasks", {
-      method: 'POST', // or 'PUT'
-      headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': getCsrfToken()
-      },
-      body: JSON.stringify(data),
-    })
-    this.setState({modalIsOpen: false});
+
+  handleChange(e){
+    this.setState({input_value: e.target.value});
   }
 
 
@@ -147,11 +153,10 @@ class InputTaskModal extends React.Component {
           contentLabel="Example Modal"
         >
           <h2>新しいタスクを追加</h2>
-          <form>
-            <textarea />
+          <form onSubmit={this.postData}>
+            <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
             <input type="submit" value="Submit" />
           </form>
-          <button onClick={this.postData}>追加</button>
         </Modal>
       </div>
     );
