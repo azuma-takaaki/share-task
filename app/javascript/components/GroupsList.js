@@ -35,6 +35,8 @@ class Group extends React.Component {
     }
     this.getGroupInfo = this.getGroupInfo.bind(this);
   }
+
+
   render () {
     return (
         <div>
@@ -42,12 +44,19 @@ class Group extends React.Component {
             {this.props.group.name}
           </button>
           {this.state.group_members}
-          {this.state.group_tasks}
+          {this.state.group_tasks.map((task) => {
+            return (
+              //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
+                <Task id={task.id} content={task.content} />
+            )
+          })}
+
           <InputTaskModal group_id={this.props.group.id}/>
         </div>
 
     );
   }
+
   getGroupInfo(id) {
     fetch("/groups/"+id,{
       method: 'GET'
@@ -62,13 +71,18 @@ class Group extends React.Component {
             group_members: user_list
           });
 
+
           var task_list = []
+          this.setState({
+            group_tasks: task_list
+          });
           for(var i in result[1]){
-            task_list.push(<p><a href={"/tasks/"+ result[1][i].id +"/edit"}>{result[1][i].content} </a></p>)
+            task_list.push(result[1][i])
           }
           this.setState({
             group_tasks: task_list
           });
+
         }
       )
   }
@@ -111,7 +125,7 @@ class InputTaskModal extends React.Component {
     this.setState({modalIsOpen: false});
   }
   postData(){
-    const data = { task: {content: this.state.input_value, group_id: '18'} };
+    const data = { task: {content: this.state.input_value, group_id: this.props.group_id} };
 
     const getCsrfToken = () => {
       const metas = document.getElementsByTagName('meta');
@@ -144,6 +158,7 @@ class InputTaskModal extends React.Component {
   render() {
     return (
       <div>
+        <p>{}</p>
         <button onClick={this.openModal}>新しいタスクを追加する</button>
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -156,6 +171,84 @@ class InputTaskModal extends React.Component {
           <form onSubmit={this.postData}>
             <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
             <input type="submit" value="Submit" />
+          </form>
+        </Modal>
+      </div>
+    );
+  }
+}
+
+
+
+
+
+
+class Task extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: props.id,
+      content: props.content,
+      index: props.index
+    };
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.deleteData = this.deleteData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  openModal() {
+    this.setState({modalIsOpen: true});
+  }
+  afterOpenModal() {
+    this.subtitle.style.color = '#fff000';
+  }
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+  deleteData(){
+
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
+      }
+      return '';
+    }
+      fetch("/tasks/" + this.state.id, {
+        method: 'DELETE', // or 'PUT'
+        headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': getCsrfToken()
+        },
+
+      })
+      this.setState({modalIsOpen: false});
+      this.setState({input_value: ""});
+  }
+
+  handleChange(e){
+    this.setState({input_value: e.target.value});
+  }
+
+  render(){
+    return(
+      <div id = {this.props.id}>
+        <button onClick={this.openModal}>{this.state.content}</button>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <h2>修正</h2>
+          <form onSubmit={this.deleteData}>
+            <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
+            <input type="submit" value="DELETE" />
           </form>
         </Modal>
       </div>
