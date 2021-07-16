@@ -22,8 +22,6 @@ class GroupsList extends React.Component {
     );
   }
 
-
-
 }
 
 class Group extends React.Component {
@@ -34,6 +32,7 @@ class Group extends React.Component {
       group_tasks: []
     }
     this.getGroupInfo = this.getGroupInfo.bind(this);
+    this.getGroupInfo(props.group.id)
   }
 
 
@@ -46,11 +45,9 @@ class Group extends React.Component {
           {this.state.group_members}
           {this.state.group_tasks.map((task) => {
             return (
-              //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
-                <Task id={task.id} content={task.content} />
+                <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
             )
           })}
-
           <InputTaskModal group_id={this.props.group.id}/>
         </div>
 
@@ -82,6 +79,7 @@ class Group extends React.Component {
           this.setState({
             group_tasks: task_list
           });
+
 
         }
       )
@@ -158,7 +156,6 @@ class InputTaskModal extends React.Component {
   render() {
     return (
       <div>
-        <p>{}</p>
         <button onClick={this.openModal}>新しいタスクを追加する</button>
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -188,8 +185,7 @@ class Task extends React.Component{
     super(props);
     this.state = {
       id: props.id,
-      content: props.content,
-      index: props.index
+      content: props.content
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -205,6 +201,7 @@ class Task extends React.Component{
   }
   closeModal() {
     this.setState({modalIsOpen: false});
+
   }
   deleteData(){
 
@@ -225,9 +222,9 @@ class Task extends React.Component{
                   'X-CSRF-Token': getCsrfToken()
         },
 
-      })
-      this.setState({modalIsOpen: false});
+      }).then(this.props.updateTasks())
       this.setState({input_value: ""});
+      closeModal()
   }
 
   handleChange(e){

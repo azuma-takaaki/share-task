@@ -35,8 +35,8 @@ class TasksController < ApplicationController
   def destroy
     @task = Task.find_by(id: params[:id])
     if @task.destroy
-      flash[:danger] = 'タスクを削除しました'
-      redirect_to current_user
+      #flash[:danger] = 'タスクを削除しました'
+      #redirect_to current_user
    else
      flash[:danger] = @task.errors.full_messages
      redirect_to task_path(@task)
