@@ -48,7 +48,7 @@ class Group extends React.Component {
                 <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
             )
           })}
-          <InputTaskModal group_id={this.props.group.id}/>
+          <InputTaskModal group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
         </div>
 
     );
@@ -142,7 +142,7 @@ class InputTaskModal extends React.Component {
                   'X-CSRF-Token': getCsrfToken()
         },
         body: JSON.stringify(data),
-      })
+      }).then(this.props.updateTasks())
       this.setState({modalIsOpen: false});
       this.setState({input_value: ""});
   }
@@ -185,23 +185,26 @@ class Task extends React.Component{
     super(props);
     this.state = {
       id: props.id,
-      content: props.content
+      content: props.content,
+      input_value: ''
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.deleteData = this.deleteData.bind(this);
+    this.updateData = this.updateData.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
   openModal() {
     this.setState({modalIsOpen: true});
+    var content = this.state.content
+    this.setState({input_value: content});
   }
   afterOpenModal() {
     this.subtitle.style.color = '#fff000';
   }
   closeModal() {
     this.setState({modalIsOpen: false});
-
   }
   deleteData(){
 
@@ -227,6 +230,32 @@ class Task extends React.Component{
       closeModal()
   }
 
+  updateData(content){
+      const getCsrfToken = () => {
+        const metas = document.getElementsByTagName('meta');
+        for (let meta of metas) {
+            if (meta.getAttribute('name') === 'csrf-token') {
+                console.log('csrf-token:', meta.getAttribute('content'));
+                return meta.getAttribute('content');
+            }
+        }
+        return '';
+      }
+
+      const data = { task: {content:this.state.input_value}, id: this.state.id };
+
+      fetch("/tasks/" + this.state.id, {
+        method: 'PATCH', // or 'PUT'
+        headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': getCsrfToken()
+        },
+        body: JSON.stringify(data),
+      }).then(this.props.updateTasks())
+      this.setState({input_value: ""});
+      closeModal()
+  }
+
   handleChange(e){
     this.setState({input_value: e.target.value});
   }
@@ -243,10 +272,11 @@ class Task extends React.Component{
           contentLabel="Example Modal"
         >
           <h2>修正</h2>
-          <form onSubmit={this.deleteData}>
+          <form onSubmit={this.updateData}>
             <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
-            <input type="submit" value="DELETE" />
+            <input type="submit" value="更新" />
           </form>
+          <button onClick={this.deleteData}>削除</button>
         </Modal>
       </div>
     );
