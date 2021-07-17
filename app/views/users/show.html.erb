@@ -38,11 +38,3 @@
 <%= react_component("RandomNumber", url: "/api/v1/hello") %>
 
 <br><br>
-
-
-<h3>グループ一覧</h3>
-<div >
-  <% Group.all.each do |group|%>
-    <%= "id: #{group.id} #{group.name} "%><br>
-  <% end %>
-</div>

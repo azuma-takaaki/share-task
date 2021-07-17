@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def react_test
     react_message =[{message: 'Hi! i am form react!'}]
-    
+
   end
 
 
@@ -66,6 +66,13 @@ class UsersController < ApplicationController
     else
       flash[:danger] = @user.errors.full_messages
       redirect_to edit_user_path(@user)
+    end
+  end
+
+  def get_group_list
+    if logged_in?
+      @user = current_user()
+      render :json => [@user.groups]
     end
   end
 

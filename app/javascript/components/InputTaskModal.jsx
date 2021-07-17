@@ -14,7 +14,6 @@ const customStyles = {
 };
 
 
-//任意のアプリを設定する　create-react-appなら#root
 class InputTaskModal extends React.Component {
   constructor() {
     super();

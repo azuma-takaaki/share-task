@@ -64,19 +64,18 @@ class Task extends React.Component{
   }
 
   updateData(content){
-      const getCsrfToken = () => {
-        const metas = document.getElementsByTagName('meta');
-        for (let meta of metas) {
-            if (meta.getAttribute('name') === 'csrf-token') {
-                console.log('csrf-token:', meta.getAttribute('content'));
-                return meta.getAttribute('content');
-            }
-        }
-        return '';
+    const data = { task: {content:this.state.input_value}, id: this.state.id };
+
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
       }
-
-      const data = { task: {content:this.state.input_value}, id: this.state.id };
-
+      return '';
+    }
       fetch("/tasks/" + this.state.id, {
         method: 'PATCH', // or 'PUT'
         headers: {
@@ -105,10 +104,9 @@ class Task extends React.Component{
           contentLabel="Example Modal"
         >
           <h2>修正</h2>
-          <form onSubmit={this.updateData}>
-            <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
-            <input type="submit" value="更新" />
-          </form>
+
+          <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
+          <button onClick={this.updateData}>更新</button>
           <button onClick={this.deleteData}>削除</button>
         </Modal>
       </div>

@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   get 'sessions/login', to: 'sessions#login_page', as: 'login_page'
   post 'sessions/login', to: 'sessions#login', as: 'login'
   get 'users/logout', to: 'users#logout', as: 'logout'
-
+  get '/get_group_list', to: 'users#get_group_list'
   get 'react_test', to: 'users#react_test'
 
   resources :users

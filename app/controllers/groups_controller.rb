@@ -7,7 +7,7 @@ class GroupsController < ApplicationController
     @group = Group.new(group_parameters)
     @group.group_users.build(group_user_parameters)
     if @group.save
-      flash[:danger] = @group.name + "を作成しました！"
+      #flash[:danger] = @group.name + "を作成しました！"
       redirect_to current_user
     else
       flash[:danger] = @group.errors.full_messages + @group_user.errors.full_messages
@@ -45,8 +45,8 @@ class GroupsController < ApplicationController
     end
     @group = Group.find_by(id: params[:id])
     if @group.update(group_update_parameters)
-      flash[:danger]="グループ名を変更しました．"
-      redirect_to current_user
+      #flash[:danger]="グループ名を変更しました．"
+      render :json => [@group]
     else
       flash[:danger]= @group.errors.full_messages
       redirect_to edit_group_path(@group)
@@ -61,7 +61,7 @@ class GroupsController < ApplicationController
     end
     @group = Group.find_by(id: params[:id])
     if @group.destroy
-      flash[:danger]="グループを削除しました．"
+      #flash[:danger]="グループを削除しました．"
       redirect_to current_user
     else
       flash[:danger]= @group.errors.full_messages

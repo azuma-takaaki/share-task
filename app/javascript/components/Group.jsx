@@ -4,35 +4,104 @@ import Modal from 'react-modal'
 import Task from "./Task.jsx"
 import InputTaskModal from "./InputTaskModal.jsx"
 
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+ }
+};
+
 class Group extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      group_name: props.group.name,
+      group_id: props.group.id,
       group_members:[] ,
-      group_tasks: []
+      group_tasks: [],
+      input_value: ''
     }
     this.getGroupInfo = this.getGroupInfo.bind(this);
-    this.getGroupInfo(props.group.id)
+    this.openModal = this.openModal.bind(this);
+    this.afterOpenModal = this.afterOpenModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.deleteGroup = this.deleteGroup.bind(this);
+    this.updateData = this.updateData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+
+    this.getGroupInfo(this.props.group.id)
   }
 
-
-  render () {
-    return (
-        <div>
-          <button onClick={ () => this.getGroupInfo(this.props.group.id)}>
-            {this.props.group.name}
-          </button>
-          {this.state.group_members}
-          {this.state.group_tasks.map((task) => {
-            return (
-                <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
-            )
-          })}
-          <InputTaskModal group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
-        </div>
-
-    );
+  openModal() {
+    this.setState({modalIsOpen: true});
+    var group_name = this.state.group_name
+    this.setState({input_value: group_name});
   }
+  afterOpenModal() {
+    this.subtitle.style.color = '#fff000';
+  }
+  closeModal() {
+    this.setState({modalIsOpen: false});
+  }
+  deleteGroup(){
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
+      }
+      return '';
+    }
+      fetch("/groups/" + this.state.group_id, {
+        method: 'DELETE', // or 'PUT'
+        headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': getCsrfToken()
+        },
+
+      }).then(this.props.updateGroupList())
+      this.setState({input_value: ""});
+      this.props.updateGroupList()
+      closeModal()
+  }
+
+  updateData(){
+      const getCsrfToken = () => {
+        const metas = document.getElementsByTagName('meta');
+        for (let meta of metas) {
+            if (meta.getAttribute('name') === 'csrf-token') {
+                console.log('csrf-token:', meta.getAttribute('content'));
+                return meta.getAttribute('content');
+            }
+        }
+        return '';
+      }
+
+      const data = { group: {name:this.state.input_value}, id: this.state.group_id };
+
+      fetch("/groups/" + this.state.group_id, {
+        method: 'PATCH', // or 'PUT'
+        headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': getCsrfToken()
+        },
+        body: JSON.stringify(data),
+      }).then(this.props.updateGroupList())
+      this.setState({input_value: ""});
+      this.props.updateGroupList()
+      closeModal()
+  }
+
+  handleChange(e){
+    this.setState({input_value: e.target.value});
+  }
+
 
   getGroupInfo(id) {
     fetch("/groups/"+id,{
@@ -63,6 +132,43 @@ class Group extends React.Component {
 
         }
       )
+  }
+
+
+  render () {
+    return (
+        <div>
+          <button onClick={ () => this.getGroupInfo(this.props.group.id)}>
+            {this.state.group_name}
+          </button>
+          <button onClick={ () => this.openModal()}>
+            グループを編集
+          </button>
+
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            onAfterOpen={this.afterOpenModal}
+            onRequestClose={this.closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+            <h2>修正</h2>
+
+            <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
+            <button onClick={this.updateData}>更新</button>
+            <button onClick={this.deleteGroup}>削除</button>
+          </Modal>
+
+          {this.state.group_members}
+          {this.state.group_tasks.map((task) => {
+            return (
+                <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
+            )
+          })}
+          <InputTaskModal group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
+        </div>
+
+    );
   }
 }
 
