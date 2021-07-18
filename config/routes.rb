@@ -7,13 +7,13 @@ Rails.application.routes.draw do
       resources :hello
     end
   end
-
   get 'group_user/new'
   root to: 'static_pages#top', as: 'top'
   get 'sessions/login', to: 'sessions#login_page', as: 'login_page'
   post 'sessions/login', to: 'sessions#login', as: 'login'
   get 'users/logout', to: 'users#logout', as: 'logout'
   get '/get_group_list', to: 'users#get_group_list'
+  get 'all_user', to: 'users#all_user'
   get 'react_test', to: 'users#react_test'
 
   resources :users

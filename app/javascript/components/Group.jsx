@@ -22,6 +22,7 @@ class Group extends React.Component {
       group_name: props.group.name,
       group_id: props.group.id,
       group_members:[] ,
+      users:[],
       group_tasks: [],
       input_value: ''
     }
@@ -32,6 +33,7 @@ class Group extends React.Component {
     this.deleteGroup = this.deleteGroup.bind(this);
     this.updateData = this.updateData.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.getUsers = this.getUsers.bind(this);
 
     this.getGroupInfo(this.props.group.id)
   }
@@ -40,6 +42,7 @@ class Group extends React.Component {
     this.setState({modalIsOpen: true});
     var group_name = this.state.group_name
     this.setState({input_value: group_name});
+    this.getUsers()
   }
   afterOpenModal() {
     this.subtitle.style.color = '#fff000';
@@ -134,6 +137,25 @@ class Group extends React.Component {
       )
   }
 
+  getUsers() {
+    fetch("/all_user",{
+      method: 'GET'
+      }).then(res => res.json())
+      .then(
+        (result) => {
+          alart('this is called in jsx')
+          var user_list = []
+          for(var i in result){
+            user_list.push(result[i])
+          }
+          this.setState({
+            users: user_list
+          });
+        }
+      )
+
+  }
+
 
   render () {
     return (
@@ -144,7 +166,16 @@ class Group extends React.Component {
           <button onClick={ () => this.openModal()}>
             グループを編集
           </button>
+          {this.state.group_members}
+          {this.state.group_tasks.map((task) => {
+            return (
+                <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
+            )
+          })}
 
+
+
+          <InputTaskModal group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
           <Modal
             isOpen={this.state.modalIsOpen}
             onAfterOpen={this.afterOpenModal}
@@ -152,20 +183,24 @@ class Group extends React.Component {
             style={customStyles}
             contentLabel="Example Modal"
           >
-            <h2>修正</h2>
-
+            <h2>グループを編集</h2>
+            <p></p>
+            <p>グループ名</p>
             <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
-            <button onClick={this.updateData}>更新</button>
-            <button onClick={this.deleteGroup}>削除</button>
+            <button onClick={this.updateData}>グループ名を変更する</button>
+            <p></p>
+            <p>メンバーを招待する</p>
+            {this.state.users.map((user) => {
+              return (
+                <p>{user.name}</p>
+              )
+            })}
+            <p></p>
+            <button onClick={this.deleteGroup}>このグループを削除する</button>
+
+
           </Modal>
 
-          {this.state.group_members}
-          {this.state.group_tasks.map((task) => {
-            return (
-                <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
-            )
-          })}
-          <InputTaskModal group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
         </div>
 
     );

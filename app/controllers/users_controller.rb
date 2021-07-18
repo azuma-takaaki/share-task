@@ -1,12 +1,4 @@
 class UsersController < ApplicationController
-
-
-  def react_test
-    react_message =[{message: 'Hi! i am form react!'}]
-
-  end
-
-
   def new
     @user = User.new()
   end
@@ -69,12 +61,22 @@ class UsersController < ApplicationController
     end
   end
 
+  def all_user
+    if logged_in?
+      @user = current_user()
+      render :json => [@user.groups]
+      logger.debug("ログに出力したい内容")
+      logger.debug(User.all)
+    end
+  end
+
   def get_group_list
     if logged_in?
       @user = current_user()
       render :json => [@user.groups]
     end
   end
+
 
   def random_number
     @random_number = rand(1000)
