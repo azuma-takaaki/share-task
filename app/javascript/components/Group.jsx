@@ -183,7 +183,7 @@ class Group extends React.Component {
     closeModal()
   }
 
-  
+
 
 
   render () {
