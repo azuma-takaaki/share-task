@@ -143,10 +143,9 @@ class Group extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
-          alart('this is called in jsx')
           var user_list = []
-          for(var i in result){
-            user_list.push(result[i])
+          for(var i in result[0]){
+            user_list.push(result[0][i])
           }
           this.setState({
             users: user_list
@@ -190,15 +189,14 @@ class Group extends React.Component {
             <button onClick={this.updateData}>グループ名を変更する</button>
             <p></p>
             <p>メンバーを招待する</p>
+
             {this.state.users.map((user) => {
               return (
-                <p>{user.name}</p>
+                <p>{user.name}<button>招待する</button></p>
               )
             })}
             <p></p>
             <button onClick={this.deleteGroup}>このグループを削除する</button>
-
-
           </Modal>
 
         </div>
