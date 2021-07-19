@@ -63,10 +63,9 @@ class UsersController < ApplicationController
 
   def all_user
     if logged_in?
-      @user = current_user()
-      render :json => [@user.groups]
-      logger.debug("ログに出力したい内容")
-      logger.debug(User.all)
+      @users = User.all
+      render :json => [@users]
+      logger.debug "全ユーザー: #{@users.to_json}"
     end
   end
 
