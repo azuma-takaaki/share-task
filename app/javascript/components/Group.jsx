@@ -42,7 +42,7 @@ class Group extends React.Component {
 
   openModal() {
     this.setState({modalIsOpen: true});
-    var group_name = this.state.group_name
+    var group_name = this.props.group.name
     this.setState({input_value: group_name});
     this.getUsers()
   }
@@ -51,6 +51,7 @@ class Group extends React.Component {
   }
   closeModal() {
     this.setState({modalIsOpen: false});
+    this.setState({input_value: ""});
   }
   deleteGroup(){
     const getCsrfToken = () => {
@@ -153,7 +154,6 @@ class Group extends React.Component {
           });
         }
       )
-      this.setState({input_value: ""});
       this.props.updateGroupList()
       closeModal()
   }
