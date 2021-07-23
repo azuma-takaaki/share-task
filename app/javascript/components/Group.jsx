@@ -22,7 +22,7 @@ class Group extends React.Component {
       group_name: props.group.name,
       group_id: props.group.id,
       group_members:[] ,
-      users:[],
+      other_users:[],
       group_tasks: [],
       input_value: ''
     }
@@ -34,6 +34,8 @@ class Group extends React.Component {
     this.updateData = this.updateData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.getUsers = this.getUsers.bind(this);
+    this.removeUser = this.removeUser.bind(this);
+    this.inviteUser = this.inviteUser.bind(this);
 
     this.getGroupInfo(this.props.group.id)
   }
@@ -105,7 +107,6 @@ class Group extends React.Component {
     this.setState({input_value: e.target.value});
   }
 
-
   getGroupInfo(id) {
     fetch("/groups/"+id,{
       method: 'GET'
@@ -114,7 +115,7 @@ class Group extends React.Component {
         (result) => {
           var user_list = []
           for(var i in result[0]){
-            user_list.push(<a href="">{result[0][i].name} </a>)
+            user_list.push(result[0][i])
           }
           this.setState({
             group_members: user_list
@@ -148,12 +149,66 @@ class Group extends React.Component {
             user_list.push(result[0][i])
           }
           this.setState({
-            users: user_list
+            other_users: user_list
           });
         }
       )
-
+      this.setState({input_value: ""});
+      this.props.updateGroupList()
+      closeModal()
   }
+
+  inviteUser(user_id){
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
+      }
+      return '';
+    }
+    const data = { group_id: this.state.group_id, user_id: user_id };
+
+    fetch('/group_user',{
+      method: 'POST',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    }).then(this.props.updateGroupList())
+    this.props.updateGroupList()
+    closeModal()
+  }
+
+  removeUser(user_id){
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
+      }
+      return '';
+    }
+    const data = { group_id: this.state.group_id, user_id: user_id };
+
+    fetch('/group_user?group_id='+this.state.group_id+'&user_id='+user_id,{
+      method: 'DELETE',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      //body: JSON.stringify(data)
+    }).then(this.props.updateGroupList())
+    this.props.updateGroupList()
+    closeModal()
+  }
+
+
 
 
   render () {
@@ -165,7 +220,11 @@ class Group extends React.Component {
           <button onClick={ () => this.openModal()}>
             グループを編集
           </button>
-          {this.state.group_members}
+          {this.state.group_members.map((group_member) => {
+            return (
+                <a href="">{group_member.name}</a>
+            )
+          })}
           {this.state.group_tasks.map((task) => {
             return (
                 <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
@@ -188,11 +247,21 @@ class Group extends React.Component {
             <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
             <button onClick={this.updateData}>グループ名を変更する</button>
             <p></p>
+            <p>グループメンバー</p>
+            {this.state.group_members.map((group_member)=>{
+              return(
+                <p>
+                  {group_member.name}
+                  <button onClick = {() => this.removeUser(group_member.id)}>退会させる</button>
+                </p>
+              )
+            })}
+            <p></p>
             <p>メンバーを招待する</p>
 
-            {this.state.users.map((user) => {
+            {this.state.other_users.map((user) => {
               return (
-                <p>{user.name}<button>招待する</button></p>
+                <p>{user.name}<button onClick={() => this.inviteUser(user.id)}>招待する</button></p>
               )
             })}
             <p></p>

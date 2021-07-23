@@ -15,8 +15,10 @@
 <%= react_component("GroupsList", { groups: @user.groups }) %>
 
 
+<br><br>
 
 <br><br>
+<%= link_to 'ログアウトする', logout_path%>
 
 <div>
   <% Task.where(user_id: @user.id).each do |task|%>

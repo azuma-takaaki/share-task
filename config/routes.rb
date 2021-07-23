@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get '/get_group_list', to: 'users#get_group_list'
   get 'all_user', to: 'users#all_user'
   get 'react_test', to: 'users#react_test'
+  delete 'group_user', to: 'group_user#destroy'
 
   resources :users
   resources :tasks
