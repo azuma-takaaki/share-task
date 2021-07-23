@@ -57,15 +57,11 @@ class GroupsController < ApplicationController
   def destroy
     if !group_member?
       flash[:danger] = "その操作は実行できません#{params}"
-      redirect_to current_user
     end
     @group = Group.find_by(id: params[:id])
     if @group.destroy
-      #flash[:danger]="グループを削除しました．"
-      redirect_to current_user
     else
       flash[:danger]= @group.errors.full_messages
-      redirect_to edit_group_path(@group)
     end
   end
 
