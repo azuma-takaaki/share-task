@@ -14,6 +14,15 @@ class GroupUserController < ApplicationController
     end
   end
 
+  def destroy
+    @group_user = GroupUser.find_by(group_user_parameters)
+    if @group_user.destroy
+      flash[:danger] = "削除しました！#{group_user_parameters}  #{params[:group_id]}"
+    else
+      flash[:danger] = "削除できませんでした#{group_user_parameters}"
+    end
+  end
+
   private
     def group_user_parameters
       params.permit(:group_id, :user_id)
