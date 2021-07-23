@@ -213,23 +213,25 @@ class Group extends React.Component {
 
   render () {
     return (
-        <div>
-          <button onClick={ () => this.getGroupInfo(this.props.group.id)}>
+        <div class="group-wrapper">
+          <button class="group-name" onClick={ () => this.getGroupInfo(this.props.group.id)}>
             {this.state.group_name}
           </button>
-          <button onClick={ () => this.openModal()}>
-            グループを編集
-          </button>
-          {this.state.group_members.map((group_member) => {
-            return (
-                <a href="">{group_member.name}</a>
-            )
-          })}
-          {this.state.group_tasks.map((task) => {
-            return (
-                <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
-            )
-          })}
+          <div class="group-infomation">
+            <button onClick={ () => this.openModal()}>
+              グループを編集
+            </button>
+            {this.state.group_members.map((group_member) => {
+              return (
+                  <a href="">{group_member.name}</a>
+              )
+            })}
+            {this.state.group_tasks.map((task) => {
+              return (
+                  <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
+              )
+            })}
+          </div>
 
 
 

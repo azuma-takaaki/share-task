@@ -1,25 +1,17 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
-input {
 
-  width: 300px;
-  height: 30px;
-  margin: 15  px;
-}
-
-.new_user{
+.group-wrapper{
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 1em;
 }
 
-p.users-group{
-  margin: 5px;
+.group-name {
+  font-size: 2em;
+  float: left;
 }
 
-h1{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.group-infomation {
+  float: left;
 }
