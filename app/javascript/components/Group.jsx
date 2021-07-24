@@ -214,10 +214,6 @@ class Group extends React.Component {
   render () {
     return (
         <div>
-          <button class="group-name" onClick={ () => this.getGroupInfo(this.props.group.id)}>
-            {this.state.group_name}
-          </button>
-
           <div class="group-members-wrapper">
             {this.state.group_members.map((group_member) => {
               return (
@@ -229,21 +225,22 @@ class Group extends React.Component {
             })}
           </div>
 
-            <button onClick={ () => this.openModal()}>
-              グループを編集
-            </button>
-            <div class="task-wrapper">
-            {this.state.group_tasks.map((task) => {
-              return (
-                  <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
-              )
-            })}
-            </div>
-
-
+          <button class="edit-group-button" onClick={ () => this.openModal()}>
+            •••
+          </button>
 
 
           <InputTaskModal group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
+
+          <div class="task-wrapper">
+          {this.state.group_tasks.map((task) => {
+            return (
+                <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
+            )
+          })}
+          </div>
+
+
           <Modal
             isOpen={this.state.modalIsOpen}
             onAfterOpen={this.afterOpenModal}
