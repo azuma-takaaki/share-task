@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(secure_user_infomation)
+    @user.icon = "icon_"+rand(0...10).to_s+".png"
     if @user.save
       log_in(@user)
       flash[:danger] = 'アカウントを登録しました'

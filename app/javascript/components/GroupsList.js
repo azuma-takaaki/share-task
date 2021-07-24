@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Group from "./Group.jsx"
 
+
 const customStyles = {
   content : {
     top                   : '50%',

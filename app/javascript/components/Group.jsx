@@ -223,7 +223,10 @@ class Group extends React.Component {
             </button>
             {this.state.group_members.map((group_member) => {
               return (
+                <div>
+                  <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
                   <a href="">{group_member.name}</a>
+                </div>
               )
             })}
             <div class="task-wrapper">
