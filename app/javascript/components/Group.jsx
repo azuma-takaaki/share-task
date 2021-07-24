@@ -217,7 +217,8 @@ class Group extends React.Component {
           <button class="group-name" onClick={ () => this.getGroupInfo(this.props.group.id)}>
             {this.state.group_name}
           </button>
-          <div class="group-infomation">
+
+          <div class="group-members-wrapper">
             {this.state.group_members.map((group_member) => {
               return (
                 <div class = "group-member">
@@ -226,6 +227,8 @@ class Group extends React.Component {
                 </div>
               )
             })}
+          </div>
+
             <button onClick={ () => this.openModal()}>
               グループを編集
             </button>
@@ -236,7 +239,7 @@ class Group extends React.Component {
               )
             })}
             </div>
-          </div>
+
 
 
 

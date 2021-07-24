@@ -38,13 +38,17 @@
   margin-left:10px;
 }
 
-.group-infomation {
 
-}
 
 //user
+.group-members-wrapper {
+  width:  auto;
+  height: auto;
+  padding: 1em;
+}
 .group-member{
   float: left;
+  margin: 0.5em;
 }
 .user-icon {
   border-radius: 50%;
@@ -55,15 +59,17 @@
 
 //task
 .task-wrapper{
-  padding: 3em;
-  margin:1em;
+  padding: 1em;
+  margin:3em;
   .task {
     font-family: serif;
     font-size: 1.5rem;
     background-color:#6C93E0;
-    width:auto;
+    width:6em;
     height:6em;
     float: left;
     margin: 0.5em;
+    white-space: pre-line;
+    word-break: break-all;
   }
 }
