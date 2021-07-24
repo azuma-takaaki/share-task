@@ -95,7 +95,7 @@ class Task extends React.Component{
   render(){
     return(
       <div id = {this.props.id}>
-        <button onClick={this.openModal}>{this.state.content}</button>
+        <button class='task'onClick={this.openModal}>{this.state.content}</button>
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}

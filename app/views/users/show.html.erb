@@ -1,4 +1,7 @@
-<h1>This is show page!</h1>
+<%= react_component("GroupsList", { groups: @user.groups }) %>
+
+
+<br><br>
 <div >
   <% if session[:user_id] %>
     <div >user_id: <%= @user.id%> </div>
@@ -9,14 +12,6 @@
     <div >ログインしてください</div>
   <% end %>
 </div>
-
-<br><br>
-
-<%= react_component("GroupsList", { groups: @user.groups }) %>
-
-
-<br><br>
-
 <br><br>
 <%= link_to 'ログアウトする', logout_path%>
 

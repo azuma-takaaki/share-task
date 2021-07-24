@@ -108,16 +108,26 @@ class GroupsList extends React.Component {
 
   render () {
     return (
-      <React.Fragment>
-        {this.state.group_list.map((group) => {
-          return (
-            //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
-              <div>
-                <button class="switch-group-display" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
-                {this.state.is_visible[group.id] && <Group group={group} updateGroupList={() => this.getGroupList}/>}
-              </div>
-          )
-        })}
+      <div>
+        <div class="all-group-area-warpper">
+          <div class="switch-group-button-list">
+          {this.state.group_list.map((group) => {
+            return (
+              <button class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
+            )
+          })}
+          </div>
+          <div class="group-wrapper">
+          {this.state.group_list.map((group) => {
+            return (
+              //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
+                <div>
+                  {this.state.is_visible[group.id] && <Group group={group} updateGroupList={() => this.getGroupList}/>}
+                </div>
+            )
+          })}
+          </div>
+        </div>
 
         <button onClick={this.openModal}>新しいグループを作成する</button>
         <Modal
@@ -131,7 +141,7 @@ class GroupsList extends React.Component {
           <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
           <button onClick={this.postData}>グループを作成</button>
         </Modal>
-      </React.Fragment>
+      </div>
     );
   }
 

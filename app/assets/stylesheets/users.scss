@@ -2,16 +2,56 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
-.group-wrapper{
 
-  padding: 1em;
+//group, task 全体
+.all-group-area-warpper{
+  display:flex;
 }
 
-.switch-group-display {
+//group選択ボタンリスト
+.switch-group-button-list{
+  background-color:#CFEFFF;
+  width:12em;
+  height:32em;
+  text-align:center;
+}
+.switch-group-button{
+  font-family: serif;
   font-size: 2em;
+  background-color:#4393F5;
+  width:auto;
+  height:auto;
+  text-align:center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 5% auto;
+}
 
+
+//group
+.group-wrapper{
+  background-color:#B3CEE3;
+  width:100em;
+  height:32em;
+  text-align:center;
+  margin-left:10px;
 }
 
 .group-infomation {
 
+}
+
+//task
+.task-wrapper{
+  padding: 3em;
+  .task {
+    font-family: serif;
+    font-size: 1.5rem;
+    background-color:#6C93E0;
+    width:auto;
+    height:6em;
+    float: left;
+    margin: 0.5em;
+  }
 }

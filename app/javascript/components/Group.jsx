@@ -213,7 +213,7 @@ class Group extends React.Component {
 
   render () {
     return (
-        <div class="group-wrapper">
+        <div>
           <button class="group-name" onClick={ () => this.getGroupInfo(this.props.group.id)}>
             {this.state.group_name}
           </button>
@@ -226,11 +226,13 @@ class Group extends React.Component {
                   <a href="">{group_member.name}</a>
               )
             })}
+            <div class="task-wrapper">
             {this.state.group_tasks.map((task) => {
               return (
                   <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
               )
             })}
+            </div>
           </div>
 
 
