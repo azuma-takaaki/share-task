@@ -218,17 +218,17 @@ class Group extends React.Component {
             {this.state.group_name}
           </button>
           <div class="group-infomation">
-            <button onClick={ () => this.openModal()}>
-              グループを編集
-            </button>
             {this.state.group_members.map((group_member) => {
               return (
-                <div>
+                <div class = "group-member">
                   <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
-                  <a href="">{group_member.name}</a>
+                  <div>{group_member.name}</div>
                 </div>
               )
             })}
+            <button onClick={ () => this.openModal()}>
+              グループを編集
+            </button>
             <div class="task-wrapper">
             {this.state.group_tasks.map((task) => {
               return (
@@ -258,6 +258,7 @@ class Group extends React.Component {
             {this.state.group_members.map((group_member)=>{
               return(
                 <p>
+                  <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
                   {group_member.name}
                   <button onClick = {() => this.removeUser(group_member.id)}>退会させる</button>
                 </p>
@@ -268,7 +269,10 @@ class Group extends React.Component {
 
             {this.state.other_users.map((user) => {
               return (
-                <p>{user.name}<button onClick={() => this.inviteUser(user.id)}>招待する</button></p>
+                <p>
+                  <img class = "user-icon" src={require("../../assets/images/default/" + user.icon)} />
+                  {user.name}<button onClick={() => this.inviteUser(user.id)}>招待する</button>
+                </p>
               )
             })}
             <p></p>
