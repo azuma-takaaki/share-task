@@ -9,9 +9,9 @@ class TasksController < ApplicationController
     @task = @group.tasks.build(strong_parameters)
 
     if @task.save
-      redirect_to @group
+      #redirect_to @group
     else
-      redirect_to User.find_by(id: sessions[:user_id])
+      #redirect_to User.find_by(id: sessions[:user_id])
     end
   end
 
