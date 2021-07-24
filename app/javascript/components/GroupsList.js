@@ -17,8 +17,13 @@ const customStyles = {
 class GroupsList extends React.Component {
   constructor(props) {
     super(props);
+    var arr_visible = []
+     props.groups.map((group) => {
+       arr_visible[group.id] = false
+     })
     this.state = {
       group_list: props.groups,
+      is_visible: arr_visible,
       input_value: ''
     }
     this.getGroupList = this.getGroupList.bind(this);
@@ -27,6 +32,7 @@ class GroupsList extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.postData = this.postData.bind(this);
+    this.switchDisplay = this.switchDisplay.bind(this);
   }
 
   getGroupList() {
@@ -88,6 +94,17 @@ class GroupsList extends React.Component {
       closeModal()
   }
 
+  switchDisplay(group_id){
+    var new_visible_group = []
+    Object.keys(this.state.is_visible).map((key) =>{
+      new_visible_group[key] = false
+    })
+    new_visible_group[group_id] = true
+    this.setState({is_visible: new_visible_group})
+  }
+
+
+
 
   render () {
     return (
@@ -96,11 +113,12 @@ class GroupsList extends React.Component {
           return (
             //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
               <div>
-                <Group group={group} updateGroupList={() => this.getGroupList}/>
-                <p></p>
+                <button class="switch-group-display" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
+                {this.state.is_visible[group.id] && <Group group={group} updateGroupList={() => this.getGroupList}/>}
               </div>
           )
         })}
+
         <button onClick={this.openModal}>新しいグループを作成する</button>
         <Modal
           isOpen={this.state.modalIsOpen}
