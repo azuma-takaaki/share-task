@@ -111,12 +111,14 @@ class GroupsList extends React.Component {
     return (
       <div>
         <div class="all-group-area-warpper">
-          <div class="switch-group-button-list">
-            {this.state.group_list.map((group) => {
-              return (
-                <button class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
-              )
-            })}
+          <div class = "side-menu">
+            <div class="switch-group-button-list">
+              {this.state.group_list.map((group) => {
+                return (
+                  <button class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
+                )
+              })}
+            </div>
             <button class = "add-group-button" onClick={this.openModal}>＋group</button>
           </div>
           <div class="group-wrapper">

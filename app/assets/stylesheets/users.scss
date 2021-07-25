@@ -5,90 +5,157 @@
 
 //group, task 全体
 .all-group-area-warpper{
-  display:flex;
-}
+    display:flex;
 
-//group選択ボタンリスト
-.switch-group-button-list{
-  background-color:#CFEFFF;
-  width:13em;
-  height:32em;
-  text-align:center;
-  padding: 1em;
-}
-.switch-group-button{
-  font-family: serif;
-  font-size: 2em;
-  background-color:#4393F5;
-  width:auto;
-  height:auto;
-  text-align:center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 10%;
-  margin: 5% auto;
-  &:hover {
-    opacity: 0.6;
-    transition-duration: 0.3s;
-  }
-}
-.add-group-button{
-  font-family: serif;
-  font-size: 1.7em;
-  width:auto;
-  height:auto;
-  text-align:center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 10%;
-  margin: 5% auto;
-  background-color:	#CCFFFF;
-  margin-top: 10em;
-  &:hover {
-    opacity: 0.6;
-    transition-duration: 0.3s;
-  }
-}
-
-
-//group
-.group-wrapper{
-  background-color:#B3CEE3;
-  width:100em;
-  height:32em;
-  text-align:center;
-  margin-left:10px;
-}
-
-.edit-group-button{
-  border-radius: 10%;
-  background-color:	#CCFFFF;
-  border: 0;
-  font-family: serif;
-  font-size: 1rem;
-  width:3em;
-  height:4em;
-  margin: 0rem 1rem 0rem 1rem;
-  float: left;
-  &:hover {
-    opacity: 0.6;
-    transition-duration: 0.3s;
-  }
-}
+    //group選択ボタンリスト
+    .side-menu{
+      width:13em;
+      height:32em;
+      position: relative;
+      .switch-group-button-list{
+        background-color:#CFEFFF;
+        width:10em;
+        height:26em;
+        text-align:center;
+        padding: 0.5em;
+        overflow:hidden;
+        overflow-y : scroll;
+        /* IE, Edge 対応 */
+        -ms-overflow-style: none;
+        /* Firefox 対応 */
+        scrollbar-width: none;
+        .switch-group-button{
+          font-family: serif;
+          font-size: 2em;
+          background-color:#4393F5;
+          width:auto;
+          height:auto;
+          text-align:center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          border-radius: 10%;
+          margin: 5% auto;
+          white-space: pre-line;
+          word-break: break-all;
+          &:hover {
+            opacity: 0.6;
+            transition-duration: 0.3s;
+          }
+        }
+      }
+      .add-group-button{
+        font-family: serif;
+        font-size: 1.7em;
+        width:auto;
+        height:auto;
+        text-align:center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 10%;
+        margin: 10% 10%;
+        background-color:	#CCFFFF;
+        margin-top: 10em;
+        position: absolute;
+        bottom: 0;
+        &:hover {
+          opacity: 0.6;
+          transition-duration: 0.3s;
+        }
+      }
+    }
 
 
-//user
-.group-members-wrapper {
-  width:  auto;
-  height: auto;
-  padding: 1em;
+    .switch-group-button-list::-webkit-scrollbar {
+      display:none;
+    }
+
+    //group
+    .group-wrapper{
+        background-color:#B3CEE3;
+        width:100em;
+        height:32em;
+        text-align:center;
+        margin-left:0px;
+
+        //edit-group-button
+        .edit-group-button{
+          border-radius: 10%;
+          background-color:	#CCFFFF;
+          border: 0;
+          font-family: serif;
+          font-size: 1rem;
+          width:3em;
+          height:4em;
+          margin: 0rem 1rem 0rem 1rem;
+          float: left;
+          &:hover {
+            opacity: 0.6;
+            transition-duration: 0.3s;
+          }
+        }
+
+        //user
+        .group-members-wrapper {
+          width:  auto;
+          height: auto;
+          padding: 1em;
+          .group-member{
+            float: left;
+            margin: 0.5em;
+          }
+          .user-icon {
+            border-radius: 50%;
+            width:  3em;
+            height: 3em;
+            border: 4px solid #99FFCC;
+          }
+        }
+
+        //task
+        .task-wrapper{
+          padding: 1em;
+          margin:1em;
+          margin-top: 5em;
+          .task {
+            font-family: serif;
+            font-size: 1.5rem;
+            background-color:#6C93E0;
+            width:6em;
+            height:6em;
+            float: left;
+            margin: 0.5em;
+            white-space: pre-line;
+            word-break: break-all;
+            border-radius: 10%;
+            &:hover {
+              opacity: 0.6;
+              transition-duration: 0.3s;
+            }
+          }
+        }
+
+        .add-task-button {
+          font-family: serif;
+          font-size: 1.5rem;
+          width:4em;
+          height:3em;
+          margin: 0rem 1rem 0rem 1rem;
+          float: right;
+          border-radius: 10%;
+          background-color:	#CCFFFF;
+          &:hover {
+            opacity: 0.6;
+            transition-duration: 0.3s;
+          }
+        }
+
+    }
+
 }
-.group-member{
-  float: left;
-  margin: 0.5em;
-}
+
+
 .user-icon {
   border-radius: 50%;
   width:  3em;
@@ -96,40 +163,11 @@
   border: 4px solid #99FFCC;
 }
 
-//task
-.task-wrapper{
-  padding: 1em;
-  margin:1em;
-  margin-top: 5em;
-  .task {
-    font-family: serif;
-    font-size: 1.5rem;
-    background-color:#6C93E0;
-    width:6em;
-    height:6em;
-    float: left;
-    margin: 0.5em;
-    white-space: pre-line;
-    word-break: break-all;
-    border-radius: 10%;
-    &:hover {
-      opacity: 0.6;
-      transition-duration: 0.3s;
-    }
-  }
+.ReactModal__Body--open {
+  position: fixed;
 }
-
-.add-task-button {
-  font-family: serif;
-  font-size: 1.5rem;
-  width:4em;
-  height:3em;
-  margin: 0rem 1rem 0rem 1rem;
-  float: right;
-  border-radius: 10%;
-  background-color:	#CCFFFF;
-  &:hover {
-    opacity: 0.6;
-    transition-duration: 0.3s;
-  }
+.modal {
+  margin-left: 1rem;
+  overflow: scroll;
+  height: 100vh;
 }

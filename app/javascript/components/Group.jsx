@@ -248,35 +248,37 @@ class Group extends React.Component {
             style={customStyles}
             contentLabel="Example Modal"
           >
-            <h2>グループを編集</h2>
-            <p></p>
-            <p>グループ名</p>
-            <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
-            <button onClick={this.updateData}>グループ名を変更する</button>
-            <p></p>
-            <p>グループメンバー</p>
-            {this.state.group_members.map((group_member)=>{
-              return(
-                <p>
-                  <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
-                  {group_member.name}
-                  <button onClick = {() => this.removeUser(group_member.id)}>退会させる</button>
-                </p>
-              )
-            })}
-            <p></p>
-            <p>メンバーを招待する</p>
+            <div class="modal">
+              <h2>グループを編集</h2>
+              <p></p>
+              <p>グループ名</p>
+              <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
+              <button onClick={this.updateData}>グループ名を変更する</button>
+              <p></p>
+              <p>グループメンバー</p>
+              {this.state.group_members.map((group_member)=>{
+                return(
+                  <p>
+                    <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
+                    {group_member.name}
+                    <button onClick = {() => this.removeUser(group_member.id)}>退会させる</button>
+                  </p>
+                )
+              })}
+              <p></p>
+              <p>メンバーを招待する</p>
 
-            {this.state.other_users.map((user) => {
-              return (
-                <p>
-                  <img class = "user-icon" src={require("../../assets/images/default/" + user.icon)} />
-                  {user.name}<button onClick={() => this.inviteUser(user.id)}>招待する</button>
-                </p>
-              )
-            })}
-            <p></p>
-            <button onClick={this.deleteGroup}>このグループを削除する</button>
+              {this.state.other_users.map((user) => {
+                return (
+                  <p>
+                    <img class = "user-icon" src={require("../../assets/images/default/" + user.icon)} />
+                    {user.name}<button onClick={() => this.inviteUser(user.id)}>招待する</button>
+                  </p>
+                )
+              })}
+              <p></p>
+              <button onClick={this.deleteGroup}>このグループを削除する</button>
+            </div>
           </Modal>
 
         </div>
