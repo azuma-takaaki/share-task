@@ -70,7 +70,6 @@ class InputTaskModal extends React.Component {
   render() {
     return (
       <div>
-        <button class="add-task-button"onClick={this.openModal}>＋task</button>
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}

@@ -18,6 +18,7 @@ const customStyles = {
 class Group extends React.Component {
   constructor(props) {
     super(props);
+    this.InputTaskModalRef = React.createRef();
     this.state = {
       group_name: props.group.name,
       group_id: props.group.id,
@@ -36,6 +37,7 @@ class Group extends React.Component {
     this.getUsers = this.getUsers.bind(this);
     this.removeUser = this.removeUser.bind(this);
     this.inviteUser = this.inviteUser.bind(this);
+    this.openInputTaskModal = this.openInputTaskModal.bind(this);
 
     this.getGroupInfo(this.props.group.id)
   }
@@ -209,28 +211,38 @@ class Group extends React.Component {
   }
 
 
+  openInputTaskModal() {
+    this.InputTaskModalRef.current.openModal(); // this.ref名.currentで実体にアクセス
+  }
+
+
 
 
   render () {
     return (
         <div>
-          <div class="group-members-wrapper">
-            {this.state.group_members.map((group_member) => {
-              return (
-                <div class = "group-member">
-                  <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
-                  <div>{group_member.name}</div>
-                </div>
-              )
-            })}
+          <div  class="group-header">
+            <div class="group-members-list">
+              {this.state.group_members.map((group_member) => {
+                return (
+                  <div class = "group-member">
+                    <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
+                    <div>{group_member.name}</div>
+                  </div>
+                )
+              })}
+            </div>
+            <div class="edit-group-button-wrapper">
+              <button class="edit-group-button" onClick={ () => this.openModal()}>
+                •••
+              </button>
+            </div>
+            <div class="add-task-button-wrapper">
+              <button class="add-task-button"onClick={this.openInputTaskModal}>＋task</button>
+            </div>
           </div>
 
-          <button class="edit-group-button" onClick={ () => this.openModal()}>
-            •••
-          </button>
-
-
-          <InputTaskModal group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
+          <InputTaskModal ref={this.InputTaskModalRef} group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
 
           <div class="task-wrapper">
           {this.state.group_tasks.map((task) => {
