@@ -17,11 +17,14 @@
 
 body{
   margin: 0;
+  height:100%;
   //background-image: image-url('sky.jpg');
   background-size: cover;
+  font-family: "メイリオ" ;
 }
 header{
-  height: 100px;
+  height: 6vh;
+  padding: 0.5%;
   background-color: #0000AA;
 
 }
@@ -49,9 +52,10 @@ header{
 }
 
 .title{
-  padding: 20px;
-  font-size: 40px;
+  padding: auto;
+  font-size: 4vh;
   color: white;
+  margin: 0 3%;
   font-family: serif;
-  display: inline-block;
+
 }

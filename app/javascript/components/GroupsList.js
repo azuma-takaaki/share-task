@@ -119,7 +119,9 @@ class GroupsList extends React.Component {
                 )
               })}
             </div>
-            <button class = "add-group-button" onClick={this.openModal}>＋group</button>
+            <div class = "add-group-button" >
+              <button onClick={this.openModal}>＋group</button>
+            </div>
           </div>
           <div class="group-wrapper">
           {this.state.group_list.map((group) => {
