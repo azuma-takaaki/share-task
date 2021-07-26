@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Group from "./Group.jsx"
-import { scaleRotate as Menu } from "react-burger-menu";
+import { push as Menu } from "react-burger-menu";
 
 
 const customStyles = {
@@ -37,6 +37,7 @@ class GroupsList extends React.Component {
     this.postData = this.postData.bind(this);
     this.switchDisplay = this.switchDisplay.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
   }
 
   getGroupList() {
@@ -111,6 +112,11 @@ class GroupsList extends React.Component {
     this.setState(state => ({menuOpen: !state.menuOpen}))
   }
 
+  closeMenu () {
+    this.setState(state => ({menuOpen: false}))
+  }
+
+
 
 
 
@@ -120,18 +126,32 @@ class GroupsList extends React.Component {
         <div class="all-group-area-wrapper" id="outer-container">
           <Menu
             isOpen={this.state.menuOpen}
+            onClose={ this.closeMenu }
             class="side-menu"
+            width={ '20%' }
             pageWrapId={ "page-wrap" }
             outerContainerId={ "outer-container" }
           >
-            {this.state.group_list.map((group) => {
-              return (
-                <button  className="menu-item"  class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
-              )
-            })}
-            <button className="menu-item" class = "btn btn-primary" onClick={this.openModal}>＋group</button>
+            <div class="side-menu">
+              <div class= "switch-group-button-list">
+                {this.state.group_list.map((group) => {
+                  return (
+                    <button   class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
+                  )
+                })}
+                </div>
+              <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
+            </div>
           </Menu>
           <main id="page-wrap">
+              {(() => {
+                if(this.state.menuOpen) {
+                    return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＞</button>);
+                } else {
+                    return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＜</button>);
+                }
+              })()}
+
             <div class="group-wrapper">
             {this.state.group_list.map((group) => {
               return (
@@ -157,7 +177,6 @@ class GroupsList extends React.Component {
           <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
           <button onClick={this.postData}>グループを作成</button>
         </Modal>
-        <button class="side-menu-toggle" onClick={this.toggleMenu}>sidemenu</button>
       </div>
     );
   }
