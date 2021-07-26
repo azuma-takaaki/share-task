@@ -140,7 +140,7 @@ class GroupsList extends React.Component {
                   )
                 })}
                 </div>
-              <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
+                <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
             </div>
           </Menu>
           <main id="page-wrap">
