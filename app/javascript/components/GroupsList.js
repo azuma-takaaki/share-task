@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Group from "./Group.jsx"
+import { scaleRotate as Menu } from "react-burger-menu";
 
 
 const customStyles = {
@@ -25,7 +26,8 @@ class GroupsList extends React.Component {
     this.state = {
       group_list: props.groups,
       is_visible: arr_visible,
-      input_value: ''
+      input_value: '',
+      menuOpen: false
     }
     this.getGroupList = this.getGroupList.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -34,6 +36,7 @@ class GroupsList extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.postData = this.postData.bind(this);
     this.switchDisplay = this.switchDisplay.bind(this);
+    this.toggleMenu = this.toggleMenu.bind(this);
   }
 
   getGroupList() {
@@ -104,36 +107,42 @@ class GroupsList extends React.Component {
     this.setState({is_visible: new_visible_group})
   }
 
+  toggleMenu () {
+    this.setState(state => ({menuOpen: !state.menuOpen}))
+  }
+
 
 
 
   render () {
     return (
       <div>
-        <div class="all-group-area-warpper">
-          <div class = "side-menu">
-            <div class="switch-group-button-list">
-              {this.state.group_list.map((group) => {
-                return (
-                  <button class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
-                )
-              })}
+        <div class="all-group-area-wrapper" id="outer-container">
+          <Menu
+            isOpen={this.state.menuOpen}
+            class="side-menu"
+            pageWrapId={ "page-wrap" }
+            outerContainerId={ "outer-container" }
+          >
+            {this.state.group_list.map((group) => {
+              return (
+                <button  className="menu-item"  class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
+              )
+            })}
+            <button className="menu-item" class = "btn btn-primary" onClick={this.openModal}>＋group</button>
+          </Menu>
+          <main id="page-wrap">
+            <div class="group-wrapper">
+            {this.state.group_list.map((group) => {
+              return (
+                //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
+                  <div>
+                    {this.state.is_visible[group.id] && <Group group={group} updateGroupList={() => this.getGroupList}/>}
+                  </div>
+              )
+            })}
             </div>
-            <div class = "add-group-button" >
-              <button class = "btn btn-primary" onClick={this.openModal}>＋group</button>
-            </div>
-          </div>
-          <div class="group-wrapper">
-          {this.state.group_list.map((group) => {
-            return (
-              //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
-                <div>
-                  {this.state.is_visible[group.id] && <Group group={group} updateGroupList={() => this.getGroupList}/>}
-                </div>
-            )
-          })}
-          </div>
-
+          </main>
         </div>
 
 
@@ -148,6 +157,7 @@ class GroupsList extends React.Component {
           <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
           <button onClick={this.postData}>グループを作成</button>
         </Modal>
+        <button class="side-menu-toggle" onClick={this.toggleMenu}>sidemenu</button>
       </div>
     );
   }
