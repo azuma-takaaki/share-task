@@ -25,6 +25,7 @@ class Group extends React.Component {
       group_members:[] ,
       other_users:[],
       group_tasks: [],
+      menuOpen: props.menuOpen,
       input_value: ''
     }
     this.getGroupInfo = this.getGroupInfo.bind(this);
@@ -38,6 +39,8 @@ class Group extends React.Component {
     this.removeUser = this.removeUser.bind(this);
     this.inviteUser = this.inviteUser.bind(this);
     this.openInputTaskModal = this.openInputTaskModal.bind(this);
+    this.toggleMenu = this.toggleMenu.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
 
     this.getGroupInfo(this.props.group.id)
   }
@@ -210,18 +213,32 @@ class Group extends React.Component {
     closeModal()
   }
 
-
   openInputTaskModal() {
     this.InputTaskModalRef.current.openModal(); // this.ref名.currentで実体にアクセス
   }
 
+  toggleMenu () {
+    this.setState(state => ({menuOpen: !state.menuOpen}))
+  }
 
+  closeMenu () {
+    this.setState(state => ({menuOpen: false}))
+  }
 
 
   render () {
     return (
         <div>
           <div  class="group-header">
+            {(() => {
+              if(this.state.menuOpen) {
+                  return(<button class="btn btn-info side-menu-toggle-header" onClick={this.props.toggleMenu()}>＞</button>);
+              } else {
+                  return(<button class="btn btn-info side-menu-toggle-header" onClick={this.props.toggleMenu()}>＜</button>);
+              }
+            })()}
+
+            <div class="group-name">{this.state.group_name}</div>
             <div class="group-members-list">
               {this.state.group_members.map((group_member) => {
                 return (

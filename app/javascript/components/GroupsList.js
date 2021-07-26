@@ -19,6 +19,7 @@ const customStyles = {
 class GroupsList extends React.Component {
   constructor(props) {
     super(props);
+    this.GroupRef = React.createRef();
     var arr_visible = []
      props.groups.map((group) => {
        arr_visible[group.id] = false
@@ -38,6 +39,8 @@ class GroupsList extends React.Component {
     this.switchDisplay = this.switchDisplay.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
+
+
   }
 
   getGroupList() {
@@ -110,10 +113,12 @@ class GroupsList extends React.Component {
 
   toggleMenu () {
     this.setState(state => ({menuOpen: !state.menuOpen}))
+    this.GroupRef.current.toggleMenu();
   }
 
   closeMenu () {
     this.setState(state => ({menuOpen: false}))
+    this.GroupRef.current.closeMenu();
   }
 
 
@@ -144,20 +149,21 @@ class GroupsList extends React.Component {
             </div>
           </Menu>
           <main id="page-wrap">
+            <div class="group-wrapper">
               {(() => {
-                if(this.state.menuOpen) {
-                    return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＞</button>);
-                } else {
-                    return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＜</button>);
+                if(!(this.state.is_visible.includes(true))){
+                  if(this.state.menuOpen) {
+                      return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＞</button>);
+                  } else {
+                      return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＜</button>);
+                  }
                 }
               })()}
-
-            <div class="group-wrapper">
             {this.state.group_list.map((group) => {
               return (
                 //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                   <div>
-                    {this.state.is_visible[group.id] && <Group group={group} updateGroupList={() => this.getGroupList}/>}
+                    {this.state.is_visible[group.id] && <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList} menuOpen={() => this.state.menuOpen} toggleMenu={() => this.toggleMenu}/> }
                   </div>
               )
             })}
