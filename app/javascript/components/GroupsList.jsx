@@ -39,6 +39,7 @@ class GroupsList extends React.Component {
     this.switchDisplay = this.switchDisplay.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
+    this.reset = this.reset.bind(this);
 
 
   }
@@ -121,6 +122,9 @@ class GroupsList extends React.Component {
     this.GroupRef.current.closeMenu();
   }
 
+  reset(){
+    alert(Object.keys(this.state.group_list[0]))
+  }
 
 
 

@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     if @user.save
       log_in(@user)
       flash[:danger] = 'アカウントを登録しました'
-      redirect_to @user
+      render :json => [@user.groups]
     else
       flash[:danger] = ['アカウント登録できませんでした'].push(@user.errors.full_messages)
       redirect_to new_user_path

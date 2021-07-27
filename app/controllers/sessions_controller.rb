@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       log_in(user)
       flash[:danger] = 'ログインしました'
-      redirect_to  user_path(user)
+      render :json => [user.groups]
     else
       flash[:danger] = 'ログインできませんでした'
       redirect_to top_path
