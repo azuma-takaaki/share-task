@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import Modal from 'react-modal'
+import Header from "./Header.jsx"
 import GroupsList from "./GroupsList.jsx"
 
 const customStyles = {
@@ -170,25 +171,31 @@ class Top extends React.Component {
       <div>
         {(() => {
           if(this.state.logged_in){
-            return(<GroupsList groups={this.state.group_list}/>)
+            return(
+              <div>
+                <Header/>
+                <GroupsList groups={this.state.group_list}/>
+              </div>
+            )
           }else{
             return(
               <div>
-              <h1>新規アカウント</h1>
-              <button class="btn btn-primary" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
-              <button class="btn btn-outline-success" onClick={()=>this.openModal("login")}>ログイン</button>
-              <p></p>
+                <Header/>
+                <h1>新規アカウント</h1>
+                <button class="btn btn-primary" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
+                <button class="btn btn-outline-success" onClick={()=>this.openModal("login")}>ログイン</button>
+                <p></p>
 
-              <Modal
-                isOpen={this.state.modalIsOpen}
-                onAfterOpen={this.afterOpenModal}
-                onRequestClose={this.closeModal}
-                style={customStyles}
-                contentLabel="Example Modal"
-              >
-                {modal_content}
+                <Modal
+                  isOpen={this.state.modalIsOpen}
+                  onAfterOpen={this.afterOpenModal}
+                  onRequestClose={this.closeModal}
+                  style={customStyles}
+                  contentLabel="Example Modal"
+                >
+                  {modal_content}
 
-              </Modal>
+                </Modal>
               </div>
             )
           }
