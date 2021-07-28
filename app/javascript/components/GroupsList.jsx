@@ -41,6 +41,8 @@ class GroupsList extends React.Component {
     this.closeMenu = this.closeMenu.bind(this);
 
 
+
+
   }
 
   getGroupList() {
@@ -127,6 +129,7 @@ class GroupsList extends React.Component {
 
 
 
+
   render () {
     return (
       <div>
@@ -154,19 +157,17 @@ class GroupsList extends React.Component {
           <main id="page-wrap">
             <div class="group-wrapper">
               {(() => {
-                if(!(this.state.is_visible.includes(true))){
                   if(this.state.menuOpen) {
                       return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＞</button>);
                   } else {
                       return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＜</button>);
                   }
-                }
               })()}
             {this.state.group_list.map((group) => {
               return (
                 //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                   <div>
-                    {this.state.is_visible[group.id] && <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList} menuOpen={() => this.state.menuOpen} toggleMenu={() => this.toggleMenu}/> }
+                    {this.state.is_visible[group.id] && <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList} /> }
                   </div>
               )
             })}
