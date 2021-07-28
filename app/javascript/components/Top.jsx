@@ -133,7 +133,6 @@ class Top extends React.Component {
           this.setState({
             group_list: group_list
           });
-          alert(Object.keys(group_list[0]))
         })
         this.setState({
           logged_in: true
@@ -152,8 +151,8 @@ class Top extends React.Component {
               <h2>新規アカウント登録</h2>
               <input name="user_name" type="text" value={this.state.user_name}  onChange={this.handleChange}/>
               <input name="email" type="text" value={this.state.email}  onChange={this.handleChange}/>
-              <input name="password" type="text" value={this.state.password}  onChange={this.handleChange}/>
-              <input name="password_confirm" type="text" value={this.state.password_confirm}  onChange={this.handleChange}/>
+              <input name="password" type="password" value={this.state.password}  onChange={this.handleChange}/>
+              <input name="password_confirm" type="password" value={this.state.password_confirm}  onChange={this.handleChange}/>
               <button class="btn btn-info" onClick={this.signupPost}>登録</button>
             </div>
     }else if(this.state.modal_type=="login"){
@@ -161,7 +160,7 @@ class Top extends React.Component {
               <div>
                 <h2>ログイン</h2>
                 <input name="email" type="text" value={this.state.email}  onChange={this.handleChange}/>
-                <input name="password" type="text" value={this.state.password}  onChange={this.handleChange}/>
+                <input name="password" type="password" value={this.state.password}  onChange={this.handleChange}/>
                 <button class="btn btn-info" onClick={this.loginPost}>ログイン</button>
               </div>
     } else {

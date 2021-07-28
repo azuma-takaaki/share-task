@@ -39,7 +39,6 @@ class GroupsList extends React.Component {
     this.switchDisplay = this.switchDisplay.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
-    this.reset = this.reset.bind(this);
 
 
   }
@@ -58,6 +57,7 @@ class GroupsList extends React.Component {
           for(var i in result[0]){
             group_list.push(result[0][i])
           }
+
           this.setState({
             group_list: group_list
           });
@@ -113,6 +113,7 @@ class GroupsList extends React.Component {
   }
 
   toggleMenu () {
+    this.getGroupList()
     this.setState(state => ({menuOpen: !state.menuOpen}))
     this.GroupRef.current.toggleMenu();
   }
@@ -122,9 +123,6 @@ class GroupsList extends React.Component {
     this.GroupRef.current.closeMenu();
   }
 
-  reset(){
-    alert(Object.keys(this.state.group_list[0]))
-  }
 
 
 
@@ -133,6 +131,7 @@ class GroupsList extends React.Component {
     return (
       <div>
         <div class="all-group-area-wrapper" id="outer-container">
+
           <Menu
             isOpen={this.state.menuOpen}
             onClose={ this.closeMenu }
