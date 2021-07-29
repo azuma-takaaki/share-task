@@ -21,29 +21,30 @@ const UseModel = () => {
 }
 
 
-const Catsle = () => {
+function Catsle(){
 	const [count, setCount] = useState(0)
 
-
   return (
-    <>
-		<button onClick = {() => setCount(count + 1)}> camera_rotation: +15° </button>
-		<button onClick = {() => setCount(count - 1)}> camera_rotation: -15° </button>
-		<Canvas  >
-			<Camera position={[0, 4, 10]}   rotation={[Math.PI/24*count, 0, 0]}/>
-			<gridHelper args={[300, 100, 0x888888, 0x888888]} position={[0, -0.65, 0]}/>
-			<pointLight position={[10, -20, 20]} />
-			<mesh
-				visible userData={{ hello: 'world' }} position={[0, 0, 2.5]} rotation={[0, -Math.PI / 2, 0]}
-			>
-				<UseModel />
-			</mesh>
+    <div id="target">
+
+  		<button onClick = {() => setCount(count + 1)}> camera_rotation: +15° </button>
+  		<button onClick = {() => setCount(count - 1)}> camera_rotation: -15° </button>
+  		<Canvas  >
+  			<Camera position={[0, 4, 10]}   rotation={[Math.PI/24*count, 0, 0]}/>
+  			<gridHelper args={[300, 100, 0x888888, 0x888888]} position={[0, -0.65, 0]}/>
+  			<pointLight position={[10, -20, 20]} />
+  			<mesh
+  				visible userData={{ hello: 'world' }} position={[0, 0, 2.5]} rotation={[0, -Math.PI / 2, 0]}
+  			>
+  				<UseModel />
+  			</mesh>
 
 
-		</Canvas>
-    </>
+  		</Canvas>
+    </div>
   )
 }
+
 
 
 
