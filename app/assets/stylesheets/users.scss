@@ -5,6 +5,44 @@
   height: 100%;
 }
 
+//top page
+.top-page-title{
+  margin: 2rem;
+}
+.top-page-content{
+  text-align: center;
+  margin: 2rem;
+  div{
+    font-size:2rem;
+    margin: 1rem;
+  }
+}
+.top-page-buttons{
+  text-align: center;
+  margin: 2rem auto;
+}
+.top-page-signup-button{
+  margin: 1rem;
+}
+.top-page-login-button{
+  margin: 1rem;
+}
+.signup-login-modal{
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0.5rem auto;
+  h2, button{
+    margin: 1rem;
+  }
+  input{
+    margin: 0.2rem;
+  }
+}
+
+
+
 //group, task 全体
 .all-group-area-wrapper{
     display:flex;
@@ -207,6 +245,8 @@
 
 .ReactModal__Body--open {
   position: fixed;
+  height: 100vh;
+  width: 100vw;
 }
 .react-modal {
   max-height: 80vh;
@@ -225,12 +265,12 @@
   top: -100px;
 }
 
-
-
-
-
-
 .side-menu{
   position:relative;
 
+}
+
+
+canvas{
+  width:1200px;
 }

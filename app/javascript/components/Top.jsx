@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Header from "./Header.jsx"
 import GroupsList from "./GroupsList.jsx"
+import Catsle from "./Catsle.jsx"
 
 const customStyles = {
   content : {
@@ -148,20 +149,20 @@ class Top extends React.Component {
     let modal_content;
     if(this.state.modal_type=="signup") {
         modal_content =
-            <div>
+            <div class = "signup-login-modal">
               <h2>新規アカウント登録</h2>
-              <input name="user_name" type="text" value={this.state.user_name}  onChange={this.handleChange}/>
-              <input name="email" type="text" value={this.state.email}  onChange={this.handleChange}/>
-              <input name="password" type="password" value={this.state.password}  onChange={this.handleChange}/>
-              <input name="password_confirm" type="password" value={this.state.password_confirm}  onChange={this.handleChange}/>
+              <input name="user_name" class="form-control" type="text" placeholder = "name" value={this.state.user_name}  onChange={this.handleChange}/>
+              <input name="email" class="form-control" type="text" placeholder = "email" value={this.state.email}  onChange={this.handleChange}/>
+              <input name="password" class="form-control" type="password" placeholder = "password" value={this.state.password}  onChange={this.handleChange}/>
+              <input name="password_confirm" class="form-control" type="password" placeholder = "password confirm" value={this.state.password_confirm}  onChange={this.handleChange}/>
               <button class="btn btn-info" onClick={this.signupPost}>登録</button>
             </div>
     }else if(this.state.modal_type=="login"){
         modal_content =
-              <div>
+              <div class = "signup-login-modal">
                 <h2>ログイン</h2>
-                <input name="email" type="text" value={this.state.email}  onChange={this.handleChange}/>
-                <input name="password" type="password" value={this.state.password}  onChange={this.handleChange}/>
+                <input name="email" class="form-control" type="text" placeholder = "email" value={this.state.email}  onChange={this.handleChange}/>
+                <input name="password" class="form-control" type="password" placeholder = "password" value={this.state.password}  onChange={this.handleChange}/>
                 <button class="btn btn-info" onClick={this.loginPost}>ログイン</button>
               </div>
     } else {
@@ -180,10 +181,20 @@ class Top extends React.Component {
           }else{
             return(
               <div>
-                <Header/>
-                <h1>新規アカウント</h1>
-                <button class="btn btn-primary" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
-                <button class="btn btn-outline-success" onClick={()=>this.openModal("login")}>ログイン</button>
+                <h1 class ="display-1 top-page-title">Share Task</h1>
+                <div class = "top-page-content">
+                   新しいチャレンジをする時、<br/>
+                   新しい習慣を身に付ける時、<br/>
+                   同じ目標を持つ仲間がそばにいてくれたら<br/>
+                   どんなに心強いでしょうか。<br/>
+                   お互いの目標やタスクを共有して<br/>
+                   仲間を見つけてください。<br/>
+                  <div>Let's share your task!</div>
+                </div>
+                <div class="top-page-buttons">
+                  <button class="btn btn-primary top-page-singup-button" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
+                  <button class="btn btn-outline-success top-page-login-button" onClick={()=>this.openModal("login")}>ログイン</button>
+                </div>
                 <p></p>
 
                 <Modal
@@ -196,6 +207,9 @@ class Top extends React.Component {
                   {modal_content}
 
                 </Modal>
+
+
+                <Catsle/>
               </div>
             )
           }
