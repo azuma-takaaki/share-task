@@ -91,8 +91,13 @@
       .side-menu-user-icon{
         width:100%;
         height:15%;
+        background-color:#339966;
         align-items: center;
         margin: auto;
+        &:hover {
+          opacity: 0.6;
+          transition-duration: 0.3s;
+        }
       }
     }
 
@@ -278,7 +283,8 @@
 
 
 canvas{
-  width:1200px;
+  height: 100%;
+  width: 100%;
 }
 
 

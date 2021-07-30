@@ -98,7 +98,10 @@ class Top extends React.Component {
           }
           this.setState({
             group_list: user_list
-          });
+          })
+          this.setState({
+            current_user: result[1]
+          })
         }).then(
           this.setState({
             logged_in: true
@@ -141,6 +144,11 @@ class Top extends React.Component {
           this.setState({
             group_list: group_list
           })
+          this.setState({
+            current_user: result[1]
+          }),
+
+
           this.closeModal()
         }).then(
           this.setState({
@@ -158,9 +166,6 @@ class Top extends React.Component {
       }).then(
         this.setState({
           logged_in: false
-        }),
-        this.setState({
-          current_user: null
         })
       )
   }
@@ -194,7 +199,7 @@ class Top extends React.Component {
     return (
       <div>
         {(() => {
-          if(this.state.logged_in){
+          if(this.state.logged_in&&(!(this.state.logged_in===null))){
             return(
               <div>
                 <Header/>
@@ -230,9 +235,6 @@ class Top extends React.Component {
                   {modal_content}
 
                 </Modal>
-
-
-                <Catsle/>
               </div>
             )
           }

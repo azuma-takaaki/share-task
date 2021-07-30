@@ -173,7 +173,10 @@ class GroupsList extends React.Component {
                 })}
               </div>
               <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
-              <button  class = "btn btn-primary side-menu-user-icon" onClick={() => this.switchDisplay("show_user")}>userだよ</button>
+              <button  class = "btn btn-primary side-menu-user-icon" onClick={() => this.switchDisplay("show_user")}>
+                <img class = "user-icon" src={require("../../assets/images/default/" +  this.props.current_user.icon)} />
+                {this.props.current_user.name}
+              </button>
 
             </div>
           </Menu>
@@ -189,7 +192,7 @@ class GroupsList extends React.Component {
 
               {(() => {
                   if(this.state.user_is_visible) {
-                      return(<User logout={this.props.logout}/>);
+                      return(<User logout={this.props.logout} current_user={this.props.current_user}/>);
                   }
               })()}
               {
@@ -197,7 +200,7 @@ class GroupsList extends React.Component {
                   return (
                     //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                       <div>
-                        {(this.state.group_is_visible[group.id] && !this.state.user_is_visible)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList} /> }
+                        {(this.state.group_is_visible[group.id] && !this.state.user_is_visible)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user}/> }
                       </div>
                   )
                 })

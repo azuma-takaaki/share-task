@@ -8,8 +8,8 @@ class UsersController < ApplicationController
     @user.icon = "icon_"+rand(0...10).to_s+".png"
     if @user.save
       log_in(@user)
-      flash[:danger] = 'アカウントを登録しました'
-      render :json => [@user.groups,@user]
+      #flash[:danger] = 'アカウントを登録しました'
+      render :json => [@user.groups, @user]
     else
       flash[:danger] = ['アカウント登録できませんでした'].push(@user.errors.full_messages)
       redirect_to new_user_path
