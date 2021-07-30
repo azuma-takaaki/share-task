@@ -23,14 +23,18 @@ const UseModel = () => {
 
 function Catsle(){
 	const [count, setCount] = useState(0)
+  const [rotY, setPosCount] = useState(0)
+  const handleClick = () => {
+    setPosCount(rotY+1)
+  };
 
   return (
     <div id="target">
-
+      <button onMouseDown = {handleClick}> rotY: {rotY} </button>
   		<button onClick = {() => setCount(count + 1)}> camera_rotation: +15° </button>
   		<button onClick = {() => setCount(count - 1)}> camera_rotation: -15° </button>
   		<Canvas  >
-  			<Camera position={[0, 4, 10]}   rotation={[Math.PI/24*count, 0, 0]}/>
+  			<Camera position={[0, 4, 10]}   rotation={[Math.PI/24*count, Math.PI/24*rotY, 0]}/>
   			<gridHelper args={[300, 100, 0x888888, 0x888888]} position={[0, -0.65, 0]}/>
   			<pointLight position={[10, -20, 20]} />
   			<mesh
