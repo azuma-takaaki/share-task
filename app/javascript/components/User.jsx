@@ -9,8 +9,8 @@ class User extends React.Component {
       <div>
         <h1>{this.props.current_user.name}</h1>
         <button>編集</button>
-        <Catsle/>
         <button onClick={this.props.logout}>ログアウトボタン</button>
+        <Catsle/>
       </div>
     );
   }
