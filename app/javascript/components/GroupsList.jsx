@@ -26,7 +26,7 @@ class GroupsList extends React.Component {
        arr_visible[group.id] = false
      })
     this.state = {
-      current_user: [],
+      current_user: props.current_user,
       group_list: props.groups,
       group_is_visible: arr_visible,
       user_is_visible: true,
@@ -133,7 +133,7 @@ class GroupsList extends React.Component {
   }
 
   getCurrentUser () {
-    fetch("/",{
+    fetch("/users/" + this.props.current_user.id,{
       method: 'GET'
       }).then(res => res.json())
       .then(
@@ -175,7 +175,7 @@ class GroupsList extends React.Component {
               <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
               <button  class = "btn btn-primary side-menu-user-icon" onClick={() => this.switchDisplay("show_user")}>
                 <img class = "user-icon" src={require("../../assets/images/default/" +  this.props.current_user.icon)} />
-                {this.props.current_user.name}
+                {this.state.current_user.name}
               </button>
 
             </div>
@@ -192,7 +192,7 @@ class GroupsList extends React.Component {
 
               {(() => {
                   if(this.state.user_is_visible) {
-                      return(<User logout={this.props.logout} current_user={this.props.current_user}/>);
+                      return(<User logout={this.props.logout} current_user={this.state.current_user} getCurrentUser={this.props.getCurrentUser}/>);
                   }
               })()}
               {

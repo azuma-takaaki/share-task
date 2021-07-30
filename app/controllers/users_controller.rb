@@ -36,7 +36,7 @@ class UsersController < ApplicationController
       @user = User.find_by(id: params[:id])
       #if @user.update(secure_user_infomation)
       if @user.update(update_params)
-        redirect_to @user
+        render :json => [@user]
       else
         flash[:danger] = @user.errors.full_messages
         redirect_to edit_user_path(@user)

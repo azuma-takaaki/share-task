@@ -41,7 +41,6 @@ class Top extends React.Component {
     this.signupPost = this.signupPost.bind(this);
     this.loginPost = this.loginPost.bind(this);
     this.logout = this.logout.bind(this);
-
   }
   openModal(type) {
     this.setState({modal_type: type});
@@ -170,6 +169,10 @@ class Top extends React.Component {
       )
   }
 
+  
+
+
+
 
 
 
@@ -203,7 +206,7 @@ class Top extends React.Component {
             return(
               <div>
                 <Header/>
-                <GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/>
+                <GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout} setCurrentUser={this.setCurrentUser}/>
               </div>
             )
           }else{
