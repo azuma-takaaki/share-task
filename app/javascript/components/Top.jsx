@@ -169,7 +169,7 @@ class Top extends React.Component {
       )
   }
 
-  
+
 
 
 
@@ -212,15 +212,17 @@ class Top extends React.Component {
           }else{
             return(
               <div>
-                <h1 class ="display-1 top-page-title">Share Task</h1>
+                <h1 class ="display-1 top-page-title">積み上げ城</h1>
                 <div class = "top-page-content">
-                   新しいチャレンジをする時、<br/>
-                   新しい習慣を身に付ける時、<br/>
-                   同じ目標を持つ仲間がそばにいてくれたら<br/>
-                   どんなに心強いでしょうか。<br/>
-                   お互いの目標やタスクを共有して<br/>
-                   仲間を見つけてください。<br/>
-                  <div>Let's share your task!</div>
+                   1日の努力を記録すると<br/>
+                   城が1つ積み上がります<br/>
+                   あなたの城が完成した時、<br/>
+                   現実のあなたのスキルや習慣も、<br/>
+                   その城のように高く強固になっていることでしょう。<br/>
+                   一歩踏み出してみましょう。<br/>
+                   同じ目標を持つお城の建築士たちが<br/>
+                   あなたを待っています。<br/>
+                  <div></div>
                 </div>
                 <div class="top-page-buttons">
                   <button class="btn btn-primary top-page-singup-button" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
