@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Group from "./Group.jsx"
+import User from "./User.jsx"
 import { push as Menu } from "react-burger-menu";
 
 
@@ -25,8 +26,10 @@ class GroupsList extends React.Component {
        arr_visible[group.id] = false
      })
     this.state = {
+      current_user: [],
       group_list: props.groups,
-      is_visible: arr_visible,
+      group_is_visible: arr_visible,
+      user_is_visible: true,
       input_value: '',
       menuOpen: false
     }
@@ -39,10 +42,7 @@ class GroupsList extends React.Component {
     this.switchDisplay = this.switchDisplay.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
-
-
-
-
+    this.getCurrentUser = this.getCurrentUser.bind(this);
   }
 
   getGroupList() {
@@ -105,17 +105,24 @@ class GroupsList extends React.Component {
       closeModal()
   }
 
-  switchDisplay(group_id){
-    var new_visible_group = []
-    Object.keys(this.state.is_visible).map((key) =>{
-      new_visible_group[key] = false
-    })
-    new_visible_group[group_id] = true
-    this.setState({is_visible: new_visible_group})
+  switchDisplay(props){
+    if(props=="show_user"){
+      this.setState({user_is_visible: true})
+    }else{
+      var new_visible_group = []
+      Object.keys(this.state.group_is_visible).map((key) =>{
+        new_visible_group[key] = false
+      })
+      new_visible_group[props] = true
+      this.setState({group_is_visible: new_visible_group})
+      this.setState({user_is_visible: false})
+    }
   }
 
   toggleMenu () {
     this.getGroupList()
+    this.getCurrentUser()
+
     this.setState(state => ({menuOpen: !state.menuOpen}))
     this.GroupRef.current.toggleMenu();
   }
@@ -123,6 +130,20 @@ class GroupsList extends React.Component {
   closeMenu () {
     this.setState(state => ({menuOpen: false}))
     this.GroupRef.current.closeMenu();
+  }
+
+  getCurrentUser () {
+    fetch("/",{
+      method: 'GET'
+      }).then(res => res.json())
+      .then(
+        (result) => {
+          var user = result[0]
+          this.setState({
+            current_user: user
+          });
+        }
+      )
   }
 
 
@@ -150,8 +171,10 @@ class GroupsList extends React.Component {
                     <button   class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
                   )
                 })}
-                </div>
-                <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
+              </div>
+              <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
+              <button  class = "btn btn-primary side-menu-user-icon" onClick={() => this.switchDisplay("show_user")}>userだよ</button>
+
             </div>
           </Menu>
           <main id="page-wrap">
@@ -163,14 +186,24 @@ class GroupsList extends React.Component {
                       return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＜</button>);
                   }
               })()}
-            {this.state.group_list.map((group) => {
-              return (
-                //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
-                  <div>
-                    {this.state.is_visible[group.id] && <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList} /> }
-                  </div>
-              )
-            })}
+
+              {(() => {
+                  if(this.state.user_is_visible) {
+                      return(<User logout={this.props.logout}/>);
+                  }
+              })()}
+              {
+                this.state.group_list.map((group) => {
+                  return (
+                    //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
+                      <div>
+                        {(this.state.group_is_visible[group.id] && !this.state.user_is_visible)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList} /> }
+                      </div>
+                  )
+                })
+              }
+
+
             </div>
           </main>
         </div>

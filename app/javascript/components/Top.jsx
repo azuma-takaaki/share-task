@@ -20,8 +20,13 @@ class Top extends React.Component {
   constructor(props) {
     super(props);
     this.GroupsListRef = React.createRef();
+    var is_logged_in = false
+    if(!(props.logged_in_user  === null)){
+      is_logged_in = true
+    }
     this.state = {
-      logged_in: false,
+      current_user: props.logged_in_user,
+      logged_in: is_logged_in,
       user_name: '',
       email:'',
       password:'',
@@ -35,6 +40,7 @@ class Top extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.signupPost = this.signupPost.bind(this);
     this.loginPost = this.loginPost.bind(this);
+    this.logout = this.logout.bind(this);
 
   }
   openModal(type) {
@@ -93,11 +99,11 @@ class Top extends React.Component {
           this.setState({
             group_list: user_list
           });
-        })
-        this.setState({
-          logged_in: true
-        });
-      this.closeModal()
+        }).then(
+          this.setState({
+            logged_in: true
+          }), this.closeModal()
+        )
   }
 
   loginPost(){
@@ -134,14 +140,31 @@ class Top extends React.Component {
 
           this.setState({
             group_list: group_list
-          });
-        })
-        this.setState({
-          logged_in: true
-        });
-        this.GroupsListRef.current.getGroupList();
-      this.closeModal()
+          })
+          this.closeModal()
+        }).then(
+          this.setState({
+            logged_in: true
+          }),
+          this.GroupsListRef.current.getGroupList()
+        )
+
+
   }
+
+  logout(){
+      fetch("/users/logout", {
+        method: 'GET'
+      }).then(
+        this.setState({
+          logged_in: false
+        }),
+        this.setState({
+          current_user: null
+        })
+      )
+  }
+
 
 
 
@@ -175,7 +198,7 @@ class Top extends React.Component {
             return(
               <div>
                 <Header/>
-                <GroupsList groups={this.state.group_list}/>
+                <GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/>
               </div>
             )
           }else{
