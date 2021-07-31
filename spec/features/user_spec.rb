@@ -1,52 +1,51 @@
 require 'rails_helper'
 
-RSpec.describe 'User', type: :features do
-  feature 'before signup'do
-    scenario 'user can signup' do
-      visit top_path
-      click_on '新規アカウント登録'
-      fill_in 'signup-form-name', with: 'rails_tutroial'
-      fill_in 'signup-form-email', with: 'rails_tutorial@rails.com'
-      fill_in 'signup-form-password', with: 'rails_tutroial'
-      fill_in 'signup-form-password-confirmation', with: 'rails_tutroial'
-      click_on 'アカウント登録'
-      expect(page).to have_content 'アカウントを登録しました'
+RSpec.describe "User", type: :model do
+  describe "#create" do
+    before do
+      @user = FactoryBot.build(:user)
     end
 
-    scenario 'user cannot login' do
-      visit top_path
-      click_on 'ログイン'
-      fill_in 'login-form-email', with: 'rails_tutorial@rails.com'
-      fill_in 'login-form-password', with: 'rails_tutroial'
-      click_on 'ログイン'
-      expect(page).to have_content 'ログインできませんでした'
+    example "正しい情報は登録ができる" do
+      expect(@user.valid?).to eq true
     end
+
+    example "名前が空だと登録できない" do
+      @user.name = nil
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Name can't be blank")
+    end
+
+    example "emailが空だと登録できない" do
+      @user.email = nil
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Email can't be blank")
+    end
+
+    example "passwordが空だと登録できない" do
+      @user.password = nil
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Password can't be blank")
+    end
+
+    example "iconが空だと登録できない" do
+      @user.icon = nil
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Icon can't be blank")
+    end
+
+
+    example "emailが256文字以上だと登録できない" do
+      @user.email = "a" * 250+ "@a.com"
+      @user.valid?
+      expect(@user.errors.full_messages).to include("Email is too long (maximum is 255 characters)")
+     end
+
+     example "passwordが6文字未満だと登録できない" do
+       @user.password = "a" * 5
+       @user.password_confirmation = "a" * 5
+       @user.valid?
+       expect(@user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
+     end
   end
-
-  feature 'after signup' do
-    background 'signup'do
-      @user = create(:rails)
-    end
-
-    scenario 'user cannnot signup with duplicate email' do
-      visit top_path
-      click_on '新規アカウント登録'
-      fill_in 'signup-form-name', with: 'rails_tutroial'
-      fill_in 'signup-form-email', with: 'rails_tutorial@rails.com'
-      fill_in 'signup-form-password', with: 'rails_tutroial'
-      fill_in 'signup-form-password-confirmation', with: 'rails_tutroial'
-      click_on 'アカウント登録'
-      expect(page).to have_content 'アカウント登録できませんでした'
-    end
-
-    scenario 'user can login' do
-      visit top_path
-      click_on 'ログイン'
-      fill_in 'login-form-email', with: 'rails_tutorial@rails.com'
-      fill_in 'login-form-password', with: 'rails_tutroial'
-      click_on 'ログイン'
-      expect(page).to have_content 'ログインしました'
-    end
-  end
-
 end
