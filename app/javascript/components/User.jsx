@@ -21,8 +21,7 @@ class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      current_user: this.props.current_user,
-      input_name: this.props.current_user.name
+      input_name: ''
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -31,6 +30,7 @@ class User extends React.Component {
     this.updateData = this.updateData.bind(this);
   }
   openModal() {
+    this.setState({input_name: this.props.current_user.name})
     this.setState({modalIsOpen: true});
   }
   afterOpenModal() {
@@ -57,7 +57,7 @@ class User extends React.Component {
       }
       return '';
     }
-      fetch("/users/" + this.state.current_user.id, {
+      fetch("/users/" + this.props.current_user.id, {
         method: 'PATCH', // or 'PUT'
         headers: {
                   'Content-Type': 'application/json',
@@ -67,8 +67,8 @@ class User extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
-          this.setState({current_user: result[0]})
-          this.setState({input_name: result[0].name});
+          this.setState({current_user: result[1]})
+          this.setState({input_name: result[1].name});
         }).then(
 
           this.closeModal()
@@ -79,8 +79,8 @@ class User extends React.Component {
     return (
       <div>
         <div class="users-header">
-          <img class = "user-icon" src={require("../../assets/images/default/" + this.state.current_user.icon)} />
-          <div class="users-page-header-name">{this.state.current_user.name}</div>
+          <img class = "user-icon" src={require("../../assets/images/default/" + this.props.current_user.icon)} />
+          <div class="users-page-header-name">{this.props.current_user.name}</div>
           <button class="edit-user-button"onClick={this.openModal}>・・・</button>
         </div>
         <Catsle/>

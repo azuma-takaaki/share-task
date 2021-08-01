@@ -24,15 +24,19 @@ class Top extends React.Component {
     if(!(props.logged_in_user  === null)){
       is_logged_in = true
     }
+
+
+    var tmp = props.logged_in_user
     this.state = {
-      current_user: props.logged_in_user,
+      current_user: tmp,
       logged_in: is_logged_in,
       user_name: '',
       email:'',
       password:'',
       password_confirm:'',
       group_list: [],
-      modal_type: ''
+      modal_type: '',
+      main_content: <div></div>
     }
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -41,6 +45,12 @@ class Top extends React.Component {
     this.signupPost = this.signupPost.bind(this);
     this.loginPost = this.loginPost.bind(this);
     this.logout = this.logout.bind(this);
+    this.setMainContent = this.setMainContent.bind(this);
+
+    if(is_logged_in){
+      this.setMainContent()
+    }
+
   }
   openModal(type) {
     this.setState({modal_type: type});
@@ -98,8 +108,11 @@ class Top extends React.Component {
           this.setState({
             group_list: user_list
           })
+
+          this.setState({ current_user: result[1] });
+
           this.setState({
-            current_user: result[1]
+            main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
           })
         }).then(
           this.setState({
@@ -139,24 +152,22 @@ class Top extends React.Component {
           for(var i in result[0]){
             group_list.push(result[0][i])
           }
-
           this.setState({
             group_list: group_list
           })
           this.setState({
             current_user: result[1]
-          }),
-
+          })
+          this.setState({
+            main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
+          })
 
           this.closeModal()
         }).then(
           this.setState({
             logged_in: true
           }),
-          this.GroupsListRef.current.getGroupList()
         )
-
-
   }
 
   logout(){
@@ -168,6 +179,30 @@ class Top extends React.Component {
         })
       )
   }
+
+  setMainContent(){
+    fetch("/users/" + this.props.logged_in_user.id, {
+      method: 'GET'
+    }).then(res => res.json())
+    .then(
+      (result) => {
+        var group_list = []
+        for(var i in result[0]){
+          group_list.push(result[0][i])
+        }
+        this.setState({
+          group_list: group_list
+        })
+        this.setState({
+          current_user: result[1]
+        })
+        this.setState({
+          main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
+        })
+      })
+
+  }
+
 
 
 
@@ -194,56 +229,52 @@ class Top extends React.Component {
                 <h2>ログイン</h2>
                 <input name="email" class="form-control" type="text" placeholder = "email" value={this.state.email}  onChange={this.handleChange}/>
                 <input name="password" class="form-control" type="password" placeholder = "password" value={this.state.password}  onChange={this.handleChange}/>
-                <button class="btn btn-info" onClick={this.loginPost}>ログイン</button>
+                <button id="modal-login-button" class="btn btn-info" onClick={this.loginPost}>ログイン</button>
               </div>
+    }else {
+    }
+
+    let main_content;
+    if (this.state.logged_in&&(!(this.state.logged_in===null))) {
+      main_content = <div>
+                        {this.state.main_content}
+                      </div>;
     } else {
+      main_content = <div>
+                        <h1 class ="display-1 top-page-title">積み上げ城</h1>
+                        <div class = "top-page-content">
+                           1日の努力を記録すると<br/>
+                           城の壁が1つ積み上がります<br/>
+                           あなたの城が完成した時、<br/>
+                           現実のあなたのスキルや習慣も、<br/>
+                           その城のように高く強固になっていることでしょう。<br/>
+                           一歩踏み出してみましょう。<br/>
+                           同じ目標を持つお城の建築士たちが<br/>
+                           あなたを待っています。<br/>
+                          <div></div>
+                        </div>
+                        <div class="top-page-buttons">
+                          <button class="btn btn-primary top-page-singup-button" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
+                          <button class="btn btn-outline-success top-page-login-button" onClick={()=>this.openModal("login")}>ログイン</button>
+                        </div>
+                        <p></p>
+
+                        <Modal
+                          isOpen={this.state.modalIsOpen}
+                          onAfterOpen={this.afterOpenModal}
+                          onRequestClose={this.closeModal}
+                          style={customStyles}
+                          contentLabel="Example Modal"
+                        >
+                          {modal_content}
+
+                        </Modal>
+                      </div>;
     }
 
     return (
       <div>
-        {(() => {
-          if(this.state.logged_in&&(!(this.state.logged_in===null))){
-            return(
-              <div>
-                <Header/>
-                <GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout} setCurrentUser={this.setCurrentUser}/>
-              </div>
-            )
-          }else{
-            return(
-              <div>
-                <h1 class ="display-1 top-page-title">積み上げ城</h1>
-                <div class = "top-page-content">
-                   1日の努力を記録すると<br/>
-                   城が1つ積み上がります<br/>
-                   あなたの城が完成した時、<br/>
-                   現実のあなたのスキルや習慣も、<br/>
-                   その城のように高く強固になっていることでしょう。<br/>
-                   一歩踏み出してみましょう。<br/>
-                   同じ目標を持つお城の建築士たちが<br/>
-                   あなたを待っています。<br/>
-                  <div></div>
-                </div>
-                <div class="top-page-buttons">
-                  <button class="btn btn-primary top-page-singup-button" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
-                  <button class="btn btn-outline-success top-page-login-button" onClick={()=>this.openModal("login")}>ログイン</button>
-                </div>
-                <p></p>
-
-                <Modal
-                  isOpen={this.state.modalIsOpen}
-                  onAfterOpen={this.afterOpenModal}
-                  onRequestClose={this.closeModal}
-                  style={customStyles}
-                  contentLabel="Example Modal"
-                >
-                  {modal_content}
-
-                </Modal>
-              </div>
-            )
-          }
-        })()}
+        {main_content}
       </div>
     );
   }

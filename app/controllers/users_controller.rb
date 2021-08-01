@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def show
     if logged_in?
       @user = current_user()
-      render :json => [@user]
+      render :json => [@user.groups, @user]
     else
       redirect_to login_page_path
     end
