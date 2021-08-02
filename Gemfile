@@ -34,6 +34,7 @@ gem 'bcrypt'
 
 gem 'react-rails'
 
+gem 'rails-i18n'
 
 
 group :production do

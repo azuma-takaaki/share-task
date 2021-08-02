@@ -39,8 +39,6 @@ class Group extends React.Component {
     this.inviteUser = this.inviteUser.bind(this);
     this.openInputTaskModal = this.openInputTaskModal.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
-
-    this.getGroupInfo(this.props.group.id)
   }
 
   openModal() {

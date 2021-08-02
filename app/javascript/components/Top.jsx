@@ -36,7 +36,9 @@ class Top extends React.Component {
       password_confirm:'',
       group_list: [],
       modal_type: '',
-      main_content: <div></div>
+      main_content: <div></div>,
+      error_messages: '',
+      success_messages: ''
     }
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -101,24 +103,34 @@ class Top extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
-          var user_list = []
-          for(var i in result[0]){
-            user_list.push(result[0][i])
+          if(result[0] == "アカウント登録できませんでした"){
+            var error_massages = []
+            for(var i in result[1]){
+              error_massages.push(result[1][i])
+            }
+            this.setState({
+              error_messages: error_massages
+            })
+          }else{
+            var user_list = []
+            for(var i in result[0]){
+              user_list.push(result[0][i])
+            }
+            this.setState({
+              group_list: user_list
+            })
+            this.setState({
+              current_user: result[1]
+            })
+            this.setState({
+              main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
+            })
+            this.setState({
+              logged_in: true
+            })
+            this.closeModal()
           }
-          this.setState({
-            group_list: user_list
-          })
-
-          this.setState({ current_user: result[1] });
-
-          this.setState({
-            main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
-          })
-        }).then(
-          this.setState({
-            logged_in: true
-          }), this.closeModal()
-        )
+        })
   }
 
   loginPost(){
@@ -167,7 +179,9 @@ class Top extends React.Component {
           this.setState({
             logged_in: true
           }),
+
         )
+
   }
 
   logout(){
@@ -234,10 +248,23 @@ class Top extends React.Component {
     }else {
     }
 
+    let error_flash_content;
+    if (!(this.state.error_messages=='')){
+      error_flash_content = <div class="alert alert-danger" id="error-flash">
+
+                                { this.state.error_messages.map((error_message) => <li>{error_message}</li>)}
+                            </div>
+    }
+    let success_flash_content;
+    if (!(this.state.success_messages=='')){
+      success_flash_content = <div class="alert alert-success" id="success-flash">{this.state.success_messages}</div>
+
+    }
+
     let main_content;
     if (this.state.logged_in&&(!(this.state.logged_in===null))) {
-      main_content = <div>
-                        {this.state.main_content}
+        main_content = <div>
+                          {this.state.main_content}
                       </div>;
     } else {
       main_content = <div>
@@ -266,6 +293,7 @@ class Top extends React.Component {
                           style={customStyles}
                           contentLabel="Example Modal"
                         >
+                          {error_flash_content}
                           {modal_content}
 
                         </Modal>
@@ -274,6 +302,7 @@ class Top extends React.Component {
 
     return (
       <div>
+        {success_flash_content}
         {main_content}
       </div>
     );

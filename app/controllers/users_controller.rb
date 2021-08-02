@@ -11,8 +11,8 @@ class UsersController < ApplicationController
       #flash[:danger] = 'アカウントを登録しました'
       render :json => [@user.groups, @user]
     else
-      flash[:danger] = ['アカウント登録できませんでした'].push(@user.errors.full_messages)
-      redirect_to new_user_path
+      #flash[:danger] = ['アカウント登録できませんでした'].push(@user.errors.full_messages)
+      render :json => ['アカウント登録できませんでした', @user.errors.full_messages]
     end
   end
 
