@@ -68,6 +68,7 @@ class Top extends React.Component {
     this.setState({email: ""});
     this.setState({password: ""});
     this.setState({password_confirm: ""});
+    this.setState({error_messages: ""});
   }
 
   handleChange(e){
@@ -160,27 +161,36 @@ class Top extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
-          var group_list = []
-          for(var i in result[0]){
-            group_list.push(result[0][i])
+          if(result[0] == "ログインできませんでした"){
+            var error_massages = []
+            for(var i in result[1]){
+              error_massages.push(result[1][i])
+            }
+            this.setState({
+              error_messages: error_massages
+            })
+          }else{
+            var group_list = []
+            for(var i in result[0]){
+              group_list.push(result[0][i])
+            }
+            this.setState({
+              group_list: group_list
+            })
+            this.setState({
+              current_user: result[1]
+            })
+            this.setState({
+              main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
+            })
+            this.setState({
+              logged_in: true
+            })
+            this.closeModal()
           }
-          this.setState({
-            group_list: group_list
-          })
-          this.setState({
-            current_user: result[1]
-          })
-          this.setState({
-            main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
-          })
 
-          this.closeModal()
-        }).then(
-          this.setState({
-            logged_in: true
-          }),
 
-        )
+        })
 
   }
 
@@ -293,6 +303,7 @@ class Top extends React.Component {
                           style={customStyles}
                           contentLabel="Example Modal"
                         >
+                          <button class="close-modal　btn-close btn btn-outline-secondary" onClick={this.closeModal}>×</button>
                           {error_flash_content}
                           {modal_content}
 

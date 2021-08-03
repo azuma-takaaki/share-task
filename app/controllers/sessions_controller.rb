@@ -10,7 +10,17 @@ class SessionsController < ApplicationController
       render :json => [user.groups, user]
     else
       #flash[:danger] = 'ログインできませんでした'
-      redirect_to top_path
+      error_messages = []
+      if params[:session][:email] == ''
+        error_messages.push('メールアドレスを入力してください')
+      end
+      if params[:session][:password] == ''
+        error_messages.push('パスワードを入力してください')
+      end
+      if !(params[:session][:email] == '') && !(params[:session][:password] == '')
+        error_messages.push('メールアドレスまたはパスワードが間違っています')
+      end
+      render :json => ['ログインできませんでした', error_messages]
     end
   end
 end
