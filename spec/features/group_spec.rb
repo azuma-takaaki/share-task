@@ -12,6 +12,7 @@ feature "Groups" , :js => true do
     fill_in "password_confirm", with:"password"
     click_button "登録"
     click_button "＜"
+    click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra").click
     expect(page).to have_content "programming"
 
