@@ -233,27 +233,41 @@ class GroupsList extends React.Component {
             isOpen={this.state.menuOpen}
             onClose={ this.closeMenu }
             class="side-menu"
-            width={ '20%' }
+            width={ '30%' }
             pageWrapId={ "page-wrap" }
             outerContainerId={ "outer-container" }
           >
             <div class="side-menu">
-              <Autosuggest
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
-                inputProps={inputProps}
-              />
-              <div class= "switch-group-button-list">
-                {this.state.group_list.map((group) => {
-                  return (
-                    <button   class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
-                  )
-                })}
+              <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                  <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">マイグループ</a>
+                  <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">グループを探す</a>
+                </div>
+              </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class= "switch-group-button-list">
+                      {this.state.group_list.map((group) => {
+                        return (
+                          <button   class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
+                        )
+                      })}
+                    </div>
+                    <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
+                
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <Autosuggest
+                      suggestions={suggestions}
+                      onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                      onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                      getSuggestionValue={getSuggestionValue}
+                      renderSuggestion={renderSuggestion}
+                      inputProps={inputProps}
+                    />
+                </div>
               </div>
-              <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
+
               <button  class = "btn btn-primary side-menu-user-icon" onClick={() => this.switchDisplay("show_user")}>
                 <img class = "user-icon" src={require("../../assets/images/default/" +  this.props.current_user.icon)} />
                 {this.props.current_user.name}
