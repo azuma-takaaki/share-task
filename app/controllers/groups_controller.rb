@@ -3,6 +3,11 @@ class GroupsController < ApplicationController
     @group = Group.new
   end
 
+  def index
+    @groups = Group.all
+    render :json => [@groups]
+  end
+
   def create
     @group = Group.new(group_parameters)
     @group.group_users.build(group_user_parameters)

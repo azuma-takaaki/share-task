@@ -46,7 +46,9 @@
 }
 
 
-
+.bm-menu-wrap{
+  width:40vw;
+}
 
 //group, task 全体
 .all-group-area-wrapper{
@@ -54,15 +56,19 @@
     height: 94vh;
     width:100%;
     margin: 0;
-    //group選択ボタンリスト
+    //side-menu
     .bm-item{
       width:100%;
       height: 94vh;
       text-align:center;
+      .search-group-form{
+        width:100%;
+        height:5%;
+      }
       .switch-group-button-list{
         background-color:#CFEFFF;
         width:100%;
-        height:70%;
+        height:65%;
         text-align:center;
         overflow:hidden;
         overflow-y : scroll;

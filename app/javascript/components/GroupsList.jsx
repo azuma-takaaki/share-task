@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Group from "./Group.jsx"
 import User from "./User.jsx"
+import Autosuggest from 'react-autosuggest';
 import { push as Menu } from "react-burger-menu";
 
 
@@ -17,6 +18,32 @@ const customStyles = {
  }
 };
 
+
+
+
+// Teach Autosuggest how to calculate suggestions for any given input value.
+const getSuggestions = value => {
+  const inputValue = value.trim().toLowerCase();
+  const inputLength = inputValue.length;
+
+  return inputLength === 0 ? [] : languages.filter(lang =>
+    lang.name.toLowerCase().slice(0, inputLength) === inputValue
+  );
+};
+
+// When suggestion is clicked, Autosuggest needs to populate the input
+// based on the clicked suggestion. Teach Autosuggest how to calculate the
+// input value for every given suggestion.
+const getSuggestionValue = suggestion => suggestion.name;
+
+// Use your imagination to render suggestions.
+const renderSuggestion = suggestion => (
+  <div>
+    {suggestion.name}
+  </div>
+);
+
+
 class GroupsList extends React.Component {
   constructor(props) {
     super(props);
@@ -30,7 +57,10 @@ class GroupsList extends React.Component {
       group_is_visible: arr_visible,
       user_is_visible: true,
       input_value: '',
-      menuOpen: false
+      menuOpen: false,
+      relative_groups_list: [],
+      value: '',
+      suggestions: []
     }
     this.getGroupList = this.getGroupList.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -41,7 +71,8 @@ class GroupsList extends React.Component {
     this.switchDisplay = this.switchDisplay.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
-    
+    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
+    this.fetchRelativeGroup = this.fetchRelativeGroup.bind(this)
   }
 
   getGroupList() {
@@ -65,7 +96,6 @@ class GroupsList extends React.Component {
         }
       )
   }
-
   openModal() {
     this.setState({modalIsOpen: true});
   }
@@ -103,7 +133,6 @@ class GroupsList extends React.Component {
       this.setState({input_value: ""});
       closeModal()
   }
-
   switchDisplay(props){
     if(props=="show_user"){
       this.setState({user_is_visible: true})
@@ -117,18 +146,64 @@ class GroupsList extends React.Component {
       this.setState({user_is_visible: false})
     }
   }
-
   toggleMenu () {
     this.getGroupList()
-
+    this.fetchRelativeGroup()
     this.setState(state => ({menuOpen: !state.menuOpen}))
     this.GroupRef.current.toggleMenu();
   }
-
   closeMenu () {
     this.setState(state => ({menuOpen: false}))
     this.GroupRef.current.closeMenu();
   }
+  fetchRelativeGroup(){
+    fetch("/groups",{
+      method: 'GET'
+      }).then(res => res.json())
+      .then(
+        (result) => {
+          var groups_list = []
+          for(var i in result){
+            groups_list.push(result[i])
+          }
+          console.log(result[0])
+          this.setState({
+            relative_groups_list: result[0]
+          });
+        }
+      )
+  }
+
+  onChange = (event, { newValue }) => {
+    this.setState({
+      value: newValue
+    });
+  };
+
+  // Autosuggest will call this function every time you need to update suggestions.
+  // You already implemented this logic above, so just use it.
+  onSuggestionsFetchRequested = ({ value }) => {
+    const getSuggestions = value => {
+
+      const inputValue = value.trim().toLowerCase();
+      const inputLength = inputValue.length;
+
+      return inputLength === 0 ? [] : this.state.relative_groups_list.filter(lang =>
+        lang.name.toLowerCase().slice(0, inputLength) === inputValue
+      );
+    };
+    this.setState({
+      suggestions: getSuggestions(value)
+    });
+  };
+
+  // Autosuggest will call this function every time you need to clear suggestions.
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
+
 
 
 
@@ -138,6 +213,18 @@ class GroupsList extends React.Component {
 
 
   render () {
+    //auto suggest
+    const { value, suggestions } = this.state;
+
+    // Autosuggest will pass through all these props to the input.
+    const inputProps = {
+    placeholder: 'グループを探す',
+        value,
+        onChange: this.onChange
+    };
+
+
+
     return (
       <div>
         <div class="all-group-area-wrapper" id="outer-container">
@@ -151,6 +238,14 @@ class GroupsList extends React.Component {
             outerContainerId={ "outer-container" }
           >
             <div class="side-menu">
+              <Autosuggest
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={renderSuggestion}
+                inputProps={inputProps}
+              />
               <div class= "switch-group-button-list">
                 {this.state.group_list.map((group) => {
                   return (
