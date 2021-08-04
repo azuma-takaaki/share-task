@@ -114,6 +114,21 @@
 
       #nav-profile{
         height: 77vh;
+        .switch-group-button{
+          font-size: 1em;
+          padding: 0.5em;
+          width:100%;
+          height:auto;
+          text-align:center;
+          border-style: none;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          &:hover {
+            opacity: 0.3;
+            transition-duration: 0.3s;
+          }
+        }
       }
       .side-menu-user-icon{
         width:100%;

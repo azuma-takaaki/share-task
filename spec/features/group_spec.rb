@@ -11,7 +11,7 @@ feature "Groups" , :js => true do
     click_button "登録"
   end
 
-  example "Groupを探す" do
+  example "Groupの検索予測が表示される" do
     @group = FactoryBot.create(:programming)
     expect(@group.valid?)
     visit "/"
@@ -19,6 +19,20 @@ feature "Groups" , :js => true do
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra").click
     expect(page).to have_content "programming"
+  end
+
+  example "検索したGroupをクリックするとそのグループのページが表示される" do
+    visit "/"
+    click_button "＜"
+    click_on "マイグループ"
+    click_button "＋group"
+    fill_in "新しいグループの名前", with:"プログラミング"
+    click_button "グループを作成"
+    click_on "グループを探す"
+    find("input[placeholder='グループを探す']").set("プログ").click
+    click_button "プログラミング"
+    sleep 1
+    expect(find('.group-name').text).to eq 'プログラミング'
   end
 
   example "存在するグループ名で新しいグループを作成しようとするとエラーメッセージが表示される" do

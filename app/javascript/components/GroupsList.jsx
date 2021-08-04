@@ -21,28 +21,6 @@ const customStyles = {
 
 
 
-// Teach Autosuggest how to calculate suggestions for any given input value.
-const getSuggestions = value => {
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
-
-  return inputLength === 0 ? [] : languages.filter(lang =>
-    lang.name.toLowerCase().slice(0, inputLength) === inputValue
-  );
-};
-
-// When suggestion is clicked, Autosuggest needs to populate the input
-// based on the clicked suggestion. Teach Autosuggest how to calculate the
-// input value for every given suggestion.
-const getSuggestionValue = suggestion => suggestion.name;
-
-// Use your imagination to render suggestions.
-const renderSuggestion = suggestion => (
-  <div>
-    {suggestion.name}
-  </div>
-);
-
 
 class GroupsList extends React.Component {
   constructor(props) {
@@ -55,8 +33,10 @@ class GroupsList extends React.Component {
     this.state = {
       group_list: props.groups,
       group_is_visible: arr_visible,
+      serched_group_is_visible: [],
       user_is_visible: true,
       input_value: '',
+      input_value_search_groups: '',
       menuOpen: false,
       relative_groups_list: [],
       value: '',
@@ -72,30 +52,26 @@ class GroupsList extends React.Component {
     this.switchDisplay = this.switchDisplay.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
-    this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
     this.fetchRelativeGroup = this.fetchRelativeGroup.bind(this)
+    this.handleChangeSearchGroups = this.handleChangeSearchGroups.bind(this)
   }
 
   getGroupList() {
+    var group_list = []
     fetch("/get_group_list",{
       method: 'GET'
       }).then(res => res.json())
       .then(
         (result) => {
-
-          var group_list = []
-          this.setState({
-            group_list: group_list
-          });
           for(var i in result[0]){
             group_list.push(result[0][i])
           }
-
-          this.setState({
-            group_list: group_list
-          });
         }
-      )
+      ).then(() =>{
+        this.setState({
+          group_list: group_list
+        });
+      })
   }
   openModal() {
     this.setState({modalIsOpen: true});
@@ -109,6 +85,25 @@ class GroupsList extends React.Component {
   }
   handleChange(e){
     this.setState({input_value: e.target.value});
+  }
+  handleChangeSearchGroups(e){
+    this.setState({input_value_search_groups: e.target.value}, function() {
+        const input_value = this.state.input_value_search_groups.trim().toLowerCase();
+        const input_length = input_value.length;
+        var new_suggestions = []
+        if(!(input_length == 0)){
+          for(var i in this.state.relative_groups_list){
+            if(this.state.relative_groups_list[i].name.toLowerCase().slice(0, input_length) === input_value){
+              new_suggestions.push(this.state.relative_groups_list[i])
+            }
+          }
+        }
+        this.setState({
+          suggestions: new_suggestions
+        })
+        this.getGroupList()
+        this.fetchRelativeGroup()
+    });
   }
   postData(){
     const data = { group: {name: this.state.input_value} };
@@ -147,16 +142,26 @@ class GroupsList extends React.Component {
         }
       })
       this.getGroupList()
+      this.fetchRelativeGroup()
   }
   switchDisplay(props){
+    var new_visible_group = []
+    Object.keys(this.state.group_is_visible).map((key) =>{
+      new_visible_group[key] = false
+    })
     if(props=="show_user"){
       this.setState({user_is_visible: true})
-    }else{
-      var new_visible_group = []
-      Object.keys(this.state.group_is_visible).map((key) =>{
-        new_visible_group[key] = false
-      })
+      this.setState({serched_group_is_visible: []})
+      this.setState({group_is_visible: new_visible_group})
+    }else if(Object.keys(this.state.group_is_visible).includes(String(props))){
       new_visible_group[props] = true
+      this.setState({user_is_visible: false})
+      this.setState({group_is_visible: new_visible_group})
+      this.setState({serched_group_is_visible: []})
+    }else{
+      var serched_group_array = [];
+      serched_group_array[props] = true
+      this.setState({serched_group_is_visible: serched_group_array})
       this.setState({group_is_visible: new_visible_group})
       this.setState({user_is_visible: false})
     }
@@ -172,52 +177,22 @@ class GroupsList extends React.Component {
     this.GroupRef.current.closeMenu();
   }
   fetchRelativeGroup(){
+    var groups_list = []
     fetch("/groups",{
       method: 'GET'
       }).then(res => res.json())
       .then(
         (result) => {
-          var groups_list = []
-          for(var i in result){
-            groups_list.push(result[i])
-          }
-          console.log(result[0])
-          this.setState({
-            relative_groups_list: result[0]
-          });
+          groups_list = result[0]
         }
-      )
+      ).then(()=>{
+        this.setState({
+          relative_groups_list: groups_list
+        });
+      })
   }
 
-  onChange = (event, { newValue }) => {
-    this.setState({
-      value: newValue
-    });
-  };
 
-  // Autosuggest will call this function every time you need to update suggestions.
-  // You already implemented this logic above, so just use it.
-  onSuggestionsFetchRequested = ({ value }) => {
-    const getSuggestions = value => {
-
-      const inputValue = value.trim().toLowerCase();
-      const inputLength = inputValue.length;
-
-      return inputLength === 0 ? [] : this.state.relative_groups_list.filter(lang =>
-        lang.name.toLowerCase().slice(0, inputLength) === inputValue
-      );
-    };
-    this.setState({
-      suggestions: getSuggestions(value)
-    });
-  };
-
-  // Autosuggest will call this function every time you need to clear suggestions.
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: []
-    });
-  };
 
 
 
@@ -280,14 +255,14 @@ class GroupsList extends React.Component {
 
                 </div>
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    <Autosuggest
-                      suggestions={suggestions}
-                      onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                      onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                      getSuggestionValue={getSuggestionValue}
-                      renderSuggestion={renderSuggestion}
-                      inputProps={inputProps}
-                    />
+                    <input type="test" placeholder="グループを探す" value={this.state.input_value_search_groups} onChange={this.handleChangeSearchGroups}/>
+                    <div class= "result-serch-groups">
+                      {this.state.suggestions.map((group) => {
+                        return (
+                          <button   class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
+                        )
+                      })}
+                    </div>
                 </div>
               </div>
 
@@ -319,6 +294,16 @@ class GroupsList extends React.Component {
                     //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                       <div>
                         {(this.state.group_is_visible[group.id] && !this.state.user_is_visible)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user}/> }
+                      </div>
+                  )
+                })
+              }
+              {
+                this.state.suggestions.map((group) => {
+                  return (
+                    //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
+                      <div>
+                        {(this.state.serched_group_is_visible[group.id])&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user}/> }
                       </div>
                   )
                 })
