@@ -61,7 +61,7 @@ class GroupsList extends React.Component {
       relative_groups_list: [],
       value: '',
       suggestions: [],
-      error_messages: []
+      error_messages: ''
     }
     this.getGroupList = this.getGroupList.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -105,7 +105,7 @@ class GroupsList extends React.Component {
   }
   closeModal() {
     this.setState({modalIsOpen: false});
-    this.setState({error_messages: []});
+    this.setState({error_messages: ''});
   }
   handleChange(e){
     this.setState({input_value: e.target.value});
@@ -238,9 +238,13 @@ class GroupsList extends React.Component {
         onChange: this.onChange
     };
 
-    let error_flash_content = <div class="alert alert-danger" id="error-flash">
-                              { this.state.error_messages.map((error_message) => <li>{error_message}</li>)}
-                          </div>
+    let error_flash_content;
+    if(!(this.state.error_messages=='')){
+      error_flash_content = <div class="alert alert-danger" id="error-flash">
+                                { this.state.error_messages.map((error_message) => <li>{error_message}</li>)}
+                            </div>
+    }
+
 
 
 
