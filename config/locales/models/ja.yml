@@ -2,9 +2,12 @@ ja:
   activerecord:
     models:
       user: ユーザー
+      group: グループ
     attributes:
       user:
         name: 名前
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード(確認)
+      group:
+        name: グループ名

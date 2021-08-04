@@ -24,7 +24,7 @@ RSpec.describe Group, type: :model do
         @other_group = FactoryBot.build(:other_group)
         @other_group.name = @group.name
         @other_group.valid?
-        expect(@other_group.errors.full_messages).to include "Nameはすでに存在します"
+        expect(@other_group.errors.full_messages).to include "グループ名はすでに存在します"
       end
     end
   end

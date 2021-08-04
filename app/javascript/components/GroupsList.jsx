@@ -60,7 +60,8 @@ class GroupsList extends React.Component {
       menuOpen: false,
       relative_groups_list: [],
       value: '',
-      suggestions: []
+      suggestions: [],
+      error_messages: []
     }
     this.getGroupList = this.getGroupList.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -104,6 +105,7 @@ class GroupsList extends React.Component {
   }
   closeModal() {
     this.setState({modalIsOpen: false});
+    this.setState({error_messages: []});
   }
   handleChange(e){
     this.setState({input_value: e.target.value});
@@ -128,10 +130,23 @@ class GroupsList extends React.Component {
                   'X-CSRF-Token': getCsrfToken()
         },
         body: JSON.stringify(data),
-      }).then(this.getGroupList)
-      this.setState({modalIsOpen: false});
-      this.setState({input_value: ""});
-      closeModal()
+      }).then(res => res.json()).then((result) => {
+        if(result[0] == "succeeded in creating a group"){
+          this.setState({modalIsOpen: false});
+          this.setState({input_value: ""});
+          closeModal()
+        }else if(result[0] == "failed to create a group"){
+          var error_massages = []
+          for(var i in result[1]){
+            error_massages.push(result[1][i])
+          }
+          this.setState({
+            error_messages: error_massages
+          })
+        }else{
+        }
+      })
+      this.getGroupList()
   }
   switchDisplay(props){
     if(props=="show_user"){
@@ -223,6 +238,10 @@ class GroupsList extends React.Component {
         onChange: this.onChange
     };
 
+    let error_flash_content = <div class="alert alert-danger" id="error-flash">
+                              { this.state.error_messages.map((error_message) => <li>{error_message}</li>)}
+                          </div>
+
 
 
     return (
@@ -254,7 +273,7 @@ class GroupsList extends React.Component {
                       })}
                     </div>
                     <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
-                
+
                 </div>
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <Autosuggest
@@ -314,8 +333,9 @@ class GroupsList extends React.Component {
           style={customStyles}
           contentLabel="Example Modal"
         >
+          {error_flash_content}
           <h2>新しいグループを作成</h2>
-          <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
+          <input type="text" placeholder="新しいグループの名前" value={this.state.input_value}  onChange={this.handleChange}/>
           <button onClick={this.postData}>グループを作成</button>
         </Modal>
       </div>

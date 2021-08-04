@@ -13,12 +13,16 @@ class GroupsController < ApplicationController
     @group.group_users.build(group_user_parameters)
     if @group.save
       #flash[:danger] = @group.name + "を作成しました！"
-      redirect_to current_user
+      render :json => ['succeeded in creating a group']
     else
-      flash[:danger] = @group.errors.full_messages + @group_user.errors.full_messages
-      @group.destroy
-      @group_user.destroy
-      redirect_to current_user
+      error_messages = @group.errors.full_messages
+      replace_index_number = error_messages.index('グループ名はすでに存在します')
+
+      if replace_index_number then
+        error_messages[replace_index_number] = 'その名前のグループは既に存在します'
+      end
+      logger.debug(replace_index_number)
+      render :json => ['failed to create a group', error_messages]
     end
   end
 
