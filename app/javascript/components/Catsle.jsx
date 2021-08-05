@@ -1,16 +1,34 @@
 import React, { useState, useRef, useEffect, Suspense }  from 'react';
 import { Canvas, useLoader, useFrame, useThree } from 'react-three-fiber';
 import { Vector3, PerspectiveCamera } from 'three';
+import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import PropTypes from "prop-types";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 const LoadModel = () => {
 	const gltf = useLoader(GLTFLoader, " /catsle.glb")
 	return (
-		<primitive scale={[0.07, 0.07, 0.035]}  object={gltf.scene} dispose={null} />
+		<primitive scale={[0.07, 0.07, 0.07]}  object={gltf.scene} dispose={null} />
 	)
 }
 
+const CameraController = () => {
+  const { camera, gl } = useThree();
+  useEffect(
+    () => {
+      const controls = new OrbitControls(camera, gl.domElement);
+
+      controls.minDistance = 3;
+      controls.maxDistance = 20;
+      return () => {
+        controls.dispose();
+      };
+    },
+    [camera, gl]
+  );
+  return null;
+};
 
 const UseModel = () => {
 	return (
@@ -35,30 +53,15 @@ function Catsle(){
 
   return (
     <div id="target">
-			<div class="move-camera-buttons">
-				<div class="change-rotate">
-		  		<button onClick = {() => setCountX(countRotX + 1)}> rot_x: +15° </button>
-		  		<button onClick = {() => setCountX(countRotX - 1)}> rot_x: -15° </button>
-					<button onClick = {() => setCountY(countRotY + 1)}> rot_y: +15° </button>
-		  		<button onClick = {() => setCountY(countRotY - 1)}> rot_y: -15° </button>
-					<button onClick = {() => setCountZ(countRotZ + 1)}> rot_y: +15° </button>
-		  		<button onClick = {() => setCountZ(countRotZ - 1)}> rot_y: -15° </button>
-				</div>
-				<div class="change-pos">
-		  		<button onClick = {() => setCountPosX(countPosX - 1)}> 左 </button>
-					<button onClick = {() => setCountPosX(countPosX + 1)}> 右 </button>
-					<button onClick = {() => setCountPosY(countPosY + 1)}> 上</button>
-		  		<button onClick = {() => setCountPosY(countPosY - 1)}> 下 </button>
-		  		<button onClick = {() => setCountPosZ(countPosZ - 1)}> 前 </button>
-					<button onClick = {() => setCountPosZ(countPosZ + 1)}> 後 </button>
-				</div>
-			</div>
+
   		<Canvas  >
+			<CameraController />
   			<Camera position={[countPosX, 4+countPosY, 10+countPosZ]}   rotation={[Math.PI/24*(countRotX-3), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
-  			<gridHelper args={[300, 100, 0x888888, 0x888888]} position={[0, -0.65, 0]}/>
-  			<pointLight position={[10, -20, 20]} />
+  			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
+  			<pointLight position={[10, -20, 70]} />
+				<pointLight position={[0, 100, -150]} />
   			<mesh
-  				visible userData={{ hello: 'world' }} position={[0, 0, 2.5]} rotation={[0, -Math.PI / 2, 0]}
+  				visible userData={{ hello: 'world' }} position={[0, 0, 0]} rotation={[0, -Math.PI / 2, 0]}
   			>
   				<UseModel />
   			</mesh>

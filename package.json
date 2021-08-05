@@ -10,6 +10,7 @@
     "@rails/webpacker": "5.2.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "^5.0.0-beta3",
+    "drei": "^2.2.21",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-autosuggest": "^10.1.0",

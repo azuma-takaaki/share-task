@@ -973,6 +973,51 @@
     webpack-cli "^3.3.12"
     webpack-sources "^1.4.3"
 
+"@react-spring/animated@~9.2.0":
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.2.4.tgz#062ecc0fdfef89f2541a42d8500428b70035f879"
+  integrity sha512-AfV6ZM8pCCAT29GY5C8/1bOPjZrv/7kD0vedjiE/tEYvNDwg9GlscrvsTViWR2XykJoYrDfdkYArrldWpsCJ5g==
+  dependencies:
+    "@react-spring/shared" "~9.2.0"
+    "@react-spring/types" "~9.2.0"
+
+"@react-spring/core@~9.2.0":
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/@react-spring/core/-/core-9.2.4.tgz#275a4a065e3a315a4f5fb28c9a6f62ce718c25d6"
+  integrity sha512-R+PwyfsjiuYCWqaTTfCpYpRmsP0h87RNm7uxC1Uxy7QAHUfHEm2sAHn+AdHPwq/MbVwDssVT8C5yf2WGcqiXGg==
+  dependencies:
+    "@react-spring/animated" "~9.2.0"
+    "@react-spring/shared" "~9.2.0"
+    "@react-spring/types" "~9.2.0"
+
+"@react-spring/rafz@~9.2.0":
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/@react-spring/rafz/-/rafz-9.2.4.tgz#44793e9adc14dd0dcd1573d094368af11a89d73a"
+  integrity sha512-SOKf9eue+vAX+DGo7kWYNl9i9J3gPUlQjifIcV9Bzw9h3i30wPOOP0TjS7iMG/kLp2cdHQYDNFte6nt23VAZkQ==
+
+"@react-spring/shared@~9.2.0":
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/@react-spring/shared/-/shared-9.2.4.tgz#f9cc66ac5308a77293330a18518e34121f4008c1"
+  integrity sha512-ZEr4l2BxmyFRUvRA2VCkPfCJii4E7cGkwbjmTBx1EmcGrOnde/V2eF5dxqCTY3k35QuCegkrWe0coRJVkh8q2Q==
+  dependencies:
+    "@react-spring/rafz" "~9.2.0"
+    "@react-spring/types" "~9.2.0"
+
+"@react-spring/types@~9.2.0":
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.2.4.tgz#2365ce9d761f548a9adcb2cd68714bf26765a5de"
+  integrity sha512-zHUXrWO8nweUN/ISjrjqU7GgXXvoEbFca1CgiE0TY0H/dqJb3l+Rhx8ecPVNYimzFg3ZZ1/T0egpLop8SOv4aA==
+
+"@react-spring/web@^9.0.0-rc.3":
+  version "9.2.4"
+  resolved "https://registry.yarnpkg.com/@react-spring/web/-/web-9.2.4.tgz#c6d5464a954bfd0d7bc90117050f796a95ebfa08"
+  integrity sha512-vtPvOalLFvuju/MDBtoSnCyt0xXSL6Amyv82fljOuWPl1yGd4M1WteijnYL9Zlriljl0a3oXcPunAVYTD9dbDQ==
+  dependencies:
+    "@react-spring/animated" "~9.2.0"
+    "@react-spring/core" "~9.2.0"
+    "@react-spring/shared" "~9.2.0"
+    "@react-spring/types" "~9.2.0"
+
 "@react-three/fiber@latest":
   version "7.0.6"
   resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-7.0.6.tgz#faa5aa5d496ae778a89fe2d3f503428a0e3c841b"
@@ -2673,6 +2718,13 @@ detect-file@^1.0.0:
   resolved "https://registry.yarnpkg.com/detect-file/-/detect-file-1.0.0.tgz"
   integrity sha1-8NZtA2cqglyxtzvbP+YjEMjlUrc=
 
+detect-gpu@^3.0.0:
+  version "3.1.11"
+  resolved "https://registry.yarnpkg.com/detect-gpu/-/detect-gpu-3.1.11.tgz#433f07fb8e505cb5e8975d23820fd4d00ec65f9b"
+  integrity sha512-JcmbzhdVfOPf0wNheytEEVD+tRZ3Lj6XQUBGKNdDjWW5Fb9xitTuBXdXnB1vcLy5DQMeSzYGFJVI66uAk4vnvA==
+  dependencies:
+    webgl-constants "^1.1.1"
+
 detect-node@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz"
@@ -2744,6 +2796,23 @@ dot-prop@^5.2.0:
   integrity sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==
   dependencies:
     is-obj "^2.0.0"
+
+drei@^2.2.21:
+  version "2.2.21"
+  resolved "https://registry.yarnpkg.com/drei/-/drei-2.2.21.tgz#37c9fe0879147e88a943ba2d45507fcf449f30c0"
+  integrity sha512-ue0fmH0VfyYUeHyyEggSsIvYQrSY3mUdW4MDiTxn69hQ08S52Z1bAHsBsE7o7TQD8cBQu+oGCRGXf7HBOUYgng==
+  dependencies:
+    "@babel/runtime" "^7.11.2"
+    "@react-spring/web" "^9.0.0-rc.3"
+    detect-gpu "^3.0.0"
+    glsl-noise "^0.0.0"
+    lodash.omit "^4.5.0"
+    lodash.pick "^4.4.0"
+    react-merge-refs "^1.0.0"
+    stats.js "^0.17.0"
+    troika-three-text "^0.34.2"
+    utility-types "^3.10.0"
+    zustand "^3.0.3"
 
 duplexify@^3.4.2, duplexify@^3.6.0:
   version "3.7.1"
@@ -3500,6 +3569,11 @@ globule@^1.0.0:
     glob "~7.1.1"
     lodash "~4.17.10"
     minimatch "~3.0.2"
+
+glsl-noise@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/glsl-noise/-/glsl-noise-0.0.0.tgz#367745f3a33382c0eeec4cb54b7e99cfc1d7670b"
+  integrity sha1-NndF86MzgsDu7Ey1S36Zz8HXZws=
 
 graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2:
   version "4.2.6"
@@ -4404,6 +4478,16 @@ lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+
+lodash.omit@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.omit/-/lodash.omit-4.5.0.tgz#6eb19ae5a1ee1dd9df0b969e66ce0b7fa30b5e60"
+  integrity sha1-brGa5aHuHdnfC5aeZs4Lf6MLXmA=
+
+lodash.pick@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
+  integrity sha1-UvBWEP/53tQiYRRB7R/BI6AwAbM=
 
 lodash.template@^4.5.0:
   version "4.5.0"
@@ -6263,7 +6347,7 @@ react-lifecycles-compat@^3.0.0:
   resolved "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-merge-refs@^1.1.0:
+react-merge-refs@^1.0.0, react-merge-refs@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
   integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
@@ -7126,6 +7210,11 @@ static-extend@^0.1.1:
     define-property "^0.2.5"
     object-copy "^0.1.0"
 
+stats.js@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/stats.js/-/stats.js-0.17.0.tgz#b1c3dc46d94498b578b7fd3985b81ace7131cc7d"
+  integrity sha1-scPcRtlEmLV4t/05hbgaznExzH0=
+
 "statuses@>= 1.4.0 < 2", "statuses@>= 1.5.0 < 2", statuses@~1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz"
@@ -7502,6 +7591,24 @@ trim-newlines@^1.0.0:
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-1.0.0.tgz"
   integrity sha1-WIeWa7WCpFA6QetST301ARgVphM=
 
+troika-three-text@^0.34.2:
+  version "0.34.2"
+  resolved "https://registry.yarnpkg.com/troika-three-text/-/troika-three-text-0.34.2.tgz#5de211ba9f4378047eac6b3c3fe1e68bb761f86c"
+  integrity sha512-2YNZjI1TJXDrSz3JvQEW4GXJ6/Zlca+On0rbPyqGvcKYZTXzHkUd7a/wBIBicP9Ca/W+V0E+BVLvsoZEXjqTfg==
+  dependencies:
+    troika-three-utils "^0.34.0"
+    troika-worker-utils "^0.34.1"
+
+troika-three-utils@^0.34.0:
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/troika-three-utils/-/troika-three-utils-0.34.0.tgz#9c34b31e8f6fd978af4be21382b7a21108ffd3e6"
+  integrity sha512-6Dm6FzGFpuiehjKkm3wAV3e+SPnHQ+GxwXnHFToKLcQ1/gVDOIL69BWCosrlEUb0SUOQjQv6sd5QpNT6IIewpQ==
+
+troika-worker-utils@^0.34.1:
+  version "0.34.1"
+  resolved "https://registry.yarnpkg.com/troika-worker-utils/-/troika-worker-utils-0.34.1.tgz#15b59af90a590106161473e4e28778e64e0d3456"
+  integrity sha512-zLTSB6ISd/dpBMG6PFR2v7sqU2bqVwOUd45iWzcgcRE9+w/5YJN8h0+H5EmgRPIVe5xus0UZQKUgVH6FRA+YdQ==
+
 "true-case-path@^1.0.2":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/true-case-path/-/true-case-path-1.0.3.tgz"
@@ -7787,6 +7894,11 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   dependencies:
     minimalistic-assert "^1.0.0"
 
+webgl-constants@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/webgl-constants/-/webgl-constants-1.1.1.tgz#f9633ee87fea56647a60b9ce735cbdfb891c6855"
+  integrity sha512-LkBXKjU5r9vAW7Gcu3T5u+5cvSvh5WwINdr0C+9jpzVB41cjQAP5ePArDtk/WHYdVj0GefCgM73BA7FlIiNtdg==
+
 webpack-assets-manifest@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/webpack-assets-manifest/-/webpack-assets-manifest-3.1.1.tgz"
@@ -8032,7 +8144,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zustand@^3.5.1:
+zustand@^3.0.3, zustand@^3.5.1:
   version "3.5.7"
   resolved "https://registry.yarnpkg.com/zustand/-/zustand-3.5.7.tgz#add5e8d0ba031ce6e0ddf9cb76ef15306efb665f"
   integrity sha512-DlVFXJavIHyXTOGz6dB+8QHZsPyJcGJSEBtlp2Ivmd5SwtlCnhPo3L8LB6YRfAOJC2PbqzgoD8NMjk+y+vIF0g==
