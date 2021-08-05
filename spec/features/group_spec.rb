@@ -45,4 +45,13 @@ feature "Groups" , :js => true do
     click_button "グループを作成"
     expect(page).to have_content "その名前のグループは既に存在します"
   end
+
+  example "作成したグループが即座にマイグループ欄へ反映される" do
+    click_button "＜"
+    click_on "マイグループ"
+    click_button "＋group"
+    fill_in "新しいグループの名前", with:"programming"
+    click_button "グループを作成"
+    expect(page).to have_content "programming"
+  end
 end
