@@ -36,7 +36,6 @@ class Top extends React.Component {
       password_confirm:'',
       group_list: [],
       modal_type: '',
-      main_content: <div></div>,
       error_messages: '',
       success_messages: ''
     }
@@ -47,11 +46,6 @@ class Top extends React.Component {
     this.signupPost = this.signupPost.bind(this);
     this.loginPost = this.loginPost.bind(this);
     this.logout = this.logout.bind(this);
-    this.setMainContent = this.setMainContent.bind(this);
-
-    if(is_logged_in){
-      this.setMainContent()
-    }
 
   }
   openModal(type) {
@@ -124,9 +118,6 @@ class Top extends React.Component {
               current_user: result[1]
             })
             this.setState({
-              main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
-            })
-            this.setState({
               logged_in: true
             })
             this.closeModal()
@@ -181,9 +172,6 @@ class Top extends React.Component {
               current_user: result[1]
             })
             this.setState({
-              main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
-            })
-            this.setState({
               logged_in: true
             })
             this.closeModal()
@@ -204,28 +192,6 @@ class Top extends React.Component {
       )
   }
 
-  setMainContent(){
-    fetch("/users/" + this.props.logged_in_user.id, {
-      method: 'GET'
-    }).then(res => res.json())
-    .then(
-      (result) => {
-        var group_list = []
-        for(var i in result[0]){
-          group_list.push(result[0][i])
-        }
-        this.setState({
-          group_list: group_list
-        })
-        this.setState({
-          current_user: result[1]
-        })
-        this.setState({
-          main_content: <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
-        })
-      })
-
-  }
 
 
 
@@ -274,7 +240,7 @@ class Top extends React.Component {
     let main_content;
     if (this.state.logged_in&&(!(this.state.logged_in===null))) {
         main_content = <div>
-                          {this.state.main_content}
+                          <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
                       </div>;
     } else {
       main_content = <div>
