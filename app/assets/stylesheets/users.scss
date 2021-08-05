@@ -161,6 +161,7 @@
           width: 4rem;
           height: 4rem;
           position:absolute;
+          z-index: 3;
         }
         //header
         .group-header{
@@ -285,6 +286,32 @@
 
 
 
+    }
+    .users-wrapper{
+      position: relative;
+      text-align: center;
+      .users-header{
+        position: absolute;
+        z-index: 2;
+      }
+      #catsle{
+
+        position: absolute;
+        /* 縦長 */
+        @media screen and (orientation: portrait) {
+          width: 100vh;
+          height: 100vh;
+          margin-left: -50vh;
+          left: 50%;
+        }
+
+        /* 横長 */
+        @media screen and (orientation: landscape) {
+          width: 100vw;
+          height: 100vw;
+         }
+        z-index: 1;
+      }
     }
 
 }

@@ -77,7 +77,7 @@ class User extends React.Component {
 
   render () {
     return (
-      <div>
+      <div class="users-wrapper">
         <div class="users-header">
           <img class = "user-icon" src={require("../../assets/images/default/" + this.props.current_user.icon)} />
           <div class="users-page-header-name">{this.props.current_user.name}</div>

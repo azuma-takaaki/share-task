@@ -52,7 +52,7 @@ function Catsle(){
   };
 
   return (
-    <div id="target">
+    <div id="catsle">
 
   		<Canvas  >
 			<CameraController />
