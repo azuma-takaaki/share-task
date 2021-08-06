@@ -12,9 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2021_07_24_072500) do
 
-  create_table "group_users", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "group_id", null: false
+  create_table "group_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["group_id", "user_id"], name: "index_group_users_on_group_id_and_user_id", unique: true
@@ -22,13 +22,13 @@ ActiveRecord::Schema.define(version: 2021_07_24_072500) do
     t.index ["user_id"], name: "index_group_users_on_user_id"
   end
 
-  create_table "groups", force: :cascade do |t|
+  create_table "groups", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tasks", force: :cascade do |t|
+  create_table "tasks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2021_07_24_072500) do
     t.integer "group_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.datetime "created_at", precision: 6, null: false

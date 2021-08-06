@@ -5,9 +5,9 @@ ruby '2.7.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.3'
-# Use sqlite3 as the database for Active Record
+# Use mysql2 as the database for Active Record
 
-#gem 'sqlite3', '~> 1.4'
+#gem 'mysql2', '~> 1.4'
 
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
@@ -38,7 +38,7 @@ gem 'rails-i18n'
 
 
 group :production do
-  gem 'pg'
+  gem 'mysql2'
 end
 
 group :development do
@@ -53,7 +53,9 @@ group :development do
 
   gem 'rubocop', require: false
 
-  gem 'sqlite3'
+  gem 'mysql2'
+
+
 end
 
 group :test do
