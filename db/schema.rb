@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_24_072500) do
+ActiveRecord::Schema.define(version: 2021_08_07_092026) do
+
+  create_table "castles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.bigint "group_id"
+    t.index ["group_id"], name: "index_castles_on_group_id"
+    t.index ["user_id"], name: "index_castles_on_user_id"
+  end
 
   create_table "group_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -45,6 +55,8 @@ ActiveRecord::Schema.define(version: 2021_07_24_072500) do
     t.string "icon"
   end
 
+  add_foreign_key "castles", "groups"
+  add_foreign_key "castles", "users"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
 end

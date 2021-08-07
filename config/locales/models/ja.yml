@@ -3,6 +3,7 @@ ja:
     models:
       user: ユーザー
       group: グループ
+      castle: 城
     attributes:
       user:
         name: 名前
@@ -11,3 +12,5 @@ ja:
         password_confirmation: パスワード(確認)
       group:
         name: グループ名
+      castle:
+        name: 城の名前
