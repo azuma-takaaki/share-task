@@ -26,6 +26,7 @@ class Top extends React.Component {
     }
 
 
+
     var tmp = props.logged_in_user
     this.state = {
       current_user: tmp,
@@ -46,8 +47,35 @@ class Top extends React.Component {
     this.signupPost = this.signupPost.bind(this);
     this.loginPost = this.loginPost.bind(this);
     this.logout = this.logout.bind(this);
+    this.setGroupList = this.setGroupList.bind(this);
 
+
+    if(is_logged_in){
+      this.setGroupList()
+    }
   }
+
+
+  setGroupList(){
+
+    var group_list = []
+    fetch("/get_group_list",{
+      method: 'GET'
+      }).then(res => res.json())
+      .then(
+        (result) => {
+          for(var i in result[0]){
+            group_list.push(result[0][i])
+          }
+          this.setState({
+            group_list: group_list
+          });
+        }
+      )
+  }
+
+
+
   openModal(type) {
     this.setState({modal_type: type});
     this.setState({modalIsOpen: true});
@@ -107,12 +135,12 @@ class Top extends React.Component {
               error_messages: error_massages
             })
           }else{
-            var user_list = []
+            var group_list = []
             for(var i in result[0]){
-              user_list.push(result[0][i])
+              group_list.push(result[0][i])
             }
             this.setState({
-              group_list: user_list
+              group_list: group_list
             })
             this.setState({
               current_user: result[1]

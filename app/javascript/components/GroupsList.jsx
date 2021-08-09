@@ -27,9 +27,11 @@ class GroupsList extends React.Component {
     super(props);
     this.GroupRef = React.createRef();
     var arr_visible = []
-     props.groups.map((group) => {
+    props.groups.map((group) => {
+
        arr_visible[group.id] = false
-     })
+    })
+  
     this.state = {
       group_list: props.groups,
       group_is_visible: arr_visible,
@@ -54,6 +56,9 @@ class GroupsList extends React.Component {
     this.closeMenu = this.closeMenu.bind(this);
     this.fetchRelativeGroup = this.fetchRelativeGroup.bind(this)
     this.handleChangeSearchGroups = this.handleChangeSearchGroups.bind(this)
+
+
+
   }
 
   getGroupList() {
@@ -71,6 +76,13 @@ class GroupsList extends React.Component {
         this.setState({
           group_list: group_list
         });
+
+        var new_visible_group = []
+        group_list.map((group) =>{
+          new_visible_group[group.id] = false
+        })
+
+        this.setState({group_is_visible: new_visible_group})
       })
   }
   openModal() {
@@ -129,6 +141,8 @@ class GroupsList extends React.Component {
         if(result[0] == "succeeded in creating a group"){
           this.setState({modalIsOpen: false});
           this.setState({input_value: ""});
+          this.getGroupList()
+          this.fetchRelativeGroup()
           closeModal()
         }else if(result[0] == "failed to create a group"){
           var error_massages = []
@@ -141,11 +155,8 @@ class GroupsList extends React.Component {
         }else{
         }
       })
-      this.getGroupList()
-      this.fetchRelativeGroup()
   }
   switchDisplay(props){
-    alert("hello! this is switchDisplay")
     var new_visible_group = []
     Object.keys(this.state.group_is_visible).map((key) =>{
       new_visible_group[key] = false
