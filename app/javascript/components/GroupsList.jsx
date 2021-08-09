@@ -145,7 +145,7 @@ class GroupsList extends React.Component {
       this.fetchRelativeGroup()
   }
   switchDisplay(props){
-    alert("hello")
+    alert("hello! this is switchDisplay")
     var new_visible_group = []
     Object.keys(this.state.group_is_visible).map((key) =>{
       new_visible_group[key] = false
