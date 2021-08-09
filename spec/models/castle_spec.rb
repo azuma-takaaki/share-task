@@ -18,5 +18,17 @@ RSpec.describe "Castle", type: :model do
       @castle.valid?
       expect(@castle.errors.full_messages).to include("城の名前を入力してください")
     end
+
+    example "ユーザーが空だと登録できない" do
+      @castle.user = nil
+      @castle.valid?
+      expect(@castle.errors.full_messages).to include("Userを入力してください")
+    end
+
+    example "グループが空だと登録できない" do
+      @castle.group = nil
+      @castle.valid?
+      expect(@castle.errors.full_messages).to include("Groupを入力してください")
+    end
   end
 end

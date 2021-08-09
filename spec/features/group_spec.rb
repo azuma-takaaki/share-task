@@ -17,7 +17,7 @@ feature "Groups" , :js => true do
     visit "/"
     click_button "＜"
     click_on "グループを探す"
-    find("input[placeholder='グループを探す']").set("progra").click
+    find("input[placeholder='グループを探す']").set("progra")
     expect(page).to have_content "programming"
   end
 
@@ -29,7 +29,7 @@ feature "Groups" , :js => true do
     fill_in "新しいグループの名前", with:"プログラミング"
     click_button "グループを作成"
     click_on "グループを探す"
-    find("input[placeholder='グループを探す']").set("プログ").click
+    find("input[placeholder='グループを探す']").set("プログ")
     click_button "プログラミング"
     sleep 1
     expect(find('.group-name').text).to eq 'プログラミング'
