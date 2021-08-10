@@ -83,7 +83,7 @@ class User extends React.Component {
           <div class="users-page-header-name">{this.props.current_user.name}</div>
           <button class="edit-user-button"onClick={this.openModal}>・・・</button>
         </div>
-        <Catsle/>
+        <Catsle castle_name="" tag_id="castle"/>
 
         <Modal
           isOpen={this.state.modalIsOpen}

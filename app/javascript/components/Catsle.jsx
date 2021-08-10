@@ -42,7 +42,7 @@ var UseModel = (position) =>{
 
 
 
-function Catsle(){
+function Catsle(props){
 	const [countRotX,setCountX] = useState(0)
 	const [countRotY,setCountY] = useState(0)
 	const [countRotZ,setCountZ] = useState(0)
@@ -64,8 +64,8 @@ function Catsle(){
 }
 
   return (
-    <div id="catsle">
-
+    <div id={props.tag_id}>
+      <h2>{props.castle_name} 城</h2>
   		<Canvas >
 				<CameraController />
   			<Camera position={[0, 4, 10]}   rotation={[Math.PI/24*(countRotX-3), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
@@ -91,10 +91,6 @@ function Catsle(){
 						}
 						return(catsles)
 				})()}
-
-
-
-
   		</Canvas>
     </div>
   )

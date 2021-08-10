@@ -43,7 +43,8 @@ class GroupsList extends React.Component {
       relative_groups_list: [],
       value: '',
       suggestions: [],
-      error_messages: ''
+      error_messages: '',
+      castle_list: []
     }
     this.getGroupList = this.getGroupList.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -54,9 +55,9 @@ class GroupsList extends React.Component {
     this.switchDisplay = this.switchDisplay.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
-    this.fetchRelativeGroup = this.fetchRelativeGroup.bind(this)
-    this.handleChangeSearchGroups = this.handleChangeSearchGroups.bind(this)
-
+    this.fetchRelativeGroup = this.fetchRelativeGroup.bind(this);
+    this.handleChangeSearchGroups = this.handleChangeSearchGroups.bind(this);
+    this.fetchCastles = this.fetchCastles.bind(this);
 
 
   }
@@ -203,6 +204,20 @@ class GroupsList extends React.Component {
         });
       })
   }
+  fetchCastles(group_id){
+    var castle_list = this.state.castle_list
+    fetch("get_castle_list/" + group_id, {
+      method: 'GET'
+      }).then(res => res.json())
+      .then(
+        (result) => {
+          castle_list[group_id] = result[0]
+          this.setState({castle_list: castle_list})
+        }
+      ).then(()=>{
+        this.switchDisplay(group_id)
+      })
+  }
 
 
 
@@ -259,7 +274,7 @@ class GroupsList extends React.Component {
                     <div class= "switch-group-button-list">
                       {this.state.group_list.map((group) => {
                         return (
-                          <button   class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
+                          <button   class="switch-group-button" onClick={() => this.fetchCastles(group.id)}>{group.name}</button>
                         )
                       })}
                     </div>
@@ -271,7 +286,7 @@ class GroupsList extends React.Component {
                     <div class= "result-serch-groups">
                       {this.state.suggestions.map((group) => {
                         return (
-                          <button   class="switch-group-button" onClick={() => this.switchDisplay(group.id)}>{group.name}</button>
+                          <button   class="switch-group-button" onClick={() => this.fetchCastles(group.id)}>{group.name}</button>
                         )
                       })}
                     </div>
@@ -305,7 +320,7 @@ class GroupsList extends React.Component {
                   return (
                     //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                       <div>
-                        {(this.state.group_is_visible[group.id] && !this.state.user_is_visible)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in}/> }
+                        {(this.state.group_is_visible[group.id] && !this.state.user_is_visible)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in} castle_list={this.state.castle_list[group.id]} fetchCastles={this.fetchCastles}/> }
                       </div>
                   )
                 })
@@ -315,7 +330,7 @@ class GroupsList extends React.Component {
                   return (
                     //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                       <div>
-                        {(this.state.serched_group_is_visible[group.id])&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in}/> }
+                        {(this.state.serched_group_is_visible[group.id])&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in}  castle_list={this.state.castle_list[group.id]} fetchCastles={this.fetchCastles}/> }
                       </div>
                   )
                 })
