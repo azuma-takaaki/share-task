@@ -66,11 +66,6 @@ function Catsle(){
   return (
     <div id="catsle">
 
-			<div id="add-catsle-button" >
-				<p>catsle: {countPosX}</p>
-				<button  onClick={addCatsle}>catsle +</button>
-				<button  onClick={destroyCatsle}>catsle -</button>
-			</div>
   		<Canvas >
 				<CameraController />
   			<Camera position={[0, 4, 10]}   rotation={[Math.PI/24*(countRotX-3), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
@@ -81,7 +76,7 @@ function Catsle(){
 
 
 				{(() => {
-						const catsles = [];
+						const catsles = [<UseModel position={[0, 0, -3]} />];
 						var n = 0
 						var l = 0
 						for(var i = 0; i < countPosX; i++) {

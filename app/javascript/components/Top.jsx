@@ -268,7 +268,7 @@ class Top extends React.Component {
     let main_content;
     if (this.state.logged_in&&(!(this.state.logged_in===null))) {
         main_content = <div>
-                          <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout}/></div>
+                          <div><Header/><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout} is_logged_in = {this.state.logged_in}/></div>
                       </div>;
     } else {
       main_content = <div>

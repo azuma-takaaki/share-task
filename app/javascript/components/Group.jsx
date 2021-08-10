@@ -25,7 +25,8 @@ class Group extends React.Component {
       group_members:[] ,
       other_users:[],
       group_tasks: [],
-      input_value: ''
+      input_value: '',
+      modal_content: ''
     }
     this.getGroupInfo = this.getGroupInfo.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -41,11 +42,54 @@ class Group extends React.Component {
     this.closeMenu = this.closeMenu.bind(this);
   }
 
-  openModal() {
+  openModal(modal_type) {
+    var modal_content;
+    if(modal_type=="edit_group"){
+      this.getUsers();
+      var group_name = this.props.group.name;
+      this.setState({input_value: group_name});
+      modal_content= <div class="react-modal">
+                        <h2>グループを編集</h2>
+                        <p></p>
+                        <p>グループ名</p>
+                        <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
+                        <button onClick={this.updateData}>グループ名を変更する</button>
+                        <p></p>
+                        <p>グループメンバー</p>
+                        {this.state.group_members.map((group_member)=>{
+                          return(
+                            <p>
+                              <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
+                              {group_member.name}
+                              <button onClick = {() => this.removeUser(group_member.id)}>退会させる</button>
+                            </p>
+                          )
+                        })}
+                        <p></p>
+                        <p>メンバーを招待する</p>
+
+                        {this.state.other_users.map((user) => {
+                          return (
+                            <p>
+                              <img class = "user-icon" src={require("../../assets/images/default/" + user.icon)} />
+                              {user.name}<button onClick={() => this.inviteUser(user.id)}>招待する</button>
+                            </p>
+                          )
+                        })}
+                        <p></p>
+                        <button onClick={this.deleteGroup}>このグループを削除する</button>
+                      </div>
+    }else if(modal_type=="create_castle"){
+      modal_content= <div class="react-modal">
+                        <h2>城を立てる</h2>
+                        <p></p>
+                        <p>城の名前</p>
+                        <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
+                        <button >城を立てる</button>
+                      </div>
+    }
+    this.setState({modal_content: modal_content});
     this.setState({modalIsOpen: true});
-    var group_name = this.props.group.name
-    this.setState({input_value: group_name});
-    this.getUsers()
   }
   afterOpenModal() {
     this.subtitle.style.color = '#fff000';
@@ -156,7 +200,6 @@ class Group extends React.Component {
         }
       )
       this.props.updateGroupList()
-      closeModal()
   }
 
   inviteUser(user_id){
@@ -219,11 +262,19 @@ class Group extends React.Component {
 
 
   render () {
+
+    let create_castle_or_task_button;
+    if (this.props.is_logged_in) {
+      create_castle_or_task_button = <button class="btn btn-primary" onClick={() => this.openModal("create_castle")}>城を立てる</button>
+    } else {
+      create_castle_or_task_button = <div class="add-task-button-wrapper">
+                                      <button class="add-task-button"onClick={this.openInputTaskModal}>＋task</button>
+                                    </div>
+    }
+
     return (
         <div>
           <div  class="group-header">
-
-
             <div class="group-name">{this.state.group_name}</div>
             <div class="group-members-list">
               {this.state.group_members.map((group_member) => {
@@ -236,13 +287,11 @@ class Group extends React.Component {
               })}
             </div>
             <div class="edit-group-button-wrapper">
-              <button class="edit-group-button" onClick={ () => this.openModal()}>
+              <button class="edit-group-button" onClick={ () => this.openModal("edit_group")}>
                 •••
               </button>
             </div>
-            <div class="add-task-button-wrapper">
-              <button class="add-task-button"onClick={this.openInputTaskModal}>＋task</button>
-            </div>
+            {create_castle_or_task_button}
           </div>
 
           <InputTaskModal ref={this.InputTaskModalRef} group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
@@ -263,37 +312,7 @@ class Group extends React.Component {
             style={customStyles}
             contentLabel="Example Modal"
           >
-            <div class="react-modal">
-              <h2>グループを編集</h2>
-              <p></p>
-              <p>グループ名</p>
-              <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
-              <button onClick={this.updateData}>グループ名を変更する</button>
-              <p></p>
-              <p>グループメンバー</p>
-              {this.state.group_members.map((group_member)=>{
-                return(
-                  <p>
-                    <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
-                    {group_member.name}
-                    <button onClick = {() => this.removeUser(group_member.id)}>退会させる</button>
-                  </p>
-                )
-              })}
-              <p></p>
-              <p>メンバーを招待する</p>
-
-              {this.state.other_users.map((user) => {
-                return (
-                  <p>
-                    <img class = "user-icon" src={require("../../assets/images/default/" + user.icon)} />
-                    {user.name}<button onClick={() => this.inviteUser(user.id)}>招待する</button>
-                  </p>
-                )
-              })}
-              <p></p>
-              <button onClick={this.deleteGroup}>このグループを削除する</button>
-            </div>
+            {this.state.modal_content}
           </Modal>
 
         </div>

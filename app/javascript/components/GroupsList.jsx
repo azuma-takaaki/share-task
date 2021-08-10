@@ -31,7 +31,7 @@ class GroupsList extends React.Component {
 
        arr_visible[group.id] = false
     })
-  
+
     this.state = {
       group_list: props.groups,
       group_is_visible: arr_visible,
@@ -305,7 +305,7 @@ class GroupsList extends React.Component {
                   return (
                     //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                       <div>
-                        {(this.state.group_is_visible[group.id] && !this.state.user_is_visible)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user}/> }
+                        {(this.state.group_is_visible[group.id] && !this.state.user_is_visible)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in}/> }
                       </div>
                   )
                 })
@@ -315,7 +315,7 @@ class GroupsList extends React.Component {
                   return (
                     //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                       <div>
-                        {(this.state.serched_group_is_visible[group.id])&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user}/> }
+                        {(this.state.serched_group_is_visible[group.id])&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in}/> }
                       </div>
                   )
                 })
