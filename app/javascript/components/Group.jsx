@@ -26,7 +26,7 @@ class Group extends React.Component {
       other_users:[],
       group_tasks: [],
       input_value: '',
-      modal_content: ''
+      modal_type: ''
     }
     this.getGroupInfo = this.getGroupInfo.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -40,12 +40,212 @@ class Group extends React.Component {
     this.inviteUser = this.inviteUser.bind(this);
     this.openInputTaskModal = this.openInputTaskModal.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
+    this.createCastle = this.createCastle.bind(this);
   }
 
   openModal(modal_type) {
+    this.getUsers();
+    this.setState({modal_type: modal_type});
+    this.setState({modalIsOpen: true});
+  }
+  afterOpenModal() {
+    this.subtitle.style.color = '#fff000';
+  }
+  closeModal() {
+    this.setState({modalIsOpen: false});
+    this.setState({input_value: ""});
+  }
+  deleteGroup(){
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
+      }
+      return '';
+    }
+      fetch("/groups/" + this.state.group_id, {
+        method: 'DELETE', // or 'PUT'
+        headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': getCsrfToken()
+        },
+
+      }).then(this.props.updateGroupList())
+      this.props.updateGroupList()
+      this.setState({input_value: ""});
+      closeModal()
+  }
+  updateData(){
+      const getCsrfToken = () => {
+        const metas = document.getElementsByTagName('meta');
+        for (let meta of metas) {
+            if (meta.getAttribute('name') === 'csrf-token') {
+                console.log('csrf-token:', meta.getAttribute('content'));
+                return meta.getAttribute('content');
+            }
+        }
+        return '';
+      }
+
+      const data = { group: {name:this.state.input_value}, id: this.state.group_id };
+
+      fetch("/groups/" + this.state.group_id, {
+        method: 'PATCH', // or 'PUT'
+        headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': getCsrfToken()
+        },
+        body: JSON.stringify(data),
+      }).then(this.props.updateGroupList())
+      this.setState({input_value: ""});
+      this.props.updateGroupList()
+      closeModal()
+  }
+  handleChange(e){
+    this.setState({input_value: e.target.value});
+  }
+  getGroupInfo(id) {
+    fetch("/groups/"+id,{
+      method: 'GET'
+      }).then(res => res.json())
+      .then(
+        (result) => {
+          var user_list = []
+          for(var i in result[0]){
+            user_list.push(result[0][i])
+          }
+          this.setState({
+            group_members: user_list
+          });
+
+
+          var task_list = []
+          this.setState({
+            group_tasks: task_list
+          });
+          for(var i in result[1]){
+            task_list.push(result[1][i])
+          }
+          this.setState({
+            group_tasks: task_list
+          });
+
+
+        }
+      )
+  }
+  getUsers() {
+    fetch("/all_user",{
+      method: 'GET'
+      }).then(res => res.json())
+      .then(
+        (result) => {
+          var user_list = []
+          for(var i in result[0]){
+            user_list.push(result[0][i])
+          }
+          this.setState({
+            other_users: user_list
+          });
+        }
+      )
+      this.props.updateGroupList()
+  }
+  inviteUser(user_id){
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
+      }
+      return '';
+    }
+    const data = { group_id: this.state.group_id, user_id: user_id };
+
+    fetch('/group_user',{
+      method: 'POST',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    }).then(this.props.updateGroupList())
+    this.props.updateGroupList()
+    closeModal()
+  }
+  removeUser(user_id){
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
+      }
+      return '';
+    }
+    const data = { group_id: this.state.group_id, user_id: user_id };
+
+    fetch('/group_user?group_id='+this.state.group_id+'&user_id='+user_id,{
+      method: 'DELETE',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      //body: JSON.stringify(data)
+    }).then(this.props.updateGroupList())
+    this.props.updateGroupList()
+    closeModal()
+  }
+  openInputTaskModal() {
+    this.InputTaskModalRef.current.openModal(); // this.ref名.currentで実体にアクセス
+  }
+  closeMenu() {
+    this.setState(state => ({menuOpen: false}))
+  }
+  createCastle() {
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
+      }
+      return '';
+    }
+    const data = { castle: {name: this.state.input_value, group_id: this.state.group_id }};
+
+    fetch('/castles',{
+      method: 'POST',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    }).then(res => res.json()).then((result) => {
+      alert(result[0])
+    })
+    this.closeModal()
+  }
+
+  render () {
+    let create_castle_or_task_button;
+    if (this.props.is_logged_in) {
+      create_castle_or_task_button = <button class="btn btn-primary" onClick={() => this.openModal("create_castle")}>城を立てる</button>
+    } else {
+      create_castle_or_task_button = <div class="add-task-button-wrapper">
+                                      <button class="add-task-button"onClick={this.openInputTaskModal}>＋task</button>
+                                    </div>
+    }
+
     var modal_content;
-    if(modal_type=="edit_group"){
-      this.getUsers();
+    if(this.state.modal_type=="edit_group"){
       var group_name = this.props.group.name;
       this.setState({input_value: group_name});
       modal_content= <div class="react-modal">
@@ -79,197 +279,14 @@ class Group extends React.Component {
                         <p></p>
                         <button onClick={this.deleteGroup}>このグループを削除する</button>
                       </div>
-    }else if(modal_type=="create_castle"){
+    }else if(this.state.modal_type=="create_castle"){
       modal_content= <div class="react-modal">
                         <h2>城を立てる</h2>
                         <p></p>
                         <p>城の名前</p>
-                        <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
-                        <button >城を立てる</button>
+                        <input type="text" value={this.state.input_value} placeholder="城の名前(目標)" onChange={this.handleChange}/>
+                        <button class="btn btn-primary post-castle-data-button" onClick={this.createCastle}>城を立てる</button>
                       </div>
-    }
-    this.setState({modal_content: modal_content});
-    this.setState({modalIsOpen: true});
-  }
-  afterOpenModal() {
-    this.subtitle.style.color = '#fff000';
-  }
-  closeModal() {
-    this.setState({modalIsOpen: false});
-    this.setState({input_value: ""});
-  }
-  deleteGroup(){
-    const getCsrfToken = () => {
-      const metas = document.getElementsByTagName('meta');
-      for (let meta of metas) {
-          if (meta.getAttribute('name') === 'csrf-token') {
-              console.log('csrf-token:', meta.getAttribute('content'));
-              return meta.getAttribute('content');
-          }
-      }
-      return '';
-    }
-      fetch("/groups/" + this.state.group_id, {
-        method: 'DELETE', // or 'PUT'
-        headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-Token': getCsrfToken()
-        },
-
-      }).then(this.props.updateGroupList())
-      this.props.updateGroupList()
-      this.setState({input_value: ""});
-      closeModal()
-  }
-
-  updateData(){
-      const getCsrfToken = () => {
-        const metas = document.getElementsByTagName('meta');
-        for (let meta of metas) {
-            if (meta.getAttribute('name') === 'csrf-token') {
-                console.log('csrf-token:', meta.getAttribute('content'));
-                return meta.getAttribute('content');
-            }
-        }
-        return '';
-      }
-
-      const data = { group: {name:this.state.input_value}, id: this.state.group_id };
-
-      fetch("/groups/" + this.state.group_id, {
-        method: 'PATCH', // or 'PUT'
-        headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-Token': getCsrfToken()
-        },
-        body: JSON.stringify(data),
-      }).then(this.props.updateGroupList())
-      this.setState({input_value: ""});
-      this.props.updateGroupList()
-      closeModal()
-  }
-
-  handleChange(e){
-    this.setState({input_value: e.target.value});
-  }
-
-  getGroupInfo(id) {
-    fetch("/groups/"+id,{
-      method: 'GET'
-      }).then(res => res.json())
-      .then(
-        (result) => {
-          var user_list = []
-          for(var i in result[0]){
-            user_list.push(result[0][i])
-          }
-          this.setState({
-            group_members: user_list
-          });
-
-
-          var task_list = []
-          this.setState({
-            group_tasks: task_list
-          });
-          for(var i in result[1]){
-            task_list.push(result[1][i])
-          }
-          this.setState({
-            group_tasks: task_list
-          });
-
-
-        }
-      )
-  }
-
-  getUsers() {
-    fetch("/all_user",{
-      method: 'GET'
-      }).then(res => res.json())
-      .then(
-        (result) => {
-          var user_list = []
-          for(var i in result[0]){
-            user_list.push(result[0][i])
-          }
-          this.setState({
-            other_users: user_list
-          });
-        }
-      )
-      this.props.updateGroupList()
-  }
-
-  inviteUser(user_id){
-    const getCsrfToken = () => {
-      const metas = document.getElementsByTagName('meta');
-      for (let meta of metas) {
-          if (meta.getAttribute('name') === 'csrf-token') {
-              console.log('csrf-token:', meta.getAttribute('content'));
-              return meta.getAttribute('content');
-          }
-      }
-      return '';
-    }
-    const data = { group_id: this.state.group_id, user_id: user_id };
-
-    fetch('/group_user',{
-      method: 'POST',
-      headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': getCsrfToken()
-      },
-      body: JSON.stringify(data)
-    }).then(this.props.updateGroupList())
-    this.props.updateGroupList()
-    closeModal()
-  }
-
-  removeUser(user_id){
-    const getCsrfToken = () => {
-      const metas = document.getElementsByTagName('meta');
-      for (let meta of metas) {
-          if (meta.getAttribute('name') === 'csrf-token') {
-              console.log('csrf-token:', meta.getAttribute('content'));
-              return meta.getAttribute('content');
-          }
-      }
-      return '';
-    }
-    const data = { group_id: this.state.group_id, user_id: user_id };
-
-    fetch('/group_user?group_id='+this.state.group_id+'&user_id='+user_id,{
-      method: 'DELETE',
-      headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': getCsrfToken()
-      },
-      //body: JSON.stringify(data)
-    }).then(this.props.updateGroupList())
-    this.props.updateGroupList()
-    closeModal()
-  }
-
-  openInputTaskModal() {
-    this.InputTaskModalRef.current.openModal(); // this.ref名.currentで実体にアクセス
-  }
-
-  closeMenu () {
-    this.setState(state => ({menuOpen: false}))
-  }
-
-
-  render () {
-
-    let create_castle_or_task_button;
-    if (this.props.is_logged_in) {
-      create_castle_or_task_button = <button class="btn btn-primary" onClick={() => this.openModal("create_castle")}>城を立てる</button>
-    } else {
-      create_castle_or_task_button = <div class="add-task-button-wrapper">
-                                      <button class="add-task-button"onClick={this.openInputTaskModal}>＋task</button>
-                                    </div>
     }
 
     return (
@@ -312,7 +329,7 @@ class Group extends React.Component {
             style={customStyles}
             contentLabel="Example Modal"
           >
-            {this.state.modal_content}
+            {modal_content}
           </Modal>
 
         </div>

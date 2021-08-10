@@ -21,7 +21,7 @@ feature "Castles" , :js => true do
     find('div.bm-overlay').click
     click_button "城を立てる"
     fill_in "城の名前(目標)", with:"web開発エンジニアになる"
-    click_button "城を立てる"
+    find(".post-castle-data-button").click
     expect(page).to have_content "web開発エンジニアになる城"
   end
 

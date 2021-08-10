@@ -21,12 +21,14 @@ feature "Groups" , :js => true do
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
     expect(page).to have_content "programming"
+    sleep 0.5
   end
+
 
   example "存在するグループ名で新しいグループを作成しようとするとエラーメッセージが表示される" do
     @group = FactoryBot.create(:programming)
     expect(@group.valid?)
-    
+    visit "/"
     click_button "＜"
     click_on "マイグループ"
     click_button "＋group"
