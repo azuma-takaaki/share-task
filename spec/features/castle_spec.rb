@@ -19,10 +19,10 @@ feature "Castles" , :js => true do
     click_button "programming"
     #page.driver.click(500, 500)
     find('div.bm-overlay').click
-    click_button "城を立てる"
+    click_button "城を建てる"
     fill_in "城の名前(目標)", with:"web開発エンジニアになる"
     find(".post-castle-data-button").click
-    expect(page).to have_content "web開発エンジニアになる城"
+    expect(page).to have_content "web開発エンジニアになる 城"
   end
 
 

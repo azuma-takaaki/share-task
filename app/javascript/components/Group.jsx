@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Task from "./Task.jsx"
 import InputTaskModal from "./InputTaskModal.jsx"
+import Catsle from "./Catsle.jsx"
 
 const customStyles = {
   content : {
@@ -41,6 +42,7 @@ class Group extends React.Component {
     this.openInputTaskModal = this.openInputTaskModal.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
     this.createCastle = this.createCastle.bind(this);
+
   }
 
   openModal(modal_type) {
@@ -229,7 +231,7 @@ class Group extends React.Component {
       },
       body: JSON.stringify(data)
     }).then(res => res.json()).then((result) => {
-      alert(result[0])
+      this.props.fetchCastles(this.props.group.id)
     })
     this.closeModal()
   }
@@ -237,7 +239,7 @@ class Group extends React.Component {
   render () {
     let create_castle_or_task_button;
     if (this.props.is_logged_in) {
-      create_castle_or_task_button = <button class="btn btn-primary" onClick={() => this.openModal("create_castle")}>城を立てる</button>
+      create_castle_or_task_button = <button class="btn btn-primary" onClick={() => this.openModal("create_castle")}>城を建てる</button>
     } else {
       create_castle_or_task_button = <div class="add-task-button-wrapper">
                                       <button class="add-task-button"onClick={this.openInputTaskModal}>＋task</button>
@@ -281,13 +283,26 @@ class Group extends React.Component {
                       </div>
     }else if(this.state.modal_type=="create_castle"){
       modal_content= <div class="react-modal">
-                        <h2>城を立てる</h2>
+                        <h2>城を建てる</h2>
                         <p></p>
                         <p>城の名前</p>
                         <input type="text" value={this.state.input_value} placeholder="城の名前(目標)" onChange={this.handleChange}/>
-                        <button class="btn btn-primary post-castle-data-button" onClick={this.createCastle}>城を立てる</button>
+                        <button class="btn btn-primary post-castle-data-button" onClick={this.createCastle}>城を建てる</button>
                       </div>
     }
+
+    var castles;
+
+    if(!(this.props.castle_list.length==0)){
+      castles = this.props.castle_list.map((castle) => {
+        return (
+            <Catsle castle_name={castle.name} tag_id="castle_at_group"/>
+        )
+      })
+    }else{
+      castles = <h1 class = "massage-castle-is-empty">城を建ててください</h1>
+    }
+
 
     return (
         <div>
@@ -304,21 +319,23 @@ class Group extends React.Component {
               })}
             </div>
             <div class="edit-group-button-wrapper">
-              <button class="edit-group-button" onClick={ () => this.openModal("edit_group")}>
-                •••
-              </button>
+
             </div>
             {create_castle_or_task_button}
+          </div>
+
+          <div>
+            {castles}
           </div>
 
           <InputTaskModal ref={this.InputTaskModalRef} group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
 
           <div class="task-wrapper">
-          {this.state.group_tasks.map((task) => {
-            return (
-                <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
-            )
-          })}
+            {this.state.group_tasks.map((task) => {
+              return (
+                  <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
+              )
+            })}
           </div>
 
 

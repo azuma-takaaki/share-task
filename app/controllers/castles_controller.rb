@@ -13,6 +13,11 @@ class CastlesController < ApplicationController
     end
   end
 
+  def get_castle_list
+    @castles = Castle.where(group_id: params[:group_id])
+    render json: [@castles]
+  end
+
   private
     def castle_parameters
       params.require(:castle).permit(:name, :group_id)
