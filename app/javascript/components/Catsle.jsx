@@ -12,8 +12,8 @@ const CameraController = () => {
     () => {
       const controls = new OrbitControls(camera, gl.domElement);
 
-      controls.minDistance = 3;
-      controls.maxDistance = 20;
+      controls.minDistance = 1;
+      controls.maxDistance = 30;
       return () => {
         controls.dispose();
       };
@@ -65,10 +65,10 @@ function Catsle(props){
 
   return (
     <div id={props.tag_id}>
-      <div>{props.castle_name} 城</div>
+      <h2>{props.castle_name} 城</h2>
   		<Canvas >
 				<CameraController />
-  			<Camera position={[0, 4, 10]}   rotation={[Math.PI/24*(countRotX-3), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
+  			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
   			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
   			<pointLight position={[10, -20, 70]} />
 				<pointLight position={[0, 100, -150]} />
@@ -76,7 +76,7 @@ function Catsle(props){
 
 
 				{(() => {
-						const catsles = [<UseModel position={[0, 0, -3]} />];
+						const catsles = [<UseModel position={[0, 0, 0]} />];
 						var n = 0
 						var l = 0
 						for(var i = 0; i < countPosX; i++) {
