@@ -13,10 +13,17 @@ class CastlesController < ApplicationController
     end
   end
 
-  def get_castle_list
+  def get_group_castle_list
     @castles = Castle.where(group_id: params[:group_id])
     render json: [@castles]
   end
+
+  def get_user_castle_list
+    @castles = Castle.where(user_id: params[:user_id])
+    render json: [@castles]
+  end
+
+
 
   private
     def castle_parameters

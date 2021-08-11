@@ -266,19 +266,32 @@
         //castle
         #castle_at_group{
           float: left;
-          /* 縦長 */
-          @media screen and (orientation: portrait) {
-            width: 30vh;
-            height: 30vh;
-            margin: 10px;
-          }
-
-          /* 横長 */
-          @media screen and (orientation: landscape) {
+          margin: 0.5rem;
+          height: 35vw;
+          width: 30vw;
+          div{
+            bottom: 0;
+            text-align: center;
+            font-size: 25px;
+            height: 5vw;
             width: 30vw;
-            height: 30vw;
-           }
-          z-index: 1;
+          }
+          canvas{
+            /* 縦長 */
+            margin-bottom: 0.5rem;
+            @media screen and (orientation: portrait) {
+              width: 30vh;
+              height: 30vh;
+              margin: 10px;
+            }
+
+            /* 横長 */
+            @media screen and (orientation: landscape) {
+              width: 30vw;
+              height: 30vw;
+             }
+            z-index: 1;
+          }
         }
 
         .massage-castle-is-empty{
@@ -306,33 +319,70 @@
             }
           }
         }
-    }
-    .users-wrapper{
-      position: relative;
-      text-align: center;
-      .users-header{
-        position: absolute;
-        z-index: 2;
-      }
-      #castle{
 
-        position: absolute;
-        /* 縦長 */
-        @media screen and (orientation: portrait) {
-          width: 100vh;
-          height: 100vh;
-          margin-left: -50vh;
-          left: 50%;
+        .users-wrapper{
+          //position: relative;
+          text-align: center;
+          .users-header{
+            //position: absolute;
+            z-index: 2;
+          }
+          .massage-castle-is-empty {
+            margin-top: 0px;
+          }
+
+          #castle_at_user_page{
+            float: left;
+            margin: 0.5rem;
+            height: 35vw;
+            width: 30vw;
+            div{
+              bottom: 0;
+              text-align: center;
+              font-size: 25px;
+              height: 5vw;
+              width: 30vw;
+            }
+            canvas{
+              /* 縦長 */
+              margin-bottom: 0.5rem;
+              @media screen and (orientation: portrait) {
+                width: 30vh;
+                height: 30vh;
+                margin: 10px;
+              }
+
+              /* 横長 */
+              @media screen and (orientation: landscape) {
+                width: 30vw;
+                height: 30vw;
+               }
+              z-index: 1;
+            }
+          }
+
+          #castle{
+
+            position: absolute;
+            /* 縦長 */
+            @media screen and (orientation: portrait) {
+              width: 100vh;
+              height: 100vh;
+              margin-left: -50vh;
+              left: 50%;
+            }
+
+            /* 横長 */
+            @media screen and (orientation: landscape) {
+              width: 100vw;
+              height: 100vw;
+             }
+            z-index: 1;
+          }
         }
-
-        /* 横長 */
-        @media screen and (orientation: landscape) {
-          width: 100vw;
-          height: 100vw;
-         }
-        z-index: 1;
-      }
     }
+
+
 
 
 }

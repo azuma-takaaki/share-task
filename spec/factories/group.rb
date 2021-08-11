@@ -10,4 +10,8 @@ FactoryBot.define do
   factory :programming , class: Group do
     name { 'programming' }
   end
+
+  factory :study , class: Group do
+    name { 'study' }
+  end
 end

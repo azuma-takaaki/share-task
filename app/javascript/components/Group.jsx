@@ -231,7 +231,7 @@ class Group extends React.Component {
       },
       body: JSON.stringify(data)
     }).then(res => res.json()).then((result) => {
-      this.props.fetchCastles(this.props.group.id)
+      this.props.fetchCastles("group", this.props.group.id)
     })
     this.closeModal()
   }

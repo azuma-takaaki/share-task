@@ -20,6 +20,7 @@ const customStyles = {
 class User extends React.Component {
   constructor(props) {
     super(props);
+    this.props.fetchCastles("user", this.props.current_user.id, false)
     this.state = {
       input_name: ''
     };
@@ -76,6 +77,18 @@ class User extends React.Component {
   }
 
   render () {
+
+    var castles;
+    if(!(this.props.users_castle_list.length==0)){
+      castles = this.props.users_castle_list.map((castle) => {
+        return (
+            <Catsle castle_name={castle.name} tag_id="castle_at_user_page"/>
+        )
+      })
+    }else{
+      castles = <h1 class = "massage-castle-is-empty">まだ城を持っていません</h1>
+    }
+
     return (
       <div class="users-wrapper">
         <div class="users-header">
@@ -83,7 +96,9 @@ class User extends React.Component {
           <div class="users-page-header-name">{this.props.current_user.name}</div>
           <button class="edit-user-button"onClick={this.openModal}>・・・</button>
         </div>
-        <Catsle castle_name="" tag_id="castle"/>
+
+        {castles}
+
 
         <Modal
           isOpen={this.state.modalIsOpen}

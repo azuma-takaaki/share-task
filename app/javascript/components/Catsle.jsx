@@ -65,7 +65,7 @@ function Catsle(props){
 
   return (
     <div id={props.tag_id}>
-      <h2>{props.castle_name} 城</h2>
+      <div>{props.castle_name} 城</div>
   		<Canvas >
 				<CameraController />
   			<Camera position={[0, 4, 10]}   rotation={[Math.PI/24*(countRotX-3), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
