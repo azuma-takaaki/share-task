@@ -57,15 +57,20 @@ function Catsle(props){
 
 	const addCatsle = () => {
 		setCountPosX(countPosX+1)
- }
+  }
 
  const destroyCatsle = () => {
 	 setCountPosX(countPosX-1)
-}
+ }
+
+ if(props.tag_class=="castle_at_group"){
+
+ }
 
   return (
-    <div id={props.tag_id}>
+    <div class={props.tag_class}>
       <h2>{props.castle_name} 城</h2>
+      <div>製作者:</div>
   		<Canvas >
 				<CameraController />
   			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>

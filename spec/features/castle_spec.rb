@@ -23,6 +23,7 @@ feature "Castles" , :js => true do
     fill_in "城の名前(目標)", with:"web開発エンジニアになる"
     find(".post-castle-data-button").click
     expect(page).to have_content "web開発エンジニアになる 城"
+    expect(page).to have_selector ".castle_at_group", text: "test_user1"
   end
 
 

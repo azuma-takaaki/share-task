@@ -296,7 +296,7 @@ class Group extends React.Component {
     if(!(this.props.castle_list.length==0)){
       castles = this.props.castle_list.map((castle) => {
         return (
-            <Catsle castle_name={castle.name} tag_id="castle_at_group"/>
+            <Catsle castle_name={castle.name} tag_class="castle_at_group"/>
         )
       })
     }else{
