@@ -63,14 +63,18 @@ function Catsle(props){
 	 setCountPosX(countPosX-1)
  }
 
+ var user_built_castle = <div></div>
  if(props.tag_class=="castle_at_group"){
-
+   user_built_castle = <div class="name-and-icon-of-user-built-castle-at-group-page">
+                          <img class = "user-icon" src={require("../../assets/images/default/" + props.user_icon)} />
+                          <div>{props.user_name}</div>
+                       </div>
  }
 
   return (
     <div class={props.tag_class}>
+      {user_built_castle}
       <h2>{props.castle_name} 城</h2>
-      <div>製作者:</div>
   		<Canvas >
 				<CameraController />
   			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>

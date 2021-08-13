@@ -14,7 +14,9 @@ class CastlesController < ApplicationController
   end
 
   def get_group_castle_list
-    @castles = Castle.where(group_id: params[:group_id])
+    @castles = Castle.joins(:user)
+                     .select("users.name AS user_name, users.icon, castles.*")
+                     .where(group_id: params[:group_id])
     render json: [@castles]
   end
 
