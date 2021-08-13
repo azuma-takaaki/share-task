@@ -5,6 +5,8 @@
   height: 100%;
 }
 
+
+
 //top page
 .top-page-title{
   margin: 2rem;
@@ -164,6 +166,8 @@
         margin-left:0px;
         position:relative;
         overflow:scroll;
+        -ms-overflow-style: none;    /* IE, Edge 対応 */
+        scrollbar-width: none;       /* Firefox 対応 */
 
         .side-menu-toggle {
           position: fixed;
@@ -406,6 +410,10 @@
             z-index: 1;
           }
         }
+    }
+    
+    .group-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+        display:none;
     }
 
 }
