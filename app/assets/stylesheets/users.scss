@@ -54,16 +54,18 @@
 .all-group-area-wrapper{
     position: fixed;
     display:flex;
-    height: 94vh;
+    height: 100vh;
     width:100%;
     margin: 0;
+
+
     //side-menu
     #nav-tab{
        display: flex;
     }
     .bm-item{
       width:100%;
-      height: 94vh;
+      height: 100vh;
       text-align:center;
       background-color:white;
       #nav-tab{
@@ -75,7 +77,7 @@
         height:5%;
       }
       #nav-home{
-        height: 77vh;
+        height: 83vh;
         .switch-group-button-list{
           background-color:#CFEFFF;
           width:100%;
@@ -113,7 +115,7 @@
       }
 
       #nav-profile{
-        height: 77vh;
+        height: 83vh;
         .switch-group-button{
           font-size: 1em;
           padding: 0.5em;
@@ -140,6 +142,12 @@
           opacity: 0.6;
           transition-duration: 0.3s;
         }
+        .user-icon {
+          border-radius: 50%;
+          width:  3em;
+          height: 3em;
+          border: 4px solid #99FFCC;
+        }
       }
 
     }
@@ -155,20 +163,26 @@
         height: 100%;
         margin-left:0px;
         position:relative;
+        overflow:scroll;
 
         .side-menu-toggle {
           position: fixed;
           width: 4rem;
           height: 4rem;
-          position:absolute;
           z-index: 3;
+          top:0;
+          z-index: 5;
         }
         //header
         .group-header{
           width: 100%;
-          height: 11vh;
+          height: 4rem;
           margin-bottm: 1rem;
           display:flex;
+          position: fixed;
+          top:0;
+          background-color:#9be5f2;
+          z-index: 4;
 
 
           //group name
@@ -267,28 +281,42 @@
         .castle_at_group{
           float: left;
           margin: 0.5rem;
-          height: 35vw;
+          height: 40vw;
           width: 30vw;
-          div{
-            bottom: 0;
-            text-align: center;
-            font-size: 25px;
-            height: 5vw;
-            width: 30vw;
+          .castle-header-at-goup-page{
+
+            .user-icon {
+              margin-left: 0.5rem;
+              float: left;
+              border-radius: 50%;
+              width:  2em;
+              height: 2em;
+              border: 4px solid #99FFCC;
+            }
+            .user-name{
+              margin-top: 1em;
+              margin-left: 0.5rem;
+              font-size: 1.5em;
+            }
+            h2{
+              margin-left: 1rem;
+            }
           }
-          canvas{
+          .canvas{
             /* 縦長 */
+            background-color: #abd4e0;
             margin-bottom: 0.5rem;
             @media screen and (orientation: portrait) {
               width: 30vh;
               height: 30vh;
-              margin: 10px;
+              margin: 0px;
             }
 
             /* 横長 */
             @media screen and (orientation: landscape) {
               width: 30vw;
               height: 30vw;
+              margin: 0px;
              }
             z-index: 1;
           }
@@ -300,9 +328,7 @@
 
         //task
         .task-wrapper{
-          padding: 1em;
-          margin:1em;
-          margin-top: 5em;
+          margin-bottom: 10vh;
           .task {
             font-size: 1.5rem;
             background-color:#6C93E0;
@@ -343,7 +369,7 @@
               height: 5vw;
               width: 30vw;
             }
-            canvas{
+            .canvas{
               /* 縦長 */
               margin-bottom: 0.5rem;
               @media screen and (orientation: portrait) {
@@ -382,10 +408,9 @@
         }
     }
 
-
-
-
 }
+
+
 #add-catsle-button{
   margin-top:10vh;
   z-index: 4;
@@ -399,12 +424,7 @@
 }
 
 
-.user-icon {
-  border-radius: 50%;
-  width:  3em;
-  height: 3em;
-  border: 4px solid #99FFCC;
-}
+
 
 .ReactModal__Body--open {
   position: fixed;
@@ -435,11 +455,6 @@
 }
 
 
-canvas{
-  width: 100%;
-}
-
-
 .profiler-results{
   display: none;
 }
@@ -449,14 +464,20 @@ canvas{
 
 .users-header{
   width: 100%;
-  height: 11vh;
-  margin-bottom: 1rem;
+  height: 4rem;
+  margin-bottm: 1rem;
   display:flex;
+  position: fixed;
+  top:0;
+  background-color:#9be5f2;
+  z-index: 4;
+  align-items: center;
+
 
   .user-icon {
     border-radius: 50%;
-    width:  5em;
-    height: 5em;
+    width:  3.8em;
+    height: 3.8em;
     margin-left: 5rem;
     border: 4px solid #99FFCC;
   }
@@ -464,7 +485,7 @@ canvas{
     font-size: 2rem;
     width: auto;
     height: 100%;
-    margin: 2%;
+    margin: 1.5% 1.5% 0% 1.5% ;
     white-space: nowrap;
   }
   .edit-user-button{
@@ -474,7 +495,7 @@ canvas{
     font-size: 1.5rem;
     width:10%;
     height:80%;
-    margin-top: 1%;
+    margin: 0% 1.5% 0% 1.5% ;
     overflow: hidden;
     text-overflow: clip;
     white-space: nowrap;

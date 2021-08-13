@@ -67,40 +67,46 @@ function Catsle(props){
  if(props.tag_class=="castle_at_group"){
    user_built_castle = <div class="name-and-icon-of-user-built-castle-at-group-page">
                           <img class = "user-icon" src={require("../../assets/images/default/" + props.user_icon)} />
-                          <div>{props.user_name}</div>
+                          <div class = "user-name">{props.user_name}</div>
                        </div>
+
  }
+
 
   return (
     <div class={props.tag_class}>
-      {user_built_castle}
-      <h2>{props.castle_name} 城</h2>
-  		<Canvas >
-				<CameraController />
-  			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
-  			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
-  			<pointLight position={[10, -20, 70]} />
-				<pointLight position={[0, 100, -150]} />
+      <div class="castle-header-at-goup-page">
+        {user_built_castle}
+        <h2>{props.castle_name} 城</h2>
+      </div>
+      <div class="canvas">
+    		<Canvas >
+  				<CameraController />
+    			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
+    			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
+    			<pointLight position={[10, -20, 70]} />
+  				<pointLight position={[0, 100, -150]} />
 
 
 
-				{(() => {
-						const catsles = [<UseModel position={[0, 0, 0]} />];
-						var n = 0
-						var l = 0
-						for(var i = 0; i < countPosX; i++) {
-								catsles.push(<UseModel position={[l*3, 0, -i+l*10]} />)
-								if(n===9){
-									l++
-									n=0
-								}else{
-									n++
-								}
+  				{(() => {
+  						const catsles = [<UseModel position={[0, 0, 0]} />];
+  						var n = 0
+  						var l = 0
+  						for(var i = 0; i < countPosX; i++) {
+  								catsles.push(<UseModel position={[l*3, 0, -i+l*10]} />)
+  								if(n===9){
+  									l++
+  									n=0
+  								}else{
+  									n++
+  								}
 
-						}
-						return(catsles)
-				})()}
-  		</Canvas>
+  						}
+  						return(catsles)
+  				})()}
+    		</Canvas>
+      </div>
     </div>
   )
 }
