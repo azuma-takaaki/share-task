@@ -13,3 +13,26 @@
       icon:"icon_"+rand(0...10).to_s+".png"
     )
 end
+
+
+User.create(
+  email: "engineer@engineer.com",
+  name: "100日後にエンジニアになる人",
+  password: "engineer",
+  icon:"icon_"+rand(0...10).to_s+".png"
+)
+
+
+User.create(
+  email: "ReactReact@React.com",
+  name: "React使い",
+  password: "ReactReact",
+  icon:"icon_"+rand(0...10).to_s+".png"
+)
+
+User.create(
+  email: "magicmagic@magicmagic.com",
+  name: "魔法使い",
+  password: "magicmagic",
+  icon:"icon_"+rand(0...10).to_s+".png"
+)
