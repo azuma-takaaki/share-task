@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Header from "./Header.jsx"
 import GroupsList from "./GroupsList.jsx"
-import Catsle from "./Catsle.jsx"
+import Castle from "./Castle.jsx"
 
 const customStyles = {
   content : {

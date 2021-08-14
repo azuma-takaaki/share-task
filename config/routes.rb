@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'castle_parts/create'
   get 'castles/create'
   get 'render_random_number', to: 'users#random_number', as: 'random_number'
   namespace :api, format: 'json' do
@@ -25,6 +26,7 @@ Rails.application.routes.draw do
   resources :groups
   resources :group_user
   resources :castles
+  resources :castle_parts
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

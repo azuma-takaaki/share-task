@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import Modal from 'react-modal'
-import Catsle from "./Catsle.jsx"
+import Castle from "./Castle.jsx"
 
 
 
@@ -77,12 +77,12 @@ class User extends React.Component {
   }
 
   render () {
-    
+
     var castles;
     if(!(this.props.users_castle_list.length==0)){
       castles = this.props.users_castle_list.map((castle) => {
         return (
-            <Catsle castle_name={castle.name} tag_class="castle_at_user_page"/>
+            <Castle castle_id={castle.id} castle_name={castle.name} tag_class="castle_at_user_page"/>
         )
       })
     }else{

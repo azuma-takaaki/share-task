@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_07_092026) do
+ActiveRecord::Schema.define(version: 2021_08_14_111826) do
+
+  create_table "castle_parts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "castle_id"
+    t.string "three_d_model_name"
+    t.float "position_x"
+    t.float "position_y"
+    t.float "position_z"
+    t.float "angle_x"
+    t.float "angle_y"
+    t.float "angle_z"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "castles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"

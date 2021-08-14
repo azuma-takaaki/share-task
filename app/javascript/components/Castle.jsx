@@ -34,7 +34,7 @@ var UseModel = (position) =>{
 	return (
 		<mesh  {...position} rotation={[0, -Math.PI / 2, 0]}>
 			<Suspense fallback={null}>
-					<LoadModel modelpath=" /catsle.glb"/>
+					<LoadModel modelpath=" /castle.glb"/>
 			</Suspense>
 		</mesh>
 	)
@@ -42,7 +42,7 @@ var UseModel = (position) =>{
 
 
 
-function Catsle(props){
+function Castle(props){
 	const [countRotX,setCountX] = useState(0)
 	const [countRotY,setCountY] = useState(0)
 	const [countRotZ,setCountZ] = useState(0)
@@ -50,21 +50,58 @@ function Catsle(props){
 	const [countPosY,setCountPosY] = useState(0)
 	const [countPosZ,setCountPosZ] = useState(0)
   const [rotY, setPosCount] = useState(0)
-	const [newCatslePos, setCatslePos] = useState(0)
+	const [newCastlePos, setCastlePos] = useState(0)
   const handleClick = () => {
     setPosCount(rotY+1)
   };
 
-	const addCatsle = () => {
-		setCountPosX(countPosX+1)
-  }
 
- const destroyCatsle = () => {
+ const destroyCastle = () => {
 	 setCountPosX(countPosX-1)
  }
 
  const showUserPage = (user_id) =>{
    props.fetchCastles("user", user_id, true)
+ }
+
+ const addCastle = () =>{
+    alert("1")
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+           }
+       }
+      return '';
+    }
+    alert("2")
+    var random_number = Math.floor(Math.random() * 6)
+    const data = { castle_part: {
+                          castle_id: props.castle_id,
+                          three_d_model_name: "castle.glb",
+                          position_x: random_number,
+                          position_y: 0,
+                          position_z: 0,
+                          angle_x: 0,
+                          angle_y: 0,
+                          angle_z: 0,
+                        }};
+
+    alert("3")
+    fetch('/castle_parts',{
+      method: 'POST',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    }).then(res => res.json())
+    .then((result) => {
+      alert("4")
+      alert(result[0])
+    })
  }
 
  var user_built_castle = <div></div>
@@ -76,6 +113,10 @@ function Catsle(props){
 
  }
 
+ var add_castle_button = <div></div>
+ if(props.tag_class=="castle_at_user_page"){
+   add_castle_button = <button onClick={()=>addCastle()}>3Dモデルを追加</button>
+ }
 
   return (
     <div class={props.tag_class}>
@@ -94,11 +135,11 @@ function Catsle(props){
 
 
   				{(() => {
-  						const catsles = [<UseModel position={[0, 0, 0]} />];
+  						const castles = [<UseModel position={[0, 0, 0]} />];
   						var n = 0
   						var l = 0
   						for(var i = 0; i < countPosX; i++) {
-  								catsles.push(<UseModel position={[l*3, 0, -i+l*10]} />)
+  								castles.push(<UseModel position={[l*3, 0, -i+l*10]} />)
   								if(n===9){
   									l++
   									n=0
@@ -107,9 +148,10 @@ function Catsle(props){
   								}
 
   						}
-  						return(catsles)
+  						return(castles)
   				})()}
     		</Canvas>
+        {add_castle_button}
       </div>
     </div>
   )
@@ -128,4 +170,4 @@ function Camera(props) {
 
 
 
-export default Catsle
+export default Castle

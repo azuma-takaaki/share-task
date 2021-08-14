@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 
-RSpec.describe "Castle", type: :model do
+RSpec.describe Castle, type: :model do
   describe "#create" do
     before do
       @user = FactoryBot.create(:user)

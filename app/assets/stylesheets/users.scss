@@ -368,15 +368,22 @@
 
           .castle_at_user_page{
             float: left;
-            margin: 0.5rem;
+            margin: 5rem 0.5rem;
             height: 35vw;
             width: 30vw;
-            div{
+            button{
+              z-index: 3;
+            }
+            .name-and-icon-of-user-built-castle-at-group-page{
               bottom: 0;
               text-align: center;
               font-size: 25px;
               height: 5vw;
               width: 30vw;
+              z-index: 0;
+            }
+            h2{
+              z-index: 3;
             }
             .canvas{
               /* 縦長 */

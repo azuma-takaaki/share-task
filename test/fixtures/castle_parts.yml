@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  castle_id: 1
+  model_name: MyString
+  position_x: 1.5
+  position_y: 1.5
+  position_z: 1.5
+  angle_x: 1.5
+  angle_y: 1.5
+  angle_z: 1.5
+
+two:
+  castle_id: 1
+  model_name: MyString
+  position_x: 1.5
+  position_y: 1.5
+  position_z: 1.5
+  angle_x: 1.5
+  angle_y: 1.5
+  angle_z: 1.5
