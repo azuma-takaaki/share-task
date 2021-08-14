@@ -63,11 +63,15 @@ function Catsle(props){
 	 setCountPosX(countPosX-1)
  }
 
+ const showUserPage = (user_id) =>{
+   props.fetchCastles("user", user_id, true)
+ }
+
  var user_built_castle = <div></div>
  if(props.tag_class=="castle_at_group"){
    user_built_castle = <div class="name-and-icon-of-user-built-castle-at-group-page">
                           <img class = "user-icon" src={require("../../assets/images/default/" + props.user_icon)} />
-                          <div class = "user-name">{props.user_name}</div>
+                          <div class = "user-name" onClick={()=>showUserPage(props.user_id)}>{props.user_name}</div>
                        </div>
 
  }

@@ -58,7 +58,7 @@ class User extends React.Component {
       }
       return '';
     }
-      fetch("/users/" + this.props.current_user.id, {
+      fetch("/users/" + this.props.user_id, {
         method: 'PATCH', // or 'PUT'
         headers: {
                   'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ class User extends React.Component {
   }
 
   render () {
-
+    
     var castles;
     if(!(this.props.users_castle_list.length==0)){
       castles = this.props.users_castle_list.map((castle) => {
