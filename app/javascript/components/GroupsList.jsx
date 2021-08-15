@@ -237,6 +237,7 @@ class GroupsList extends React.Component {
         }).then(res => res.json())
         .then(
           (result) => {
+            //alert(result[0][2]["castle"]["castle_name"])
             users_castle_list[id] = result[0]
             this.setState({users_castle_list: users_castle_list})
             var visible_user = result[1]

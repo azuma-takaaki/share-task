@@ -61,67 +61,74 @@ function Castle(props){
  }
 
  const showUserPage = (user_id) =>{
-   props.fetchCastles("user", user_id, true)
- }
+     props.fetchCastles("user", user_id, true)
+  }
 
- const addCastle = () =>{
-    alert("1")
-    const getCsrfToken = () => {
-      const metas = document.getElementsByTagName('meta');
-      for (let meta of metas) {
-          if (meta.getAttribute('name') === 'csrf-token') {
-              console.log('csrf-token:', meta.getAttribute('content'));
-              return meta.getAttribute('content');
-           }
-       }
-      return '';
-    }
-    alert("2")
-    var random_number = Math.floor(Math.random() * 6)
-    const data = { castle_part: {
-                          castle_id: props.castle_id,
-                          three_d_model_name: "castle.glb",
-                          position_x: random_number,
-                          position_y: 0,
-                          position_z: 0,
-                          angle_x: 0,
-                          angle_y: 0,
-                          angle_z: 0,
-                        }};
+  const addCastle = () =>{
+      const getCsrfToken = () => {
+        const metas = document.getElementsByTagName('meta');
+        for (let meta of metas) {
+            if (meta.getAttribute('name') === 'csrf-token') {
+                console.log('csrf-token:', meta.getAttribute('content'));
+                return meta.getAttribute('content');
+             }
+         }
+        return '';
+      }
 
-    alert("3")
-    fetch('/castle_parts',{
-      method: 'POST',
-      headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': getCsrfToken()
-      },
-      body: JSON.stringify(data)
-    }).then(res => res.json())
-    .then((result) => {
-      alert("4")
-      alert(result[0])
-    })
- }
 
- var user_built_castle = <div></div>
- if(props.tag_class=="castle_at_group"){
-   user_built_castle = <div class="name-and-icon-of-user-built-castle-at-group-page">
-                          <img class = "user-icon" src={require("../../assets/images/default/" + props.user_icon)} />
-                          <div class = "user-name" onClick={()=>showUserPage(props.user_id)}>{props.user_name}</div>
-                       </div>
+      const data = { castle_part: {
+                            castle_id: props.castle_id,
+                            three_d_model_name: "castle.glb",
+                            position_x: Math.floor(Math.random() * 20 -10),
+                            position_y: 0,
+                            position_z: Math.floor(Math.random() * 20 -10),
+                            angle_x: 0,
+                            angle_y: 0,
+                            angle_z: 0,
+                          }};
 
- }
+      fetch('/castle_parts',{
+        method: 'POST',
+        headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': getCsrfToken()
+        },
+        body: JSON.stringify(data)
+      }).then(res => res.json())
+      .then((result) => {
+        props.fetchCastles("user", props.user_id, false)
+      })
+  }
 
- var add_castle_button = <div></div>
- if(props.tag_class=="castle_at_user_page"){
-   add_castle_button = <button onClick={()=>addCastle()}>3Dモデルを追加</button>
- }
+
+  var castle;
+
+  var user_infomation_on_castle = <div></div>
+  if(props.tag_class=="castle_at_group"){
+    user_infomation_on_castle = <div class="name-and-icon-of-user-built-castle-at-group-page">
+                           <img class = "user-icon" src={require("../../assets/images/default/" + props.user_icon)} />
+                           <div class = "user-name" onClick={()=>showUserPage(props.user_id)}>{props.user_name}</div>
+                        </div>
+  }
+
+  var add_castle_button = <div></div>
+  if(props.tag_class=="castle_at_user_page"){
+      add_castle_button = <button onClick={()=>addCastle()}>3Dモデルを追加</button>
+      var castle_parts=[];
+      for(var i=0; i<props.castle_models.length; i++){
+        castle_parts.push(<UseModel position={[props.castle_models[i]["position_x"], props.castle_models[i]["position_y"], props.castle_models[i]["position_z"]]} />)
+      }
+      castle = castle_parts
+
+  }
+
+
 
   return (
     <div class={props.tag_class}>
       <div class="castle-header-at-goup-page">
-        {user_built_castle}
+        {user_infomation_on_castle}
         <h2>{props.castle_name} 城</h2>
       </div>
       <div class="canvas">
@@ -132,24 +139,9 @@ function Castle(props){
     			<pointLight position={[10, -20, 70]} />
   				<pointLight position={[0, 100, -150]} />
 
+          {castle}
 
 
-  				{(() => {
-  						const castles = [<UseModel position={[0, 0, 0]} />];
-  						var n = 0
-  						var l = 0
-  						for(var i = 0; i < countPosX; i++) {
-  								castles.push(<UseModel position={[l*3, 0, -i+l*10]} />)
-  								if(n===9){
-  									l++
-  									n=0
-  								}else{
-  									n++
-  								}
-
-  						}
-  						return(castles)
-  				})()}
     		</Canvas>
         {add_castle_button}
       </div>

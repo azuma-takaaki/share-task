@@ -82,7 +82,7 @@ class User extends React.Component {
     if(!(this.props.users_castle_list.length==0)){
       castles = this.props.users_castle_list.map((castle) => {
         return (
-            <Castle castle_id={castle.id} castle_name={castle.name} tag_class="castle_at_user_page"/>
+            <Castle castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} tag_class="castle_at_user_page" fetchCastles={this.props.fetchCastles} user_id={this.props.current_user.id}/>
         )
       })
     }else{

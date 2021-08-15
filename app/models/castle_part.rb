@@ -1,4 +1,6 @@
 class CastlePart < ApplicationRecord
+  belongs_to :castle
+
   validates :castle_id, presence: true
   validates :position_x, presence: true
   validates :position_y, presence: true
