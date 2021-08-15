@@ -102,25 +102,24 @@ function Castle(props){
   }
 
 
-  var castle;
+  var castle = [<UseModel position={[0,0,0]}/>];
+
+
+  for(var i=0; i<props.castle_models.length; i++){
+    castle.push(<UseModel position={[props.castle_models[i]["position_x"], props.castle_models[i]["position_y"], props.castle_models[i]["position_z"]]} />)
+  }
 
   var user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
     user_infomation_on_castle = <div class="name-and-icon-of-user-built-castle-at-group-page">
-                           <img class = "user-icon" src={require("../../assets/images/default/" + props.user_icon)} />
-                           <div class = "user-name" onClick={()=>showUserPage(props.user_id)}>{props.user_name}</div>
-                        </div>
+                                   <img class = "user-icon" src={require("../../assets/images/default/" + props.user_icon)} />
+                                   <div class = "user-name" onClick={()=>showUserPage(props.user_id)}>{props.user_name}</div>
+                                </div>
   }
 
   var add_castle_button = <div></div>
   if(props.tag_class=="castle_at_user_page"){
       add_castle_button = <button onClick={()=>addCastle()}>3Dモデルを追加</button>
-      var castle_parts=[];
-      for(var i=0; i<props.castle_models.length; i++){
-        castle_parts.push(<UseModel position={[props.castle_models[i]["position_x"], props.castle_models[i]["position_y"], props.castle_models[i]["position_z"]]} />)
-      }
-      castle = castle_parts
-
   }
 
 
