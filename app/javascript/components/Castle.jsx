@@ -30,11 +30,15 @@ const LoadModel = (modelpath) => {
 	)
 }
 
-var UseModel = (position) =>{
+var UseModel = (props) =>{
+  var {position, modelpath} = props
+  if(modelpath==null){
+    modelpath="castle.glb"
+  }
 	return (
-		<mesh  {...position} rotation={[0, -Math.PI / 2, 0]}>
+		<mesh  position = {position} rotation={[0, -Math.PI / 2, 0]}>
 			<Suspense fallback={null}>
-					<LoadModel modelpath=" /castle.glb"/>
+					<LoadModel modelpath={"/" + modelpath}/>
 			</Suspense>
 		</mesh>
 	)
@@ -76,10 +80,10 @@ function Castle(props){
         return '';
       }
 
-
+      var model_name_list = [ "wall_01.glb", "castle.glb"]
       const data = { castle_part: {
                             castle_id: props.castle_id,
-                            three_d_model_name: "castle.glb",
+                            three_d_model_name: model_name_list[Math.floor(Math.random() * model_name_list.length)],
                             position_x: Math.floor(Math.random() * 20 -10),
                             position_y: 0,
                             position_z: Math.floor(Math.random() * 20 -10),
@@ -102,11 +106,9 @@ function Castle(props){
   }
 
 
-  var castle = [<UseModel position={[0,0,0]}/>];
-
-
+  var castle = [<UseModel position={[0,0,0]} modelpath={"castle.glb"}/>];
   for(var i=0; i<props.castle_models.length; i++){
-    castle.push(<UseModel position={[props.castle_models[i]["position_x"], props.castle_models[i]["position_y"], props.castle_models[i]["position_z"]]} />)
+    castle.push(<UseModel position={[props.castle_models[i]["position_x"], props.castle_models[i]["position_y"], props.castle_models[i]["position_z"]]} modelpath={props.castle_models[i]["three_d_model_name"]} />)
   }
 
   var user_infomation_on_castle = <div></div>
