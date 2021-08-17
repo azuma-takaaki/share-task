@@ -30,29 +30,23 @@ const LoadModel = (modelpath) => {
 	)
 }
 
-var UseModel = (props) =>{
-  var {position, modelpath} = props
-  if(modelpath==null){
-    modelpath="castle.glb"
-  }
-	return (
-		<mesh  position = {position} rotation={[0, -Math.PI / 2, 0]}>
-			<Suspense fallback={null}>
-					<LoadModel modelpath={"/" + modelpath}/>
-			</Suspense>
-		</mesh>
-	)
-}
+
 
 
 
 function Castle(props){
+  const [castleModels, setCastleModels] = useState(props.castle_models)
+  const [editModelNumber, setEditModelNumber] = useState(0)
+
 	const [countRotX,setCountX] = useState(0)
 	const [countRotY,setCountY] = useState(0)
 	const [countRotZ,setCountZ] = useState(0)
 	const [countPosX,setCountPosX] = useState(0)
-	const [countPosY,setCountPosY] = useState(2)
-	const [countPosZ,setCountPosZ] = useState(0)
+  const [previousCountPosX,setPreviousCountPosX] = useState(0)
+	const [countPosY,setCountPosY] = useState(0)
+  const [previousCountPosY,setPreviousCountPosY] = useState(0)
+  const [countPosZ,setCountPosZ] = useState(0)
+  const [previousCountPosZ,setPreviousCountPosZ] = useState(0)
   const [rotY, setPosCount] = useState(0)
 	const [newCastlePos, setCastlePos] = useState(0)
   const [clickCoordinateX, setclickCoordinateX] = useState(0)
@@ -61,12 +55,11 @@ function Castle(props){
     setPosCount(rotY+1)
   };
 
-
- const destroyCastle = () => {
+  const destroyCastle = () => {
 	 setCountPosX(countPosX-1)
  }
 
- const showUserPage = (user_id) =>{
+  const showUserPage = (user_id) =>{
      props.fetchCastles("user", user_id, true)
   }
 
@@ -101,22 +94,44 @@ function Castle(props){
                   'X-CSRF-Token': getCsrfToken()
         },
         body: JSON.stringify(data)
-      }).then(res => res.json())
+      })
+      .then(res => res.json())
       .then((result) => {
         props.fetchCastles("user", props.user_id, false)
       })
+      .then(setCastleModels(props.castle_models))
+  }
+
+  const cangeEditModel = (model_number) =>{
+    setPreviousCountPosX(castleModels[model_number]["position_x"])
+    setPreviousCountPosY(castleModels[model_number]["position_y"])
+    setPreviousCountPosZ(castleModels[model_number]["position_z"])
+    setEditModelNumber(model_number)
+  }
+
+
+  var UseModel = (props) =>{
+    var {model_number, position, modelpath} = props
+    if(modelpath==null){
+      modelpath="castle.glb"
+    }
+  	return (
+  		<mesh  onClick={()=>{cangeEditModel(model_number)}}position = {position} rotation={[0, -Math.PI / 2, 0]}>
+  			<Suspense fallback={null}>
+  					<LoadModel modelpath={"/" + modelpath}/>
+  			</Suspense>
+  		</mesh>
+  	)
   }
 
 
 
-  var castle = [<UseModel position={[0,0,0]} modelpath={"castle.glb"}/>];
-  for(var i=0; i<props.castle_models.length; i++){
-    castle.push(<UseModel position={[props.castle_models[i]["position_x"], props.castle_models[i]["position_y"], props.castle_models[i]["position_z"]]} modelpath={props.castle_models[i]["three_d_model_name"]} />)
+  var castle = [];
+  for(var i=0; i<castleModels.length; i++){
+    castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} modelpath={castleModels[i]["three_d_model_name"]} />)
   }
 
-  var test_castle = <UseModel position={[0,countPosY,0]} modelpath={"castle.glb"}/>
-  var y_button1 = <button onClick={() => setCountPosY(countPosY+1)}>+Y</button>
-  var y_button2 = <button onClick={() => setCountPosY(countPosY-1)}>-Y</button>
+  var test_castle = <UseModel position={[countPosX,countPosY,countPosZ]} modelpath={"castle.glb"}/>
 
   var user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
@@ -131,36 +146,50 @@ function Castle(props){
       add_castle_button = <button onClick={()=>addCastle()}>3Dモデルを追加</button>
   }
 
-  var click_button = <button onClick={()=>getMouseCoordinate()}>ドラッグしてください</button>
-  var click_coordinate = <div >{clickCoordinateX}</div>
-  
-
 
   const useMove = () => {
-  const [state, setState] = useState({x: 0, y: 0})
+    const [state, setState] = useState({x: 0, y: 0})
 
-  const handleMouseMove = e => {
-    e.persist()
-    setState(state => ({...state, x: e.clientX, y: e.clientY}))
+    const handleMouseMove = e => {
+        e.persist()
+        setState({x: e.clientX, y: e.clientY})
+      }
+      return {
+        x: state.x,
+        y: state.y,
+        handleMouseMove,
+      }
   }
-  return {
-    x: state.x,
-    y: state.y,
-    handleMouseMove,
-  }
-}
 
-const Hook = () => {
+  const useClick = () => {
+    const [clickCoordinate, setClickCoordinate] = useState({x: 0, y: 0})
+
+    const handleMouseClick = e => {
+        e.persist()
+        setClickCoordinate({x: e.clientX, y: e.clientY})
+      }
+      return {
+        click_x: clickCoordinate.x,
+        click_y: clickCoordinate.y,
+        handleMouseClick,
+      }
+  }
+
   const {x, y, handleMouseMove} = useMove()
-  return (
-    <div className="mouseArea" onMouseMove={handleMouseMove}>
-      Hook
-      <div className="mouseInfo">
-        The current mouse position is ({x}, {y})
-      </div>
-    </div>
-  )
-}
+  const {click_x, click_y, handleMouseClick} = useClick()
+  const [mouseIsDown, setMouseIsDown] = useState(false)
+
+
+  var move_amount_x;
+  var move_amount_y;
+  if(mouseIsDown){
+    move_amount_x = x-click_x
+    move_amount_y = y-click_y
+  }else{
+    move_amount_x = 0
+    move_amount_y = 0
+  }
+
 
   return (
     <div class={props.tag_class}>
@@ -182,8 +211,70 @@ const Hook = () => {
 
 
     		</Canvas>
-        {add_castle_button}{y_button1}{y_button2}{click_button}{click_coordinate}
-        <Hook/>
+        {add_castle_button}
+        <div
+              className="mouseArea"
+              onMouseMove={(e)=>{
+                handleMouseMove(e);
+                if(mouseIsDown){
+                  var new_castle_models = castleModels
+                  new_castle_models[editModelNumber]["position_x"] = previousCountPosX+(x-click_x)*0.1
+                  setCastleModels(new_castle_models)
+                }
+              }}
+              onMouseDown={(e) => {
+                handleMouseClick(e);
+                setMouseIsDown(true);
+              }}
+              onMouseUp={()=>{
+                setMouseIsDown(false);
+                setPreviousCountPosX(castleModels[editModelNumber]["position_x"])
+              }}
+        >
+            X
+        </div>
+        <div
+              className="mouseArea"
+              onMouseMove={(e)=>{
+                handleMouseMove(e);
+                if(mouseIsDown){
+                  var new_castle_models = castleModels
+                  new_castle_models[editModelNumber]["position_y"] = previousCountPosY+(x-click_x)*0.1
+                  setCastleModels(new_castle_models)
+                }
+              }}
+              onMouseDown={(e) => {
+                handleMouseClick(e);
+                setMouseIsDown(true);
+              }}
+              onMouseUp={()=>{
+                setMouseIsDown(false);
+                setPreviousCountPosY(castleModels[editModelNumber]["position_y"])
+              }}
+        >
+            Y
+        </div>
+        <div
+              className="mouseArea"
+              onMouseMove={(e)=>{
+                handleMouseMove(e);
+                if(mouseIsDown){
+                  var new_castle_models = castleModels
+                  new_castle_models[editModelNumber]["position_z"] = previousCountPosZ+(x-click_x)*0.1
+                  setCastleModels(new_castle_models)
+                }
+              }}
+              onMouseDown={(e) => {
+                handleMouseClick(e);
+                setMouseIsDown(true);
+              }}
+              onMouseUp={()=>{
+                setMouseIsDown(false);
+                setPreviousCountPosZ(castleModels[editModelNumber]["position_z"])
+              }}
+        >
+            Z
+        </div>
       </div>
     </div>
   )
