@@ -51,10 +51,12 @@ function Castle(props){
 	const [countRotY,setCountY] = useState(0)
 	const [countRotZ,setCountZ] = useState(0)
 	const [countPosX,setCountPosX] = useState(0)
-	const [countPosY,setCountPosY] = useState(0)
+	const [countPosY,setCountPosY] = useState(2)
 	const [countPosZ,setCountPosZ] = useState(0)
   const [rotY, setPosCount] = useState(0)
 	const [newCastlePos, setCastlePos] = useState(0)
+  const [clickCoordinateX, setclickCoordinateX] = useState(0)
+
   const handleClick = () => {
     setPosCount(rotY+1)
   };
@@ -106,10 +108,15 @@ function Castle(props){
   }
 
 
+
   var castle = [<UseModel position={[0,0,0]} modelpath={"castle.glb"}/>];
   for(var i=0; i<props.castle_models.length; i++){
     castle.push(<UseModel position={[props.castle_models[i]["position_x"], props.castle_models[i]["position_y"], props.castle_models[i]["position_z"]]} modelpath={props.castle_models[i]["three_d_model_name"]} />)
   }
+
+  var test_castle = <UseModel position={[0,countPosY,0]} modelpath={"castle.glb"}/>
+  var y_button1 = <button onClick={() => setCountPosY(countPosY+1)}>+Y</button>
+  var y_button2 = <button onClick={() => setCountPosY(countPosY-1)}>-Y</button>
 
   var user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
@@ -124,7 +131,36 @@ function Castle(props){
       add_castle_button = <button onClick={()=>addCastle()}>3Dモデルを追加</button>
   }
 
+  var click_button = <button onClick={()=>getMouseCoordinate()}>ドラッグしてください</button>
+  var click_coordinate = <div >{clickCoordinateX}</div>
+  
 
+
+  const useMove = () => {
+  const [state, setState] = useState({x: 0, y: 0})
+
+  const handleMouseMove = e => {
+    e.persist()
+    setState(state => ({...state, x: e.clientX, y: e.clientY}))
+  }
+  return {
+    x: state.x,
+    y: state.y,
+    handleMouseMove,
+  }
+}
+
+const Hook = () => {
+  const {x, y, handleMouseMove} = useMove()
+  return (
+    <div className="mouseArea" onMouseMove={handleMouseMove}>
+      Hook
+      <div className="mouseInfo">
+        The current mouse position is ({x}, {y})
+      </div>
+    </div>
+  )
+}
 
   return (
     <div class={props.tag_class}>
@@ -141,10 +177,13 @@ function Castle(props){
   				<pointLight position={[0, 100, -150]} />
 
           {castle}
+          {test_castle}
+
 
 
     		</Canvas>
-        {add_castle_button}
+        {add_castle_button}{y_button1}{y_button2}{click_button}{click_coordinate}
+        <Hook/>
       </div>
     </div>
   )
