@@ -390,14 +390,14 @@
               margin-bottom: 0.5rem;
               @media screen and (orientation: portrait) {
                 width: 30vh;
-                height: 30vh;
+                height: 20vh;
                 margin: 10px;
               }
 
               /* 横長 */
               @media screen and (orientation: landscape) {
                 width: 30vw;
-                height: 30vw;
+                height: 20vw;
                }
               z-index: 1;
             }
@@ -420,6 +420,28 @@
               height: 100vw;
              }
             z-index: 1;
+          }
+
+          .move-sliders{
+            color: white;
+            margin:0.5em;
+            height: 1.5em;
+            user-select:none;
+            -webkit-user-select:none;
+            -ms-user-select: none;
+            -moz-user-select:none;
+            -khtml-user-select:none;
+            -webkit-user-drag:none;
+            -khtml-user-drag:none;
+          }
+          .move-x-slider{
+            background-color: red;
+          }
+          .move-y-slider{
+            background-color: green;
+          }
+          .move-z-slider{
+            background-color: blue;
           }
         }
     }

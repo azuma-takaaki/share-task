@@ -38,9 +38,16 @@ function Castle(props){
   const [castleModels, setCastleModels] = useState(props.castle_models)
   const [editModelNumber, setEditModelNumber] = useState(0)
 
-	const [countRotX,setCountX] = useState(0)
-	const [countRotY,setCountY] = useState(0)
-	const [countRotZ,setCountZ] = useState(0)
+	const [countRotX,setCountRotX] = useState(0)
+  const [previousCountRotX,setPreviousCountRotX] = useState(0)
+	const [countRotY,setCountRotY] = useState(0)
+  const [previousCountRotY,setPreviousCountRotY] = useState(0)
+	const [countRotZ,setCountRotZ] = useState(0)
+  const [previousCountRotZ,setPreviousCountRotZ] = useState(0)
+
+
+
+
 	const [countPosX,setCountPosX] = useState(0)
   const [previousCountPosX,setPreviousCountPosX] = useState(0)
 	const [countPosY,setCountPosY] = useState(0)
@@ -111,12 +118,18 @@ function Castle(props){
 
 
   var UseModel = (props) =>{
-    var {model_number, position, modelpath} = props
+    var {model_number, position, rotation, modelpath} = props
+    if(!(rotation==null)){
+      rotation[1] = rotation[1] - Math.PI / 4
+    }
+
+    //-Math.PI / 2
     if(modelpath==null){
       modelpath="castle.glb"
     }
+
   	return (
-  		<mesh  onClick={()=>{cangeEditModel(model_number)}}position = {position} rotation={[0, -Math.PI / 2, 0]}>
+  		<mesh  onClick={()=>{cangeEditModel(model_number)}} position = {position} rotation={rotation}>
   			<Suspense fallback={null}>
   					<LoadModel modelpath={"/" + modelpath}/>
   			</Suspense>
@@ -128,7 +141,7 @@ function Castle(props){
 
   var castle = [];
   for(var i=0; i<castleModels.length; i++){
-    castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} modelpath={castleModels[i]["three_d_model_name"]} />)
+    castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} />)
   }
 
   var test_castle = <UseModel position={[countPosX,countPosY,countPosZ]} modelpath={"castle.glb"}/>
@@ -206,14 +219,12 @@ function Castle(props){
   				<pointLight position={[0, 100, -150]} />
 
           {castle}
-          {test_castle}
 
 
 
     		</Canvas>
         {add_castle_button}
-        <div
-              className="mouseArea"
+        <div class = "move-sliders move-x-slider"
               onMouseMove={(e)=>{
                 handleMouseMove(e);
                 if(mouseIsDown){
@@ -231,10 +242,9 @@ function Castle(props){
                 setPreviousCountPosX(castleModels[editModelNumber]["position_x"])
               }}
         >
-            X
+            ← X ({Math.floor(castleModels[editModelNumber]["position_x"] * 100)/100}) →
         </div>
-        <div
-              className="mouseArea"
+        <div class = "move-sliders move-y-slider"
               onMouseMove={(e)=>{
                 handleMouseMove(e);
                 if(mouseIsDown){
@@ -252,10 +262,9 @@ function Castle(props){
                 setPreviousCountPosY(castleModels[editModelNumber]["position_y"])
               }}
         >
-            Y
+            ← Y ({Math.floor(castleModels[editModelNumber]["position_y"] * 100)/100}) →
         </div>
-        <div
-              className="mouseArea"
+        <div class = "move-sliders move-z-slider"
               onMouseMove={(e)=>{
                 handleMouseMove(e);
                 if(mouseIsDown){
@@ -273,7 +282,68 @@ function Castle(props){
                 setPreviousCountPosZ(castleModels[editModelNumber]["position_z"])
               }}
         >
-            Z
+            ← Z ({Math.floor(castleModels[editModelNumber]["position_z"] * 100)/100}) →
+        </div>
+
+        <div class = "move-sliders move-x-slider"
+              onMouseMove={(e)=>{
+                handleMouseMove(e);
+                if(mouseIsDown){
+                  var new_castle_models = castleModels
+                  new_castle_models[editModelNumber]["angle_x"] = previousCountRotX+(x-click_x)*0.01
+                  setCastleModels(new_castle_models)
+                }
+              }}
+              onMouseDown={(e) => {
+                handleMouseClick(e);
+                setMouseIsDown(true);
+              }}
+              onMouseUp={()=>{
+                setMouseIsDown(false);
+                setPreviousCountRotX(castleModels[editModelNumber]["angle_x"])
+              }}
+        >
+            🔄 X ({Math.floor(castleModels[editModelNumber]["angle_x"] / Math.PI * 180 * 100)/100})度 🔄
+        </div>
+        <div class = "move-sliders move-y-slider"
+              onMouseMove={(e)=>{
+                handleMouseMove(e);
+                if(mouseIsDown){
+                  var new_castle_models = castleModels
+                  new_castle_models[editModelNumber]["angle_y"] = previousCountRotY+(x-click_x)*0.01
+                  setCastleModels(new_castle_models)
+                }
+              }}
+              onMouseDown={(e) => {
+                handleMouseClick(e);
+                setMouseIsDown(true);
+              }}
+              onMouseUp={()=>{
+                setMouseIsDown(false);
+                setPreviousCountRotY(castleModels[editModelNumber]["angle_y"])
+              }}
+        >
+            🔄 Y ({Math.floor(castleModels[editModelNumber]["angle_y"] / Math.PI * 180 * 100)/100})度 🔄
+        </div>
+        <div class = "move-sliders move-z-slider"
+              onMouseMove={(e)=>{
+                handleMouseMove(e);
+                if(mouseIsDown){
+                  var new_castle_models = castleModels
+                  new_castle_models[editModelNumber]["angle_z"] = previousCountRotZ+(x-click_x)*0.01
+                  setCastleModels(new_castle_models)
+                }
+              }}
+              onMouseDown={(e) => {
+                handleMouseClick(e);
+                setMouseIsDown(true);
+              }}
+              onMouseUp={()=>{
+                setMouseIsDown(false);
+                setPreviousCountRotZ(castleModels[editModelNumber]["angle_z"])
+              }}
+        >
+            🔄 Z ({Math.floor(castleModels[editModelNumber]["angle_z"] / Math.PI * 180 * 100)/100})度 🔄
         </div>
       </div>
     </div>
