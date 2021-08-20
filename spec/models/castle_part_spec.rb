@@ -5,7 +5,7 @@ RSpec.describe CastlePart, type: :model do
     before do
       @user = FactoryBot.create(:user)
       @group = FactoryBot.create(:group)
-      @castle = FactoryBot.create(:castle, user: @user, group: @group)
+      @castle = FactoryBot.create(:castle0, user: @user, group: @group)
     end
 
     describe "#valid_infomation" do

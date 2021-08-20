@@ -6,7 +6,7 @@ RSpec.describe Castle, type: :model do
     before do
       @user = FactoryBot.create(:user)
       @group = FactoryBot.create(:group)
-      @castle = FactoryBot.build(:castle, user: @user, group: @group)
+      @castle = FactoryBot.build(:castle0, user: @user, group: @group)
     end
 
     example "正しい情報は登録ができる" do
