@@ -237,9 +237,9 @@ class GroupsList extends React.Component {
         }).then(res => res.json())
         .then(
           (result) => {
-            //alert(result[0][2]["castle"]["castle_name"])
             users_castle_list[id] = result[0]
             this.setState({users_castle_list: users_castle_list})
+            //alert("GL:" + users_castle_list[id][0]["models"].length)
             var visible_user = result[1]
             this.setState({visible_user: visible_user})
           }
@@ -350,7 +350,6 @@ class GroupsList extends React.Component {
               {
                 this.state.group_list.map((group) => {
                   return (
-                    //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                       <div>
                         {(this.state.group_is_visible[group.id] && this.state.visible_user_id<0)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in} castle_list={this.state.groups_castle_list[group.id]} fetchCastles={this.fetchCastles}/> }
                       </div>

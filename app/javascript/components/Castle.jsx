@@ -35,6 +35,7 @@ const LoadModel = (modelpath) => {
 
 
 function Castle(props){
+
   const [castleModels, setCastleModels] = useState(props.castle_models)
   const [editModelNumber, setEditModelNumber] = useState(0)
 
@@ -106,7 +107,10 @@ function Castle(props){
       .then((result) => {
         props.fetchCastles("user", props.user_id, false)
       })
-      .then(setCastleModels(props.castle_models))
+      .then((result)=>{
+        //alert("実際: " + props.castle_models.length)
+        setCastleModels(props.castle_models)
+      })
   }
 
   const cangeEditModel = (model_number) =>{
@@ -125,7 +129,7 @@ function Castle(props){
 
     //-Math.PI / 2
     if(modelpath==null){
-      modelpath="castle.glb"
+      modelpath="wall_01.glb"
     }
 
   	return (
@@ -141,10 +145,10 @@ function Castle(props){
 
   var castle = [];
   for(var i=0; i<castleModels.length; i++){
-    castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} />)
+    if(!(castleModels[i]["three_d_model_name"]==null)){
+      castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} />)
+    }
   }
-
-  var test_castle = <UseModel position={[countPosX,countPosY,countPosZ]} modelpath={"castle.glb"}/>
 
   var user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
@@ -203,27 +207,10 @@ function Castle(props){
     move_amount_y = 0
   }
 
-
-  return (
-    <div class={props.tag_class}>
-      <div class="castle-header-at-goup-page">
-        {user_infomation_on_castle}
-        <h2>{props.castle_name} 城</h2>
-      </div>
-      <div class="canvas">
-    		<Canvas >
-  				<CameraController />
-    			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
-    			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
-    			<pointLight position={[10, -20, 70]} />
-  				<pointLight position={[0, 100, -150]} />
-
-          {castle}
-
-
-
-    		</Canvas>
-        {add_castle_button}
+  var edit_castle_parts_sliders = <div></div>
+  if(props.tag_class=="castle_at_user_page"){
+    edit_castle_parts_sliders =
+      <div>
         <div class = "move-sliders move-x-slider"
               onMouseMove={(e)=>{
                 handleMouseMove(e);
@@ -345,6 +332,31 @@ function Castle(props){
         >
             🔄 Z ({Math.floor(castleModels[editModelNumber]["angle_z"] / Math.PI * 180 * 100)/100})度 🔄
         </div>
+    </div>
+  }
+
+
+  return (
+    <div class={props.tag_class}>
+      <div class="castle-header-at-goup-page">
+        {user_infomation_on_castle}
+        <h2>{props.castle_name} 城</h2>
+      </div>
+      <div class="canvas">
+    		<Canvas >
+  				<CameraController />
+    			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
+    			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
+    			<pointLight position={[10, -20, 70]} />
+  				<pointLight position={[0, 100, -150]} />
+
+          {castle}
+
+
+
+    		</Canvas>
+        {add_castle_button}
+        {edit_castle_parts_sliders}
       </div>
     </div>
   )

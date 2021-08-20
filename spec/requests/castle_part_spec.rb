@@ -66,4 +66,5 @@ RSpec.describe SessionsController, type: :request do
       expect(JSON.parse(response.body)[0]).to eq "you cannot operate the castle of other users"
     end
   end
+
 end
