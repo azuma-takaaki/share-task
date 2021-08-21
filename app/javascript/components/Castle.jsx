@@ -120,6 +120,47 @@ function Castle(props){
     setEditModelNumber(model_number)
   }
 
+  const updateCastleParts = () =>{
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+           }
+       }
+      return '';
+    }
+
+    var update_castle_parts_list = []
+    for(var i=0; i<castleModels.length; i++){
+        update_castle_parts_list[i] = {id: castleModels[i].id,
+                           castle_id: props.castle_id,
+                           three_d_model_name: castleModels[i].three_d_model_name,
+                           position_x: castleModels[i].position_x,
+                           position_y: castleModels[i].position_y,
+                           position_z: castleModels[i].position_z,
+                           angle_x: castleModels[i].angle_x,
+                           angle_y: castleModels[i].angle_y,
+                           angle_z: castleModels[i].angle_z,
+                          }
+    }
+
+
+    const data = { castle_parts: update_castle_parts_list};
+    fetch( "/castle_parts/update",{
+      method: 'PATCH',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then((result) => {
+      alert(result[0])
+    })
+  }
 
   var UseModel = (props) =>{
     var {model_number, position, rotation, modelpath} = props
@@ -207,8 +248,12 @@ function Castle(props){
     move_amount_y = 0
   }
 
+
+  var save_castle_parts_button = <div></div>
   var edit_castle_parts_sliders = <div></div>
   if(props.tag_class=="castle_at_user_page"){
+    save_castle_parts_button = <button onClick = {()=> updateCastleParts()}>変更を保存</button>
+
     edit_castle_parts_sliders =
       <div>
         <div class = "move-sliders move-x-slider"
@@ -336,6 +381,7 @@ function Castle(props){
   }
 
 
+
   return (
     <div class={props.tag_class}>
       <div class="castle-header-at-goup-page">
@@ -356,6 +402,7 @@ function Castle(props){
 
     		</Canvas>
         {add_castle_button}
+        {save_castle_parts_button}
         {edit_castle_parts_sliders}
       </div>
     </div>

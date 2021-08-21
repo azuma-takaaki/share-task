@@ -60,7 +60,7 @@ class CastlesController < ApplicationController
 
   def get_user_castle_list
     @castle_part_list = Castle.left_joins(:castle_parts)
-                     .select("castles.name, castles.id AS castle_id, castle_parts.three_d_model_name, castle_parts.position_x, castle_parts.position_y, castle_parts.position_z, castle_parts.angle_x, castle_parts.angle_y, castle_parts.angle_z ")
+                     .select("castles.name, castles.id AS castle_id, castle_parts.id, castle_parts.three_d_model_name, castle_parts.position_x, castle_parts.position_y, castle_parts.position_z, castle_parts.angle_x, castle_parts.angle_y, castle_parts.angle_z ")
                      .where(user_id: params[:user_id])
 
     @tmp_castle_part = {}
@@ -71,7 +71,8 @@ class CastlesController < ApplicationController
     end
 
     @castle_part_list.each do |castle_part|
-      @tmp_castle_part[(castle_part.castle_id).to_s][:models].push({three_d_model_name: castle_part.three_d_model_name,
+      @tmp_castle_part[(castle_part.castle_id).to_s][:models].push({id: castle_part.id,
+                                                                    three_d_model_name: castle_part.three_d_model_name,
                                                                     position_x: castle_part.position_x,
                                                                     position_y: castle_part.position_y,
                                                                     position_z: castle_part.position_z,
