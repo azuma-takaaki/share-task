@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'reports/create'
   get 'castle_parts/create'
   get 'castles/create'
   get 'render_random_number', to: 'users#random_number', as: 'random_number'
@@ -27,6 +28,6 @@ Rails.application.routes.draw do
   resources :group_user
   resources :castles
   resources :castle_parts
-
+  resources :reports
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
