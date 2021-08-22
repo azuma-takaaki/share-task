@@ -28,7 +28,7 @@ feature "Report" , :js => true do
       expect(page).to have_selector ".users-page-header-name", text: "test_user1"
       click_button "積み上げを登録する"
       fill_in "今日の積み上げ", with:"プログラミングを5時間勉強した！"
-      click_buton "積み上げを登録"
+      click_button "登録する"
       expect(page).to have_selector ".report-content", text: "プログラミングを5時間勉強した！"
     end
   end

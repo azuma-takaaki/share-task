@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import PropTypes from "prop-types";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import Modal from 'react-modal'
 
 const CameraController = () => {
   const { camera, gl } = useThree();
@@ -58,6 +59,68 @@ function Castle(props){
   const [rotY, setPosCount] = useState(0)
 	const [newCastlePos, setCastlePos] = useState(0)
   const [clickCoordinateX, setclickCoordinateX] = useState(0)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [modalInput, setModalInput] = useState("")
+
+  const customStyles = {
+    content : {
+      top                   : '50%',
+      left                  : '50%',
+      right                 : 'auto',
+      bottom                : 'auto',
+      marginRight           : '-50%',
+      transform             : 'translate(-50%, -50%)'
+   }
+  }
+
+  const openModal = () =>  {
+    setModalIsOpen(true)
+  }
+  const afterOpenModal = () => {
+
+  }
+  const closeModal = () =>  {
+    setModalInput("")
+    setModalIsOpen(false)
+  }
+  const handleChange = (e) => {
+    setModalInput(e.target.value)
+  }
+
+  const postReport = () =>{
+
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+           }
+       }
+      return '';
+    }
+
+    const data = { report: {content: modalInput, user_id: props.user_id, castle_id: props.castle_id}}
+
+    fetch('/reports',{
+      method: 'POST',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then((result) => {
+
+      props.fetchCastles("user", props.user_id, false)
+    })
+    .then(()=>{
+      setModalInput("")
+      setModalIsOpen(false)
+    })
+  }
+
 
   const handleClick = () => {
     setPosCount(rotY+1)
@@ -199,10 +262,7 @@ function Castle(props){
                                 </div>
   }
 
-  var add_castle_button = <div></div>
-  if(props.tag_class=="castle_at_user_page"){
-      add_castle_button = <button onClick={()=>addCastle()}>3Dモデルを追加</button>
-  }
+
 
 
   const useMove = () => {
@@ -249,10 +309,26 @@ function Castle(props){
   }
 
 
+  var open_report_modal_button = <div></div>
+  var report_list = <div></div>
   var save_castle_parts_button = <div></div>
+  var add_castle_button = <div></div>
   var edit_castle_parts_sliders = <div></div>
   if(props.tag_class=="castle_at_user_page"){
+    open_report_modal_button = <button onClick = {() => openModal()}>積み上げを登録する</button>
+
+
+    var new_report_list = []
+    if (!(props.castle_reports[0].content == null)){
+      for(var i=0; i<props.castle_reports.length; i++){
+        new_report_list.push(<p class = "report-content p-3 mb-2 bg-info text-white">今日の積み上げ: {props.castle_reports[i].content}</p>)
+      }
+    }
+    report_list = new_report_list
+
     save_castle_parts_button = <button onClick = {()=> updateCastleParts()}>変更を保存</button>
+
+    add_castle_button = <button onClick={()=>addCastle()}>3Dモデルを追加</button>
 
     edit_castle_parts_sliders =
       <div>
@@ -401,6 +477,21 @@ function Castle(props){
 
 
     		</Canvas>
+        <Modal
+          isOpen={modalIsOpen}
+          onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
+          <h2>今日の積み上げ</h2>
+          <textarea  value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
+          <button onClick={postReport}>登録する</button>
+
+        </Modal>
+        {open_report_modal_button}
+        {report_list}
         {add_castle_button}
         {save_castle_parts_button}
         {edit_castle_parts_sliders}

@@ -20,15 +20,11 @@ class CastlesController < ApplicationController
 
 
 
-    logger.debug("aaa")
     @tmp_castle_part = {}
     @castle_part_list.each do |castle_part|
       @tmp_castle_part[(castle_part.castle_id).to_s] = {castle: {castle_name: castle_part.name, castle_id: castle_part.castle_id}, models:[], user:{user_id:castle_part.user_id, user_name:castle_part.user_name, user_icon:castle_part.icon}}
       logger.debug(castle_part.name+"/"+castle_part.castle_id.to_s)
-      logger.debug("aaa")
-      logger.debug("aaa")
-      logger.debug("aaa")
-      logger.debug("aaa")
+
 
     end
 
@@ -63,9 +59,13 @@ class CastlesController < ApplicationController
                      .select("castles.name, castles.id AS castle_id, castle_parts.id, castle_parts.three_d_model_name, castle_parts.position_x, castle_parts.position_y, castle_parts.position_z, castle_parts.angle_x, castle_parts.angle_y, castle_parts.angle_z ")
                      .where(user_id: params[:user_id])
 
+    @report_list = Castle.left_joins(:reports)
+                    .select("castles.id AS castle_id, reports.content ")
+                    .where(user_id: params[:user_id])
+
     @tmp_castle_part = {}
     @castle_part_list.each do |castle_part|
-      @tmp_castle_part[(castle_part.castle_id).to_s] = {castle: {castle_name: castle_part.name, castle_id: castle_part.castle_id}, models:[]}
+      @tmp_castle_part[(castle_part.castle_id).to_s] = {castle: {castle_name: castle_part.name, castle_id: castle_part.castle_id}, models:[], reports:[]}
 
       logger.debug(castle_part.name+"/"+castle_part.castle_id.to_s)
     end
@@ -81,6 +81,12 @@ class CastlesController < ApplicationController
                                                                     angle_z: castle_part.angle_z,
                                                                   })
     end
+
+    @report_list.each do |report|
+      @tmp_castle_part[(report.castle_id).to_s][:reports].push({content: report.content})
+    end
+
+
 
     @castles = []
     counter = 0
