@@ -47,9 +47,6 @@ function Castle(props){
 	const [countRotZ,setCountRotZ] = useState(0)
   const [previousCountRotZ,setPreviousCountRotZ] = useState(0)
 
-
-
-
 	const [countPosX,setCountPosX] = useState(0)
   const [previousCountPosX,setPreviousCountPosX] = useState(0)
 	const [countPosY,setCountPosY] = useState(0)
@@ -61,6 +58,10 @@ function Castle(props){
   const [clickCoordinateX, setclickCoordinateX] = useState(0)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [modalInput, setModalInput] = useState("")
+
+  useEffect(() => {
+    setCastleModels(props.castle_models)
+  });
 
   const customStyles = {
     content : {
@@ -175,6 +176,7 @@ function Castle(props){
         setCastleModels(props.castle_models)
       })
   }
+
 
   const cangeEditModel = (model_number) =>{
     setPreviousCountPosX(castleModels[model_number]["position_x"])

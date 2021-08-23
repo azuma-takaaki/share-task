@@ -9,6 +9,11 @@ RSpec.describe SessionsController, type: :request do
     end
 
     example "正しい情報は登録ができる" do
+      @castle.castle_part_point = 1
+      @castle.save
+      @castle.reload
+      pre_castle_part_point = @castle.castle_part_point
+      pre_castle_parts_number = @castle.castle_parts.length
       post login_path , params: { session: {
                                         email: @user.email,
                                         password: @user.password,
@@ -26,9 +31,43 @@ RSpec.describe SessionsController, type: :request do
                                   }}
       puts("response: " + response.body)
       expect(response).to have_http_status(200)
+      expect(@castle.reload.castle_part_point).to eq pre_castle_part_point-1
+      expect(@castle.reload.castle_parts.length).to eq pre_castle_parts_number+1
+    end
+
+    example "castle_part_pointが0だと登録できない" do
+      @castle.castle_part_point = 0
+      @castle.save
+      @castle.reload
+      pre_castle_part_point = @castle.castle_part_point
+      pre_castle_parts_number = @castle.castle_parts.length
+      post login_path , params: { session: {
+                                        email: @user.email,
+                                        password: @user.password,
+                                      }}
+      post castle_parts_path, params: { castle_part: {
+                                    castle_id: @castle.id,
+                                    three_d_model_name: "castle.glb",
+                                    position_x: 0,
+                                    position_y: 0,
+                                    position_z: 0,
+                                    angle_x: 0,
+                                    angle_y: 0,
+                                    angle_z: 0,
+                                  }}
+
+      puts("response: " + response.body)
+      expect(JSON.parse(response.body)[0]).to eq "Cannot add castle_part without castle_part_point"
+      expect(@castle.reload.castle_part_point).to eq pre_castle_part_point
+      expect(@castle.reload.castle_parts.length).to eq pre_castle_parts_number
     end
 
     example "ログインしていないと登録できない" do
+      @castle.castle_part_point = 1
+      @castle.save
+      @castle.reload
+      pre_castle_part_point = @castle.castle_part_point
+      pre_castle_parts_number = @castle.castle_parts.length
       post castle_parts_path, params: { castle_part: {
                                     castle_id: @castle.id,
                                     three_d_model_name: "castle.glb",
@@ -42,9 +81,16 @@ RSpec.describe SessionsController, type: :request do
 
       puts("response: " + response.body)
       expect(JSON.parse(response.body)[0]).to eq "this operation cannot be performed without logging in"
+      expect(@castle.reload.castle_part_point).to eq pre_castle_part_point
+      expect(@castle.reload.castle_parts.length).to eq pre_castle_parts_number
     end
 
     example "他ユーザーのcastle_partは登録できない" do
+      @castle.castle_part_point = 1
+      @castle.save
+      @castle.reload
+      pre_castle_part_point = @castle.castle_part_point
+      pre_castle_parts_number = @castle.castle_parts.length
       @other_user = FactoryBot.create(:user)
       post login_path , params: { session: {
                                         email: @other_user.email,
@@ -64,6 +110,8 @@ RSpec.describe SessionsController, type: :request do
 
       puts("response: " + response.body)
       expect(JSON.parse(response.body)[0]).to eq "you cannot operate the castle of other users"
+      expect(@castle.reload.castle_part_point).to eq pre_castle_part_point
+      expect(@castle.reload.castle_parts.length).to eq pre_castle_parts_number
     end
   end
 
