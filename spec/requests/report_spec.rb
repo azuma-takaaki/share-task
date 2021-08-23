@@ -24,6 +24,145 @@ RSpec.describe SessionsController, type: :request do
         expect(JSON.parse(response.body)[0]).to eq "Successful registration of report"
         expect(Report.all.length).to eq pre_number_of_record+1
       end
+
+      example "reportを登録した時に1日に1度castle_part_pointが増える" do
+
+        puts "普通にreportをポストする->成功を確認"
+
+        post login_path , params: { session: {
+                                          email: @user.email,
+                                          password: @user.password,
+                                        }}
+        expect(response).to have_http_status(200)
+        pre_number_of_record = Report.all.length
+        pre_castle_part_point = @castle.castle_part_point
+        post reports_path, params: { report: {
+                                      content: "プログラミングを1時間した！",
+                                      user_id: @user.id,
+                                      castle_id: @castle.id
+                                    }}
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)[0]).to eq "Successful registration of report"
+        expect(Report.all.length).to eq pre_number_of_record+1
+        expect(@castle.reload.castle_part_point).to eq pre_castle_part_point+1
+
+        puts "普通にreportをポストする->失敗を確認(一日一つまでというメッセージが帰ってくる)"
+
+        pre_number_of_record = Report.all.length
+        pre_castle_part_point = @castle.castle_part_point
+        post reports_path, params: { report: {
+                                      content: "プログラミングを2時間した！",
+                                      user_id: @user.id,
+                                      castle_id: @castle.id
+                                    }}
+        expect(JSON.parse(response.body)[0]).to eq "Reports can only be registered once a day"
+        expect(Report.all.length).to eq pre_number_of_record
+        expect(@castle.reload.castle_part_point).to eq pre_castle_part_point
+
+        puts ""
+        puts "次の日にtravel"
+        travel_to Time.now + 1.day
+        puts "普通にreportをポストする->成功を確認"
+        post login_path , params: { session: {
+                                          email: @user.email,
+                                          password: @user.password,
+                                        }}
+        expect(response).to have_http_status(200)
+        pre_number_of_record = Report.all.length
+        pre_castle_part_point = @castle.castle_part_point
+        post reports_path, params: { report: {
+                                      content: "プログラミングを1時間した！",
+                                      user_id: @user.id,
+                                      castle_id: @castle.id
+                                    }}
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)[0]).to eq "Successful registration of report"
+        expect(Report.all.length).to eq pre_number_of_record+1
+        expect(@castle.reload.castle_part_point).to eq pre_castle_part_point+1
+
+        puts "普通にreportをポストする->失敗を確認(一日一つまでというメッセージが帰ってくる)"
+
+        pre_number_of_record = Report.all.length
+        pre_castle_part_point = @castle.castle_part_point
+        post reports_path, params: { report: {
+                                      content: "プログラミングを2時間した！",
+                                      user_id: @user.id,
+                                      castle_id: @castle.id
+                                    }}
+        expect(JSON.parse(response.body)[0]).to eq "Reports can only be registered once a day"
+        expect(Report.all.length).to eq pre_number_of_record
+        expect(@castle.reload.castle_part_point).to eq pre_castle_part_point
+
+        puts ""
+        puts "次の月にtravel"
+        travel_to Time.now + 1.month
+        puts "普通にreportをポストする->成功を確認"
+        post login_path , params: { session: {
+                                          email: @user.email,
+                                          password: @user.password,
+                                        }}
+        expect(response).to have_http_status(200)
+        pre_number_of_record = Report.all.length
+        pre_castle_part_point = @castle.castle_part_point
+        post reports_path, params: { report: {
+                                      content: "プログラミングを1時間した！",
+                                      user_id: @user.id,
+                                      castle_id: @castle.id
+                                    }}
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)[0]).to eq "Successful registration of report"
+        expect(Report.all.length).to eq pre_number_of_record+1
+        expect(@castle.reload.castle_part_point).to eq pre_castle_part_point+1
+
+        puts "普通にreportをポストする->失敗を確認(一日一つまでというメッセージが帰ってくる)"
+
+        pre_number_of_record = Report.all.length
+        pre_castle_part_point = @castle.castle_part_point
+        post reports_path, params: { report: {
+                                      content: "プログラミングを2時間した！",
+                                      user_id: @user.id,
+                                      castle_id: @castle.id
+                                    }}
+        expect(JSON.parse(response.body)[0]).to eq "Reports can only be registered once a day"
+        expect(Report.all.length).to eq pre_number_of_record
+        expect(@castle.reload.castle_part_point).to eq pre_castle_part_point
+
+        puts ""
+        puts "次の年にtravel"
+        travel_to Time.now + 1.year
+        puts "普通にreportをポストする->成功を確認"
+        post login_path , params: { session: {
+                                          email: @user.email,
+                                          password: @user.password,
+                                        }}
+        expect(response).to have_http_status(200)
+        pre_number_of_record = Report.all.length
+        pre_castle_part_point = @castle.castle_part_point
+        post reports_path, params: { report: {
+                                      content: "プログラミングを1時間した！",
+                                      user_id: @user.id,
+                                      castle_id: @castle.id
+                                    }}
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)[0]).to eq "Successful registration of report"
+        expect(Report.all.length).to eq pre_number_of_record+1
+        expect(@castle.reload.castle_part_point).to eq pre_castle_part_point+1
+
+        puts "普通にreportをポストする->失敗を確認(一日一つまでというメッセージが帰ってくる)"
+
+        pre_number_of_record = Report.all.length
+        pre_castle_part_point = @castle.castle_part_point
+        post reports_path, params: { report: {
+                                      content: "プログラミングを2時間した！",
+                                      user_id: @user.id,
+                                      castle_id: @castle.id
+                                    }}
+        expect(JSON.parse(response.body)[0]).to eq "Reports can only be registered once a day"
+        expect(Report.all.length).to eq pre_number_of_record
+        expect(@castle.reload.castle_part_point).to eq pre_castle_part_point
+
+
+      end
     end
 
     describe "#invalid_infomation" do

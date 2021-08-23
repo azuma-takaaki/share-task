@@ -64,5 +64,7 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  #report投稿時に1日に1度, castle_part_pointを増加させる昨日のテストに使用
+  config.include ActiveSupport::Testing::TimeHelpers
 
 end

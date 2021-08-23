@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_21_102719) do
+ActiveRecord::Schema.define(version: 2021_08_23_075223) do
 
   create_table "castle_parts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "castle_id"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2021_08_21_102719) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
     t.bigint "group_id"
+    t.integer "castle_part_point"
     t.index ["group_id"], name: "index_castles_on_group_id"
     t.index ["user_id"], name: "index_castles_on_user_id"
   end

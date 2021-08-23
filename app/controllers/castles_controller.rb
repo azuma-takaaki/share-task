@@ -2,6 +2,7 @@ class CastlesController < ApplicationController
   def create
     if logged_in?
       @castle = Castle.new(castle_parameters)
+      @castle.castle_part_point = 0
       @castle.user_id = current_user().id
       if @castle.save
         render json: ["城を立てました！"]
