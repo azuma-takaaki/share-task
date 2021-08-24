@@ -147,7 +147,8 @@ function Castle(props){
         return '';
       }
 
-      var model_name_list = [ "wall_01.glb", "castle.glb"]
+      var model_name_list = [ "castle.glb", "castle.glb"]
+      //var model_name_list = [ "wall_01.glb", "castle.glb"]
       const data = { castle_part: {
                             castle_id: props.castle_id,
                             three_d_model_name: model_name_list[Math.floor(Math.random() * model_name_list.length)],
@@ -169,11 +170,10 @@ function Castle(props){
       })
       .then(res => res.json())
       .then((result) => {
+        if(result[0] == "Cannot add castle_part without castle_part_point"){
+          alert("積み上げポイントが足りません！")
+        }
         props.fetchCastles("user", props.user_id, false)
-      })
-      .then((result)=>{
-        //alert("実際: " + props.castle_models.length)
-        setCastleModels(props.castle_models)
       })
   }
 
@@ -310,13 +310,15 @@ function Castle(props){
     move_amount_y = 0
   }
 
-
+  var castle_part_point = <div></div>;
   var open_report_modal_button = <div></div>
   var report_list = <div></div>
   var save_castle_parts_button = <div></div>
   var add_castle_button = <div></div>
   var edit_castle_parts_sliders = <div></div>
   if(props.tag_class=="castle_at_user_page"){
+    castle_part_point = <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
+
     open_report_modal_button = <button onClick = {() => openModal()}>積み上げを登録する</button>
 
 
@@ -492,10 +494,11 @@ function Castle(props){
           <button onClick={postReport}>登録する</button>
 
         </Modal>
+        {castle_part_point}
         {open_report_modal_button}
-        {report_list}
         {add_castle_button}
         {save_castle_parts_button}
+        {report_list}
         {edit_castle_parts_sliders}
       </div>
     </div>

@@ -11,6 +11,33 @@ feature "CastleParts" , :js => true do
     click_button "登録"
   end
 
+
+  example "castle_part_pointを使ってcastle_partを追加できる" do
+    @group = FactoryBot.create(:programming)
+    click_button "＜"
+    click_on "グループを探す"
+    find("input[placeholder='グループを探す']").set("progra")
+    click_button "programming"
+    find('div.bm-overlay').click
+    click_button "城を建てる"
+    fill_in "城の名前(目標)", with:"web開発エンジニアになる"
+    find(".post-castle-data-button").click
+    expect(page).to have_content "web開発エンジニアになる 城"
+
+    page.find('.user-name', text: 'test_user1').click
+    expect(page).to have_selector ".users-page-header-name", text: "test_user1"
+
+    expect(page).to have_selector ".castle-point-at-user-page", text: "0"
+    click_button "積み上げを登録する"
+    fill_in "今日の積み上げ", with:"プログラミングを5時間勉強した！"
+    click_button "登録する"
+    expect(page).to have_selector ".castle-point-at-user-page", text: "1"
+    expect(page).to have_selector ".report-content", text: "プログラミングを5時間勉強した！"
+    click_button "3Dモデルを追加"
+    expect(page).to have_selector ".castle-point-at-user-page", text: "0"
+
+  end
+
   example "複数のcastle_partを一度にアップデートできる" do
     @group = FactoryBot.create(:programming)
     click_button "＜"
