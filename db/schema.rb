@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_23_075223) do
+ActiveRecord::Schema.define(version: 2021_08_25_095547) do
+
+  create_table "castle_part_prices", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "three_d_model_name"
+    t.string "displayed_name"
+    t.integer "castle_part_point"
+    t.integer "ruby_point"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "castle_parts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "castle_id"

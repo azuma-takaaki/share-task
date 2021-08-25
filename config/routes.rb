@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'castle_part_price/index'
   get 'reports/create'
   get 'castle_parts/create'
   get 'castles/create'
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
   delete 'group_user', to: 'group_user#destroy'
   get 'get_group_castle_list/:group_id', to: 'castles#get_group_castle_list'
   get 'get_user_castle_list/:user_id', to: 'castles#get_user_castle_list'
+  get 'get_castle_part_price_list', to: 'castle_part_price#index'
 
   resources :users
   resources :tasks

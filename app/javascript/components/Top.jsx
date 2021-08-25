@@ -49,7 +49,6 @@ class Top extends React.Component {
     this.logout = this.logout.bind(this);
     this.setGroupList = this.setGroupList.bind(this);
 
-
     if(is_logged_in){
       this.setGroupList()
     }
@@ -57,7 +56,6 @@ class Top extends React.Component {
 
 
   setGroupList(){
-
     var group_list = []
     fetch("/get_group_list",{
       method: 'GET'

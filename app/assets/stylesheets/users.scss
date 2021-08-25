@@ -356,66 +356,81 @@
         }
 
         .users-wrapper{
-          //position: relative;
           text-align: center;
           .users-header{
-            //position: absolute;
             z-index: 2;
           }
           .massage-castle-is-empty {
             margin-top: 0px;
           }
 
-          .castle_at_user_page{
-            float: left;
-            margin: 5rem 0.5rem;
-            height: 35vw;
-            width: 30vw;
-            button{
-              z-index: 3;
-            }
-            h2{
-              z-index: 3;
-            }
-            .castle-point-at-user-page{
-              font-size: 2rem;
-            }
-            .canvas{
-              /* 縦長 */
-              margin-bottom: 0.5rem;
-              @media screen and (orientation: portrait) {
-                width: 30vh;
-                height: 20vh;
-                margin: 10px;
-              }
 
-              /* 横長 */
-              @media screen and (orientation: landscape) {
-                width: 30vw;
-                height: 20vw;
-               }
-              z-index: 1;
-            }
-          }
-
-          #castle{
-
-            position: absolute;
-            /* 縦長 */
-            @media screen and (orientation: portrait) {
-              width: 100vh;
-              height: 100vh;
-              margin-left: -50vh;
-              left: 50%;
-            }
-
-            /* 横長 */
-            @media screen and (orientation: landscape) {
+          @media screen and (orientation: landscape) {
+            .castle_at_user_page{
+              display: -webkit-flex;
+              display: -moz-flex;
+              display: -ms-flex;
+              display: -o-flex;
+              display: flex;
+              margin: 5rem 0.5rem;
+              height: 80vh;
               width: 100vw;
-              height: 100vw;
-             }
-            z-index: 1;
+              button{
+                z-index: 3;
+              }
+              h2{
+                z-index: 3;
+              }
+              .add-3d-model{
+                button{
+                  border-style: none;
+                  width: 100%;
+                }
+              }
+              .canvas{
+                margin-bottom: 0.5rem;
+                width: 80vh;
+                height: 80vh;
+                margin: 10px;
+                z-index: 1;
+              }
+              .edit-castle-contents-wrapper{
+                width: 40vw;
+                margin: 0rem 2rem;
+              }
+            }
           }
+          /*スマホ*/
+          @media screen and (orientation: portrait) {
+            .castle_at_user_page{
+              display: -webkit-flex;
+              display: -moz-flex;
+              display: -ms-flex;
+              display: -o-flex;
+              display: flex;
+              margin: 5rem 0.5rem;
+              height: 35vw;
+              width: 100vw;
+              button{
+                  z-index: 3;
+                }
+              h2{
+                  z-index: 3;
+                }
+              .canvas{
+                  margin-bottom: 0.5rem;
+                  width: 30vh;
+                  height: 20vh;
+                  margin: 10px;
+                  z-index: 1;
+                }
+              .edit-castle-contents-wrapper{
+                width: 40vw;
+              }
+            }
+          }
+
+
 
           .move-sliders{
             color: white;

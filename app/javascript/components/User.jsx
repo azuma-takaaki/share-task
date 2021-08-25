@@ -22,14 +22,37 @@ class User extends React.Component {
     super(props);
     this.props.fetchCastles("user", this.props.current_user.id, false)
     this.state = {
-      input_name: ''
+      input_name: '',
+      castle_part_price_list: []
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.updateData = this.updateData.bind(this);
+    this.setCastlePartPriceList = this.setCastlePartPriceList.bind(this);
+
+    this.setCastlePartPriceList()
   }
+
+
+  setCastlePartPriceList(){
+    var castle_part_price_list = []
+    fetch("/get_castle_part_price_list",{
+      method: 'GET'
+      }).then(res => res.json())
+      .then(
+        (result) => {
+          for(var i in result[0]){
+            castle_part_price_list.push(result[0][i])
+          }
+          this.setState({
+            castle_part_price_list: castle_part_price_list
+          });
+        }
+      )
+  }
+
   openModal() {
     this.setState({input_name: this.props.current_user.name})
     this.setState({modalIsOpen: true});
@@ -83,7 +106,7 @@ class User extends React.Component {
       castles = this.props.users_castle_list.map((castle) => {
         //alert("User: " + castle["models"].length)
         return (
-            <Castle castle={castle["castle"]} castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} castle_reports={castle["reports"]} tag_class="castle_at_user_page" fetchCastles={this.props.fetchCastles} user_id={this.props.current_user.id}/>
+            <Castle castle={castle["castle"]} castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} castle_reports={castle["reports"]} tag_class="castle_at_user_page" fetchCastles={this.props.fetchCastles} user_id={this.props.current_user.id}  castle_part_price_list = {this.state.castle_part_price_list}/>
         )
       })
     }else{

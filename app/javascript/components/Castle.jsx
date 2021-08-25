@@ -40,6 +40,10 @@ function Castle(props){
   const [castleModels, setCastleModels] = useState(props.castle_models)
   const [editModelNumber, setEditModelNumber] = useState(0)
 
+  const [selectedCastleToAdd, setSelectedCastleToAdd] = useState("")
+
+  const [modalContent, setModalContent] = useState("")
+
 	const [countRotX,setCountRotX] = useState(0)
   const [previousCountRotX,setPreviousCountRotX] = useState(0)
 	const [countRotY,setCountRotY] = useState(0)
@@ -74,7 +78,37 @@ function Castle(props){
    }
   }
 
-  const openModal = () =>  {
+  const openModal = (type) =>  {
+    var new_modal_content;
+    if(type=="add_report"){
+      new_modal_content = <div>
+                            <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
+                            <h2>今日の積み上げ</h2>
+                            <textarea  value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
+                            <button onClick={postReport}>登録する</button>
+                          </div>
+
+    }else if(type=="confirmation_to_add_model"){
+      if(props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]>=0){
+        new_modal_content = <div>
+                              <h2>{selectedCastleToAdd["displayed_name"]}を追加しますか？</h2>
+                              <div>
+                                積み上げポイント: {props.castle.castle_part_point} → {props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]}
+                              </div>
+                            </div>
+      }else{
+        new_modal_content = <div>
+                              <h2>積み上げポイントが足りません！</h2>
+                              <div>
+                                必要な積み上げポイント: {selectedCastleToAdd["castle_part_point"]}
+                              </div>
+                              <div>
+                                現在の積み上げポイント: {props.castle.castle_part_point}
+                              </div>
+                            </div>
+      }
+    }
+    setModalContent(new_modal_content)
     setModalIsOpen(true)
   }
   const afterOpenModal = () => {
@@ -256,6 +290,10 @@ function Castle(props){
     }
   }
 
+  var castle_selected_to_add;
+  if (selectedCastleToAdd!=""){
+    castle_selected_to_add = <UseModel model_number={castleModels.length} position={[0, 2, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} />
+  }
   var user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
     user_infomation_on_castle = <div class="name-and-icon-of-user-built-castle-at-group-page">
@@ -309,7 +347,8 @@ function Castle(props){
     move_amount_x = 0
     move_amount_y = 0
   }
-
+  var tabs = <div></div>;
+  var edit_castle_contents = <div></div>;
   var castle_part_point = <div></div>;
   var open_report_modal_button = <div></div>
   var report_list = <div></div>
@@ -317,190 +356,213 @@ function Castle(props){
   var add_castle_button = <div></div>
   var edit_castle_parts_sliders = <div></div>
   if(props.tag_class=="castle_at_user_page"){
-    castle_part_point = <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
-
-    open_report_modal_button = <button onClick = {() => openModal()}>積み上げを登録する</button>
-
-
     var new_report_list = []
     if (!(props.castle_reports[0].content == null)){
-      for(var i=0; i<props.castle_reports.length; i++){
-        new_report_list.push(<p class = "report-content p-3 mb-2 bg-info text-white">今日の積み上げ: {props.castle_reports[i].content}</p>)
-      }
+        for(var i=0; i<props.castle_reports.length; i++){
+          new_report_list.push(<p class = "report-content p-3 mb-2 bg-info text-white">今日の積み上げ: {props.castle_reports[i].content}</p>)
+        }
     }
-    report_list = new_report_list
+    var castle_part_price_list = []
+    var temppp = []
+    for(var i=0; i<props.castle_part_price_list.length; i++){
+      const num = i
+      castle_part_price_list.push(<div>
+                                    <button class = "p-3 mb-2 bg-info text-white" onClick={() => {setSelectedCastleToAdd(props.castle_part_price_list[num])}}>
+                                        {props.castle_part_price_list[i]["displayed_name"]+"  必要ポイント: "+ props.castle_part_price_list[num]["castle_part_point"]}
+                                    </button>
+                                  </div>)
 
-    save_castle_parts_button = <button onClick = {()=> updateCastleParts()}>変更を保存</button>
+    }
 
-    add_castle_button = <button onClick={()=>addCastle()}>3Dモデルを追加</button>
 
-    edit_castle_parts_sliders =
-      <div>
-        <div class = "move-sliders move-x-slider"
-              onMouseMove={(e)=>{
-                handleMouseMove(e);
-                if(mouseIsDown){
-                  var new_castle_models = castleModels
-                  new_castle_models[editModelNumber]["position_x"] = previousCountPosX+(x-click_x)*0.1
-                  setCastleModels(new_castle_models)
-                }
-              }}
-              onMouseDown={(e) => {
-                handleMouseClick(e);
-                setMouseIsDown(true);
-              }}
-              onMouseUp={()=>{
-                setMouseIsDown(false);
-                setPreviousCountPosX(castleModels[editModelNumber]["position_x"])
-              }}
-        >
-            ← X ({Math.floor(castleModels[editModelNumber]["position_x"] * 100)/100}) →
-        </div>
-        <div class = "move-sliders move-y-slider"
-              onMouseMove={(e)=>{
-                handleMouseMove(e);
-                if(mouseIsDown){
-                  var new_castle_models = castleModels
-                  new_castle_models[editModelNumber]["position_y"] = previousCountPosY+(x-click_x)*0.1
-                  setCastleModels(new_castle_models)
-                }
-              }}
-              onMouseDown={(e) => {
-                handleMouseClick(e);
-                setMouseIsDown(true);
-              }}
-              onMouseUp={()=>{
-                setMouseIsDown(false);
-                setPreviousCountPosY(castleModels[editModelNumber]["position_y"])
-              }}
-        >
-            ← Y ({Math.floor(castleModels[editModelNumber]["position_y"] * 100)/100}) →
-        </div>
-        <div class = "move-sliders move-z-slider"
-              onMouseMove={(e)=>{
-                handleMouseMove(e);
-                if(mouseIsDown){
-                  var new_castle_models = castleModels
-                  new_castle_models[editModelNumber]["position_z"] = previousCountPosZ+(x-click_x)*0.1
-                  setCastleModels(new_castle_models)
-                }
-              }}
-              onMouseDown={(e) => {
-                handleMouseClick(e);
-                setMouseIsDown(true);
-              }}
-              onMouseUp={()=>{
-                setMouseIsDown(false);
-                setPreviousCountPosZ(castleModels[editModelNumber]["position_z"])
-              }}
-        >
-            ← Z ({Math.floor(castleModels[editModelNumber]["position_z"] * 100)/100}) →
-        </div>
 
-        <div class = "move-sliders move-x-slider"
-              onMouseMove={(e)=>{
-                handleMouseMove(e);
-                if(mouseIsDown){
-                  var new_castle_models = castleModels
-                  new_castle_models[editModelNumber]["angle_x"] = previousCountRotX+(x-click_x)*0.01
-                  setCastleModels(new_castle_models)
-                }
-              }}
-              onMouseDown={(e) => {
-                handleMouseClick(e);
-                setMouseIsDown(true);
-              }}
-              onMouseUp={()=>{
-                setMouseIsDown(false);
-                setPreviousCountRotX(castleModels[editModelNumber]["angle_x"])
-              }}
-        >
-            🔄 X ({Math.floor(castleModels[editModelNumber]["angle_x"] / Math.PI * 180 * 100)/100})度 🔄
-        </div>
-        <div class = "move-sliders move-y-slider"
-              onMouseMove={(e)=>{
-                handleMouseMove(e);
-                if(mouseIsDown){
-                  var new_castle_models = castleModels
-                  new_castle_models[editModelNumber]["angle_y"] = previousCountRotY+(x-click_x)*0.01
-                  setCastleModels(new_castle_models)
-                }
-              }}
-              onMouseDown={(e) => {
-                handleMouseClick(e);
-                setMouseIsDown(true);
-              }}
-              onMouseUp={()=>{
-                setMouseIsDown(false);
-                setPreviousCountRotY(castleModels[editModelNumber]["angle_y"])
-              }}
-        >
-            🔄 Y ({Math.floor(castleModels[editModelNumber]["angle_y"] / Math.PI * 180 * 100)/100})度 🔄
-        </div>
-        <div class = "move-sliders move-z-slider"
-              onMouseMove={(e)=>{
-                handleMouseMove(e);
-                if(mouseIsDown){
-                  var new_castle_models = castleModels
-                  new_castle_models[editModelNumber]["angle_z"] = previousCountRotZ+(x-click_x)*0.01
-                  setCastleModels(new_castle_models)
-                }
-              }}
-              onMouseDown={(e) => {
-                handleMouseClick(e);
-                setMouseIsDown(true);
-              }}
-              onMouseUp={()=>{
-                setMouseIsDown(false);
-                setPreviousCountRotZ(castleModels[editModelNumber]["angle_z"])
-              }}
-        >
-            🔄 Z ({Math.floor(castleModels[editModelNumber]["angle_z"] / Math.PI * 180 * 100)/100})度 🔄
-        </div>
-    </div>
+
+    edit_castle_contents= <div class="edit-castle-contents-wrapper">
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                  <a class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
+                                  <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
+                                  <a class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
+                                </div>
+                              </nav>
+                              <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name} role="tabpanel" aria-labelledby="nav-home-tab">
+                                  <button onClick = {() => openModal("add_report")}>積み上げを登録する</button>
+                                  <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
+                                  {new_report_list}
+                                </div>
+                                <div class="tab-pane fade show add-3d-model" id={"nav-add-model-"+props.castle.castle_name} role="tabpanel" aria-labelledby="nav-add-model-tab">
+                                  {castle_part_price_list}
+                                  <p></p>
+                                  <button onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
+                                </div>
+                                <div class="tab-pane fade show " id={"nav-move-model-"+props.castle.castle_name} role="tabpanel" aria-labelledby="nav-move-model-tab">
+                                  <button onClick = {()=> updateCastleParts()}>変更を保存</button>
+                                  <div>
+                                      <div class = "move-sliders move-x-slider"
+                                            onMouseMove={(e)=>{
+                                              handleMouseMove(e);
+                                              if(mouseIsDown){
+                                                var new_castle_models = castleModels
+                                                new_castle_models[editModelNumber]["position_x"] = previousCountPosX+(x-click_x)*0.1
+                                                setCastleModels(new_castle_models)
+                                              }
+                                            }}
+                                            onMouseDown={(e) => {
+                                              handleMouseClick(e);
+                                              setMouseIsDown(true);
+                                            }}
+                                            onMouseUp={()=>{
+                                              setMouseIsDown(false);
+                                              setPreviousCountPosX(castleModels[editModelNumber]["position_x"])
+                                            }}
+                                      >
+                                          ← X ({Math.floor(castleModels[editModelNumber]["position_x"] * 100)/100}) →
+                                      </div>
+                                      <div class = "move-sliders move-y-slider"
+                                            onMouseMove={(e)=>{
+                                              handleMouseMove(e);
+                                              if(mouseIsDown){
+                                                var new_castle_models = castleModels
+                                                new_castle_models[editModelNumber]["position_y"] = previousCountPosY+(x-click_x)*0.1
+                                                setCastleModels(new_castle_models)
+                                              }
+                                            }}
+                                            onMouseDown={(e) => {
+                                              handleMouseClick(e);
+                                              setMouseIsDown(true);
+                                            }}
+                                            onMouseUp={()=>{
+                                              setMouseIsDown(false);
+                                              setPreviousCountPosY(castleModels[editModelNumber]["position_y"])
+                                            }}
+                                      >
+                                          ← Y ({Math.floor(castleModels[editModelNumber]["position_y"] * 100)/100}) →
+                                      </div>
+                                      <div class = "move-sliders move-z-slider"
+                                            onMouseMove={(e)=>{
+                                              handleMouseMove(e);
+                                              if(mouseIsDown){
+                                                var new_castle_models = castleModels
+                                                new_castle_models[editModelNumber]["position_z"] = previousCountPosZ+(x-click_x)*0.1
+                                                setCastleModels(new_castle_models)
+                                              }
+                                            }}
+                                            onMouseDown={(e) => {
+                                              handleMouseClick(e);
+                                              setMouseIsDown(true);
+                                            }}
+                                            onMouseUp={()=>{
+                                              setMouseIsDown(false);
+                                              setPreviousCountPosZ(castleModels[editModelNumber]["position_z"])
+                                            }}
+                                      >
+                                          ← Z ({Math.floor(castleModels[editModelNumber]["position_z"] * 100)/100}) →
+                                      </div>
+
+                                      <div class = "move-sliders move-x-slider"
+                                            onMouseMove={(e)=>{
+                                              handleMouseMove(e);
+                                              if(mouseIsDown){
+                                                var new_castle_models = castleModels
+                                                new_castle_models[editModelNumber]["angle_x"] = previousCountRotX+(x-click_x)*0.01
+                                                setCastleModels(new_castle_models)
+                                              }
+                                            }}
+                                            onMouseDown={(e) => {
+                                              handleMouseClick(e);
+                                              setMouseIsDown(true);
+                                            }}
+                                            onMouseUp={()=>{
+                                              setMouseIsDown(false);
+                                              setPreviousCountRotX(castleModels[editModelNumber]["angle_x"])
+                                            }}
+                                      >
+                                          🔄 X ({Math.floor(castleModels[editModelNumber]["angle_x"] / Math.PI * 180 * 100)/100})度 🔄
+                                      </div>
+                                      <div class = "move-sliders move-y-slider"
+                                            onMouseMove={(e)=>{
+                                              handleMouseMove(e);
+                                              if(mouseIsDown){
+                                                var new_castle_models = castleModels
+                                                new_castle_models[editModelNumber]["angle_y"] = previousCountRotY+(x-click_x)*0.01
+                                                setCastleModels(new_castle_models)
+                                              }
+                                            }}
+                                            onMouseDown={(e) => {
+                                              handleMouseClick(e);
+                                              setMouseIsDown(true);
+                                            }}
+                                            onMouseUp={()=>{
+                                              setMouseIsDown(false);
+                                              setPreviousCountRotY(castleModels[editModelNumber]["angle_y"])
+                                            }}
+                                      >
+                                          🔄 Y ({Math.floor(castleModels[editModelNumber]["angle_y"] / Math.PI * 180 * 100)/100})度 🔄
+                                      </div>
+                                      <div class = "move-sliders move-z-slider"
+                                            onMouseMove={(e)=>{
+                                              handleMouseMove(e);
+                                              if(mouseIsDown){
+                                                var new_castle_models = castleModels
+                                                new_castle_models[editModelNumber]["angle_z"] = previousCountRotZ+(x-click_x)*0.01
+                                                setCastleModels(new_castle_models)
+                                              }
+                                            }}
+                                            onMouseDown={(e) => {
+                                              handleMouseClick(e);
+                                              setMouseIsDown(true);
+                                            }}
+                                            onMouseUp={()=>{
+                                              setMouseIsDown(false);
+                                              setPreviousCountRotZ(castleModels[editModelNumber]["angle_z"])
+                                            }}
+                                      >
+                                          🔄 Z ({Math.floor(castleModels[editModelNumber]["angle_z"] / Math.PI * 180 * 100)/100})度 🔄
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+
+
   }
 
 
 
   return (
     <div class={props.tag_class}>
-      <div class="castle-header-at-goup-page">
-        {user_infomation_on_castle}
-        <h2>{props.castle_name} 城</h2>
+      <div class="header-and-canvas-wrapper">
+        <div class="castle-header-at-goup-page">
+          {user_infomation_on_castle}
+          <h2>{props.castle_name} 城</h2>
+        </div>
+        <div class="canvas">
+      		<Canvas >
+    				<CameraController />
+      			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
+      			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
+      			<pointLight position={[10, -20, 70]} />
+    				<pointLight position={[0, 100, -150]} />
+
+            {castle}
+            {castle_selected_to_add}
+
+
+
+      		</Canvas>
+        </div>
       </div>
-      <div class="canvas">
-    		<Canvas >
-  				<CameraController />
-    			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
-    			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
-    			<pointLight position={[10, -20, 70]} />
-  				<pointLight position={[0, 100, -150]} />
-
-          {castle}
-
-
-
-    		</Canvas>
-        <Modal
-          isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
-          <h2>今日の積み上げ</h2>
-          <textarea  value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
-          <button onClick={postReport}>登録する</button>
-
-        </Modal>
-        {castle_part_point}
-        {open_report_modal_button}
-        {add_castle_button}
-        {save_castle_parts_button}
-        {report_list}
-        {edit_castle_parts_sliders}
-      </div>
+      {edit_castle_contents}
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        {modalContent}
+      </Modal>
     </div>
   )
 }
