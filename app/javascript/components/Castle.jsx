@@ -42,7 +42,14 @@ function Castle(props){
 
   const [selectedCastleToAdd, setSelectedCastleToAdd] = useState("")
 
-  const [modalContent, setModalContent] = useState("")
+  var default_modal_content = <div>
+                                <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
+                                <h2>今日の積み上げ</h2>
+                                <textarea  value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
+                                <button onClick={postReport}>登録する</button>
+                              </div>
+
+  const [modalContent, setModalContent] = useState(default_modal_content)
 
 	const [countRotX,setCountRotX] = useState(0)
   const [previousCountRotX,setPreviousCountRotX] = useState(0)
@@ -81,20 +88,25 @@ function Castle(props){
   const openModal = (type) =>  {
     var new_modal_content;
     if(type=="add_report"){
-      new_modal_content = <div>
-                            <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
-                            <h2>今日の積み上げ</h2>
-                            <textarea  value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
-                            <button onClick={postReport}>登録する</button>
+      new_modal_content =<div>
+
                           </div>
 
     }else if(type=="confirmation_to_add_model"){
-      if(props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]>=0){
+      if(selectedCastleToAdd==""){
+        new_modal_content = <div>
+                              <h2>追加する建物を選んでください</h2>
+                              <div>
+                                現在の積み上げポイント: {props.castle.castle_part_point}
+                              </div>
+                            </div>
+      }else if(props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]>=0){
         new_modal_content = <div>
                               <h2>{selectedCastleToAdd["displayed_name"]}を追加しますか？</h2>
                               <div>
                                 積み上げポイント: {props.castle.castle_part_point} → {props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]}
                               </div>
+                              <button onClick={()=>addCastle(selectedCastleToAdd["three_d_model_name"])}>城に追加する</button>
                             </div>
       }else{
         new_modal_content = <div>
@@ -107,8 +119,9 @@ function Castle(props){
                               </div>
                             </div>
       }
+      setModalContent(new_modal_content)
     }
-    setModalContent(new_modal_content)
+
     setModalIsOpen(true)
   }
   const afterOpenModal = () => {
@@ -169,7 +182,9 @@ function Castle(props){
      props.fetchCastles("user", user_id, true)
   }
 
-  const addCastle = () =>{
+  const addCastle = (new_model_name) =>{
+      setSelectedCastleToAdd("")
+      closeModal()
       const getCsrfToken = () => {
         const metas = document.getElementsByTagName('meta');
         for (let meta of metas) {
@@ -185,10 +200,10 @@ function Castle(props){
       //var model_name_list = [ "wall_01.glb", "castle.glb"]
       const data = { castle_part: {
                             castle_id: props.castle_id,
-                            three_d_model_name: model_name_list[Math.floor(Math.random() * model_name_list.length)],
-                            position_x: Math.floor(Math.random() * 20 -10),
+                            three_d_model_name: new_model_name,
+                            position_x: 0,
                             position_y: 0,
-                            position_z: Math.floor(Math.random() * 20 -10),
+                            position_z: 0,
                             angle_x: 0,
                             angle_y: 0,
                             angle_z: 0,
@@ -292,7 +307,7 @@ function Castle(props){
 
   var castle_selected_to_add;
   if (selectedCastleToAdd!=""){
-    castle_selected_to_add = <UseModel model_number={castleModels.length} position={[0, 2, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} />
+    castle_selected_to_add = <UseModel model_number={castleModels.length} position={[0, 1, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} />
   }
   var user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
@@ -380,18 +395,19 @@ function Castle(props){
     edit_castle_contents= <div class="edit-castle-contents-wrapper">
                             <nav>
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                  <a class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
-                                  <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
-                                  <a class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
+                                  <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
+                                  <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
+                                  <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
                                 </div>
                               </nav>
                               <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name} role="tabpanel" aria-labelledby="nav-home-tab">
-                                  <button onClick = {() => openModal("add_report")}>積み上げを登録する</button>
                                   <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
                                   {new_report_list}
+                                  <button onClick = {() => openModal("add_report")}>積み上げを登録する</button>
                                 </div>
                                 <div class="tab-pane fade show add-3d-model" id={"nav-add-model-"+props.castle.castle_name} role="tabpanel" aria-labelledby="nav-add-model-tab">
+                                  <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
                                   {castle_part_price_list}
                                   <p></p>
                                   <button onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
