@@ -46,10 +46,10 @@ function Castle(props){
                                 <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
                                 <h2>今日の積み上げ</h2>
                                 <textarea  value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
-                                <button onClick={postReport}>登録する</button>
+                                <button onClick={() => postReport(modalInput)}>登録する</button>
                               </div>
 
-  const [modalContent, setModalContent] = useState(default_modal_content)
+  const [modalType, setModalType] = useState("add_report")
 
 	const [countRotX,setCountRotX] = useState(0)
   const [previousCountRotX,setPreviousCountRotX] = useState(0)
@@ -86,42 +86,7 @@ function Castle(props){
   }
 
   const openModal = (type) =>  {
-    var new_modal_content;
-    if(type=="add_report"){
-      new_modal_content =<div>
-
-                          </div>
-
-    }else if(type=="confirmation_to_add_model"){
-      if(selectedCastleToAdd==""){
-        new_modal_content = <div>
-                              <h2>追加する建物を選んでください</h2>
-                              <div>
-                                現在の積み上げポイント: {props.castle.castle_part_point}
-                              </div>
-                            </div>
-      }else if(props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]>=0){
-        new_modal_content = <div>
-                              <h2>{selectedCastleToAdd["displayed_name"]}を追加しますか？</h2>
-                              <div>
-                                積み上げポイント: {props.castle.castle_part_point} → {props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]}
-                              </div>
-                              <button onClick={()=>addCastle(selectedCastleToAdd["three_d_model_name"])}>城に追加する</button>
-                            </div>
-      }else{
-        new_modal_content = <div>
-                              <h2>積み上げポイントが足りません！</h2>
-                              <div>
-                                必要な積み上げポイント: {selectedCastleToAdd["castle_part_point"]}
-                              </div>
-                              <div>
-                                現在の積み上げポイント: {props.castle.castle_part_point}
-                              </div>
-                            </div>
-      }
-      setModalContent(new_modal_content)
-    }
-
+    setModalType(type)
     setModalIsOpen(true)
   }
   const afterOpenModal = () => {
@@ -136,7 +101,6 @@ function Castle(props){
   }
 
   const postReport = () =>{
-
     const getCsrfToken = () => {
       const metas = document.getElementsByTagName('meta');
       for (let meta of metas) {
@@ -149,7 +113,6 @@ function Castle(props){
     }
 
     const data = { report: {content: modalInput, user_id: props.user_id, castle_id: props.castle_id}}
-
     fetch('/reports',{
       method: 'POST',
       headers: {
@@ -160,7 +123,6 @@ function Castle(props){
     })
     .then(res => res.json())
     .then((result) => {
-
       props.fetchCastles("user", props.user_id, false)
     })
     .then(()=>{
@@ -544,6 +506,42 @@ function Castle(props){
 
   }
 
+  var modal_content;
+  if (modalType=="add_report"){
+    modal_content = <div>
+                                  <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
+                                  <h2>今日の積み上げ</h2>
+                                  <textarea  value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
+                                  <button onClick={() => postReport()}>登録する</button>
+                                </div>
+  }else if(modalType=="confirmation_to_add_model"){
+    if(selectedCastleToAdd==""){
+      modal_content = <div>
+                            <h2>追加する建物を選んでください</h2>
+                            <div>
+                              現在の積み上げポイント: {props.castle.castle_part_point}
+                            </div>
+                          </div>
+    }else if(props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]>=0){
+      modal_content = <div>
+                            <h2>{selectedCastleToAdd["displayed_name"]}を追加しますか？</h2>
+                            <div>
+                              積み上げポイント: {props.castle.castle_part_point} → {props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]}
+                            </div>
+                            <button onClick={()=>addCastle(selectedCastleToAdd["three_d_model_name"])}>城に追加する</button>
+                          </div>
+    }else{
+      modal_content = <div>
+                            <h2>積み上げポイントが足りません！</h2>
+                            <div>
+                              必要な積み上げポイント: {selectedCastleToAdd["castle_part_point"]}
+                            </div>
+                            <div>
+                              現在の積み上げポイント: {props.castle.castle_part_point}
+                            </div>
+                          </div>
+    }
+  }
 
 
   return (
@@ -577,7 +575,7 @@ function Castle(props){
         style={customStyles}
         contentLabel="Example Modal"
       >
-        {modalContent}
+        {modal_content}
       </Modal>
     </div>
   )

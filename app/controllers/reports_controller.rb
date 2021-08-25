@@ -15,7 +15,7 @@ class ReportsController < ApplicationController
           end
           render :json => ["Successful registration of report"]
         rescue => e
-          render :json => ["Report registration failed in transaction processing"]
+          render :json => ["Report registration failed in transaction processing", e]
         end
       else
         render :json => ["Reports can only be registered once a day"]
