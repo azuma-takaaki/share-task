@@ -62,6 +62,10 @@
 
 
     //side-menu
+    .bm-menu-wrap{
+      width:40vw;
+      min-width: 300px;
+    }
     #nav-tab{
        display: flex;
     }
@@ -282,54 +286,133 @@
         }
 
         //castle
-        .castle_at_group{
-          float: left;
-          margin: 0.5rem;
-          height: 40vw;
-          width: 30vw;
-          .castle-header-at-goup-page{
-
-            .user-icon {
-              margin-left: 0.5rem;
-              float: left;
-              border-radius: 50%;
-              width:  2.5em;
-              height: 2.5em;
-              border: 3px solid #99FFCC;
-            }
-            .user-name{
-              margin-top: 1em;
-              margin-left: 0.5rem;
-              font-size: 1.5em;
-              cursor : pointer;
-              &:hover {
-                text-decoration: underline;
+        @media screen and (orientation: portrait) {
+          .castle_at_group{
+            float: left;
+            margin: 0.5rem;
+            height: 120vw;
+            width: 100vw;
+            .castle-header-at-goup-page{
+              .user-icon {
+                margin-left: 0.5rem;
+                float: left;
+                border-radius: 50%;
+                width:  2em;
+                height: 2em;
+                border: 3px solid #99FFCC;
+              }
+              .user-name{
+                margin-top: 1em;
+                margin-left: 0.5rem;
+                font-size: 1.5em;
+                cursor : pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+              h2{
+                font-size: 1.7em;
+                margin-left: 1rem;
               }
             }
-            h2{
-              font-size: 1.7em;
-              margin-left: 1rem;
+            .canvas{
+              background-color: #abd4e0;
+              margin-bottom: 0.5rem;
+              width: 90vw;
+              height: 90vw;
+              margin: 0px;
+              z-index: 1;
             }
           }
-          .canvas{
-            /* 縦長 */
-            background-color: #abd4e0;
-            margin-bottom: 0.5rem;
-            @media screen and (orientation: portrait) {
-              width: 30vh;
-              height: 30vh;
-              margin: 0px;
-            }
 
-            /* 横長 */
-            @media screen and (orientation: landscape) {
-              width: 30vw;
-              height: 30vw;
-              margin: 0px;
-             }
-            z-index: 1;
-          }
         }
+
+        @media screen and (orientation: landscape) {
+          .castle_at_group{
+            float: left;
+            margin: 0.5rem 0.5rem 0.5rem 1rem;
+            height: 40vw;
+            width: 31vw;
+            .castle-header-at-goup-page{
+
+              .user-icon {
+                margin-left: 0.5rem;
+                float: left;
+                border-radius: 50%;
+                width:  2.5em;
+                height: 2.5em;
+                border: 3px solid #99FFCC;
+              }
+              .user-name{
+                margin-top: 1em;
+                margin-left: 0.5rem;
+                font-size: 1.5em;
+                cursor : pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+              h2{
+                font-size: 1.7em;
+                margin-left: 1rem;
+              }
+            }
+            .canvas{
+              background-color: #abd4e0;
+              margin-bottom: 0.5rem;
+              width: 32vw;
+              height: 32vw;
+              margin: 0px;
+              z-index: 1;
+            }
+          }
+
+        }
+
+        @media screen and (orientation: landscape) and (max-width: 1100px){
+          .castle_at_group{
+            float: left;
+            margin: 0.5rem;
+            height: 60vw;
+            width: 47vw;
+            .castle-header-at-goup-page{
+
+              .user-icon {
+                margin-left: 0.5rem;
+                float: left;
+                border-radius: 50%;
+                width:  2.5em;
+                height: 2.5em;
+                border: 3px solid #99FFCC;
+              }
+              .user-name{
+                margin-top: 1em;
+                margin-left: 0.5rem;
+                font-size: 1.5em;
+                cursor : pointer;
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+              h2{
+                font-size: 1.7em;
+                margin-left: 1rem;
+              }
+            }
+            .canvas{
+              /* 縦長 */
+              background-color: #abd4e0;
+              margin-bottom: 0.5rem;
+              width: 45vw;
+              height: 45vw;
+              margin: 0px;
+              z-index: 1;
+            }
+          }
+
+        }
+
+
 
         .massage-castle-is-empty{
           margin-top: 3rem;
@@ -395,13 +478,13 @@
                 z-index: 1;
               }
               .edit-castle-contents-wrapper{
-                width: 40vw;
-                margin: 0rem 2rem;
+                width: calc(100vw - 80vh);
+                margin: 0rem 1rem;
               }
             }
           }
-          /*スマホ*/
-          @media screen and (orientation: portrait) {
+
+          @media screen and (orientation: landscape) and (max-width: 1000px){
             .castle_at_user_page{
               display: -webkit-flex;
               display: -moz-flex;
@@ -409,7 +492,38 @@
               display: -o-flex;
               display: flex;
               margin: 5rem 0.5rem;
-              height: 35vw;
+              height: 67vh;
+              width: 100vw;
+              button{
+                z-index: 3;
+              }
+              h2{
+                z-index: 3;
+              }
+              .add-3d-model{
+                button{
+                  border-style: none;
+                  width: 100%;
+                }
+              }
+              .canvas{
+                margin-bottom: 0.5rem;
+                width: 50vw;
+                height: 50vw;
+                margin: 10px;
+                z-index: 1;
+              }
+              .edit-castle-contents-wrapper{
+                width: calc(100vw - 50vw);
+                margin: 0rem 1rem;
+              }
+            }
+          }
+          /*スマホ*/
+          @media screen and (orientation: portrait) {
+            .castle_at_user_page{
+              margin: 5rem 0.5rem;
+              height: calc(100vw);
               width: 100vw;
               button{
                   z-index: 3;
@@ -419,16 +533,19 @@
                 }
               .canvas{
                   margin-bottom: 0.5rem;
-                  width: 30vh;
-                  height: 20vh;
-                  margin: 10px;
+                  width: 90vw;
+                  height: 50vw;
+                  margin: 5px;
                   z-index: 1;
                 }
               .edit-castle-contents-wrapper{
-                width: 40vw;
+                width: 92vw;
+                margin: 0rem 1rem;
               }
             }
           }
+
+
 
 
 

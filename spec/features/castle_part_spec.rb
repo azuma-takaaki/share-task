@@ -33,7 +33,11 @@ feature "CastleParts" , :js => true do
     click_button "登録する"
     expect(page).to have_selector ".castle-point-at-user-page", text: "1"
     expect(page).to have_selector ".report-content", text: "プログラミングを5時間勉強した！"
+
+    page.find('.nav-link', text: '増築').click
+    click_button ('城の門 必要ポイント: 1')
     click_button "3Dモデルを追加"
+    click_button "城に追加する"
     expect(page).to have_selector ".castle-point-at-user-page", text: "0"
 
   end
@@ -56,7 +60,11 @@ feature "CastleParts" , :js => true do
     fill_in "今日の積み上げ", with:"プログラミングを5時間勉強した！"
     click_button "登録する"
     expect(page).to have_selector ".report-content", text: "プログラミングを5時間勉強した！"
+    page.find('.nav-link', text: '増築').click
+    click_button ('城の門 必要ポイント: 1')
     click_button "3Dモデルを追加"
+    click_button "城に追加する"
+    page.find('.nav-link', text: '移動').click
     click_button "変更を保存"
   end
 

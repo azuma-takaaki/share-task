@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_25_095547) do
+ActiveRecord::Schema.define(version: 2021_08_25_093304) do
 
   create_table "castle_part_prices", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "three_d_model_name"
