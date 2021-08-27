@@ -20,14 +20,14 @@ class Top extends React.Component {
   constructor(props) {
     super(props);
     this.GroupsListRef = React.createRef();
-    var is_logged_in = false
+    let is_logged_in = false
     if(!(props.logged_in_user  === null)){
       is_logged_in = true
     }
 
 
 
-    var tmp = props.logged_in_user
+    let tmp = props.logged_in_user
     this.state = {
       current_user: tmp,
       logged_in: is_logged_in,
@@ -56,13 +56,13 @@ class Top extends React.Component {
 
 
   setGroupList(){
-    var group_list = []
+    let group_list = []
     fetch("/get_group_list",{
       method: 'GET'
       }).then(res => res.json())
       .then(
         (result) => {
-          for(var i in result[0]){
+          for(let i in result[0]){
             group_list.push(result[0][i])
           }
           this.setState({
@@ -125,16 +125,16 @@ class Top extends React.Component {
       .then(
         (result) => {
           if(result[0] == "アカウント登録できませんでした"){
-            var error_massages = []
-            for(var i in result[1]){
+            let error_massages = []
+            for(let i in result[1]){
               error_massages.push(result[1][i])
             }
             this.setState({
               error_messages: error_massages
             })
           }else{
-            var group_list = []
-            for(var i in result[0]){
+            let group_list = []
+            for(let i in result[0]){
               group_list.push(result[0][i])
             }
             this.setState({
@@ -179,16 +179,16 @@ class Top extends React.Component {
       .then(
         (result) => {
           if(result[0] == "ログインできませんでした"){
-            var error_massages = []
-            for(var i in result[1]){
+            let error_massages = []
+            for(let i in result[1]){
               error_massages.push(result[1][i])
             }
             this.setState({
               error_messages: error_massages
             })
           }else{
-            var group_list = []
-            for(var i in result[0]){
+            let group_list = []
+            for(let i in result[0]){
               group_list.push(result[0][i])
             }
             this.setState({

@@ -26,17 +26,17 @@ class GroupsList extends React.Component {
   constructor(props) {
     super(props);
     this.GroupRef = React.createRef();
-    var arr_visible = []
+    let arr_visible = []
     props.groups.map((group) => {
 
        arr_visible[group.id] = false
     })
 
-    var users_castle_list = [];
+    let users_castle_list = [];
     users_castle_list[this.props.current_user.id] = []
 
-    var current_user_id = this.props.current_user.id
-    var current_user = this.props.current_user
+    let current_user_id = this.props.current_user.id
+    let current_user = this.props.current_user
 
 
     this.state = {
@@ -72,13 +72,13 @@ class GroupsList extends React.Component {
   }
 
   getGroupList() {
-    var group_list = []
+    let group_list = []
     fetch("/get_group_list",{
       method: 'GET'
       }).then(res => res.json())
       .then(
         (result) => {
-          for(var i in result[0]){
+          for(let i in result[0]){
             group_list.push(result[0][i])
           }
         }
@@ -87,7 +87,7 @@ class GroupsList extends React.Component {
           group_list: group_list
         });
 
-        var new_visible_group = []
+        let new_visible_group = []
         group_list.map((group) =>{
           new_visible_group[group.id] = false
         })
@@ -112,9 +112,9 @@ class GroupsList extends React.Component {
     this.setState({input_value_search_groups: e.target.value}, function() {
         const input_value = this.state.input_value_search_groups.trim().toLowerCase();
         const input_length = input_value.length;
-        var new_suggestions = []
+        let new_suggestions = []
         if(!(input_length == 0)){
-          for(var i in this.state.relative_groups_list){
+          for(let i in this.state.relative_groups_list){
             if(this.state.relative_groups_list[i].name.toLowerCase().slice(0, input_length) === input_value){
               new_suggestions.push(this.state.relative_groups_list[i])
             }
@@ -155,8 +155,8 @@ class GroupsList extends React.Component {
           this.fetchRelativeGroup()
           closeModal()
         }else if(result[0] == "failed to create a group"){
-          var error_massages = []
-          for(var i in result[1]){
+          let error_massages = []
+          for(let i in result[1]){
             error_massages.push(result[1][i])
           }
           this.setState({
@@ -167,7 +167,7 @@ class GroupsList extends React.Component {
       })
   }
   switchDisplay(type, id){
-    var new_visible_group = []
+    let new_visible_group = []
     Object.keys(this.state.group_is_visible).map((key) =>{
       new_visible_group[key] = false
     })
@@ -183,7 +183,7 @@ class GroupsList extends React.Component {
         this.setState({group_is_visible: new_visible_group})
         this.setState({serched_group_is_visible: []})
       }else{
-        var serched_group_array = [];
+        let serched_group_array = [];
         serched_group_array[id] = true
         this.setState({serched_group_is_visible: serched_group_array})
         this.setState({group_is_visible: new_visible_group})
@@ -202,7 +202,7 @@ class GroupsList extends React.Component {
     this.GroupRef.current.closeMenu();
   }
   fetchRelativeGroup(){
-    var groups_list = []
+    let groups_list = []
     fetch("/groups",{
       method: 'GET'
       }).then(res => res.json())
@@ -218,7 +218,7 @@ class GroupsList extends React.Component {
   }
   fetchCastles(type, id, switchDisplay){
     if(type == "group"){
-      var groups_castle_list = this.state.groups_castle_list
+      let groups_castle_list = this.state.groups_castle_list
       fetch("get_group_castle_list/" + id, {
         method: 'GET'
         }).then(res => res.json())
@@ -231,7 +231,7 @@ class GroupsList extends React.Component {
           this.switchDisplay(type, id)
         })
     }else if(type == "user"){
-      var users_castle_list = this.state.users_castle_list
+      let users_castle_list = this.state.users_castle_list
       fetch("get_user_castle_list/" + id, {
         method: 'GET'
         }).then(res => res.json())
@@ -240,7 +240,7 @@ class GroupsList extends React.Component {
             users_castle_list[id] = result[0]
             this.setState({users_castle_list: users_castle_list})
             //alert("GL:" + users_castle_list[id][0]["models"].length)
-            var visible_user = result[1]
+            let visible_user = result[1]
             this.setState({visible_user: visible_user})
           }
         ).then(()=>{

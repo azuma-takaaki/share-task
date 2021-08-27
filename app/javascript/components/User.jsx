@@ -37,13 +37,13 @@ class User extends React.Component {
 
 
   setCastlePartPriceList(){
-    var castle_part_price_list = []
+    let castle_part_price_list = []
     fetch("/get_castle_part_price_list",{
       method: 'GET'
       }).then(res => res.json())
       .then(
         (result) => {
-          for(var i in result[0]){
+          for(let i in result[0]){
             castle_part_price_list.push(result[0][i])
           }
           this.setState({
@@ -101,7 +101,7 @@ class User extends React.Component {
 
   render () {
 
-    var castles;
+    let castles;
     if(!(this.props.users_castle_list.length==0)){
       castles = this.props.users_castle_list.map((castle) => {
         //alert("User: " + castle["models"].length)

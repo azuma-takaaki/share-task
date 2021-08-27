@@ -115,8 +115,8 @@ class Group extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
-          var user_list = []
-          for(var i in result[0]){
+          let user_list = []
+          for(let i in result[0]){
             user_list.push(result[0][i])
           }
           this.setState({
@@ -124,11 +124,11 @@ class Group extends React.Component {
           });
 
 
-          var task_list = []
+          let task_list = []
           this.setState({
             group_tasks: task_list
           });
-          for(var i in result[1]){
+          for(let i in result[1]){
             task_list.push(result[1][i])
           }
           this.setState({
@@ -145,8 +145,8 @@ class Group extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
-          var user_list = []
-          for(var i in result[0]){
+          let user_list = []
+          for(let i in result[0]){
             user_list.push(result[0][i])
           }
           this.setState({
@@ -246,9 +246,9 @@ class Group extends React.Component {
                                     </div>
     }
 
-    var modal_content;
+    let modal_content;
     if(this.state.modal_type=="edit_group"){
-      var group_name = this.props.group.name;
+      let group_name = this.props.group.name;
       this.setState({input_value: group_name});
       modal_content= <div class="react-modal">
                         <h2>グループを編集</h2>
@@ -291,7 +291,7 @@ class Group extends React.Component {
                       </div>
     }
 
-    var castles;
+    let castles;
 
     if(!(this.props.castle_list.length==0)){
       castles = this.props.castle_list.map((castle) => {

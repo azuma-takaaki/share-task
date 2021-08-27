@@ -335,17 +335,16 @@ function Castle(props){
   if(props.tag_class=="castle_at_user_page"){
     var new_report_list = []
     if (!(props.castle_reports[0].content == null)){
-        for(var i=0; i<props.castle_reports.length; i++){
+        for(let i=0; i<props.castle_reports.length; i++){
           new_report_list.push(<p class = "report-content p-3 mb-2 bg-info text-white">今日の積み上げ: {props.castle_reports[i].content}</p>)
         }
     }
     var castle_part_price_list = []
     var temppp = []
-    for(var i=0; i<props.castle_part_price_list.length; i++){
-      const num = i
+    for(let i=0; i<props.castle_part_price_list.length; i++){
       castle_part_price_list.push(<div>
-                                    <button class = "p-3 mb-2 bg-info text-white" onClick={() => {setSelectedCastleToAdd(props.castle_part_price_list[num])}}>
-                                        {props.castle_part_price_list[i]["displayed_name"]+"  必要ポイント: "+ props.castle_part_price_list[num]["castle_part_point"]}
+                                    <button class = "p-3 mb-2 bg-info text-white" onClick={() => {setSelectedCastleToAdd(props.castle_part_price_list[i])}}>
+                                        {props.castle_part_price_list[i]["displayed_name"]+"  必要ポイント: "+ props.castle_part_price_list[i]["castle_part_point"]}
                                     </button>
                                   </div>)
 

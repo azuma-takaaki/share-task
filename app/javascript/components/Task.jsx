@@ -30,7 +30,7 @@ class Task extends React.Component{
   }
   openModal() {
     this.setState({modalIsOpen: true});
-    var content = this.state.content
+    let content = this.state.content
     this.setState({input_value: content});
   }
   afterOpenModal() {
