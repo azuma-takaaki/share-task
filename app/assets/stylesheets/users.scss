@@ -162,8 +162,8 @@
       display:none;
     }
 
-    //group
-    .group-wrapper{
+    //main-display
+    .group-user-wrapper{
         background-color:#B3CEE3;
         width:100vw;
         height: 100%;
@@ -181,241 +181,249 @@
           top:0;
           z-index: 5;
         }
-        //header
-        .group-header{
-          width: 100%;
-          height: 4rem;
-          margin-bottm: 1rem;
-          display:flex;
-          position: fixed;
-          top:0;
-          background-color:#9be5f2;
-          z-index: 4;
 
 
-          //group name
-          .group-name{
-            font-size: 2rem;
-            width: 30%;
-            height: 100%;
-            margin: 1% 5%;
-            white-space: nowrap;
-            margin-left: 5rem;
-          }
-          //user
-          .group-members-list {
-            background-color:#CFEFFF;
-            width:  auto;
-            height: 100%;
-            padding: 0rem;
-            margin: 0rem;
+        .group-wrapper{
+
+          //header
+          .group-header{
+            width: 100%;
+            height: 4rem;
+            margin-bottm: 1rem;
             display:flex;
-            overflow-x: hidden;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-            &:hover {
-              overflow-x: auto;
+            position: fixed;
+            top:0;
+            background-color:#9be5f2;
+            z-index: 4;
+
+
+            //group name
+            .group-name{
+              font-size: 2rem;
+              width: 30%;
+              height: 100%;
+              margin: 1% 5%;
+              white-space: nowrap;
+              margin-left: 5rem;
             }
-            .group-member{
-              font-size: 0.6em;
-              float: left;
-              margin: 0.5em;
-            }
-            .user-icon {
-              border-radius: 50%;
-              width:  3em;
-              height: 3em;
-              border: 4px solid #99FFCC;
+            //user
+            .group-members-list {
+              background-color:#CFEFFF;
+              width:  auto;
+              height: 100%;
+              padding: 0rem;
+              margin: 0rem;
+              display:flex;
+              overflow-x: hidden;
+              white-space: nowrap;
+              -webkit-overflow-scrolling: touch;
+              &:hover {
+                overflow-x: auto;
+              }
+              .group-member{
+                font-size: 0.6em;
+                float: left;
+                margin: 0.5em;
+              }
+              .user-icon {
+                border-radius: 50%;
+                width:  3em;
+                height: 3em;
+                border: 4px solid #99FFCC;
+              }
             }
 
-          }
-
-          //edit-group-button
-          .edit-group-button-wrapper{
-            width:6%;
-            height:100%;
-
-            .edit-group-button{
-              background-color:	#CCFFFF;
-              //border-width: thin;
-              border: 0;
-              font-size: 1.5rem;
-              width:100%;
+            //edit-group-button
+            .edit-group-button-wrapper{
+              width:6%;
               height:100%;
-              overflow: hidden;
-              text-overflow: clip;
-              white-space: nowrap;
-              &:hover {
-                opacity: 0.6;
-                transition-duration: 0.3s;
-              }
-            }
-          }
 
-          .add-task-button-wrapper{
-            width:24%;
-            height:100%;
-            padding: 0.5rem;
-            //add-task-button
-            .add-task-button {
-              font-size: 1.5rem;
-              width:90%;
-              height:80%;
-              border: 0;
-              border-radius: 10%;
-              background-color:	#CCFFFF;
-              overflow: hidden;
-              text-overflow: clip;
-              white-space: nowrap;
-
-
-              bottom: 0;
-              line-height: 120%;
-              text-decoration: none;
-              position:relative;
-              -webkit-border-radius: 24px;
-              -moz-border-radius: 24px;
-              border-style: none;
-              &:hover {
-                opacity: 0.6;
-                transition-duration: 0.3s;
-              }
-            }
-          }
-
-        }
-
-        //castle
-        @media screen and (orientation: portrait) {
-          .castle_at_group{
-            float: left;
-            margin: 0.5rem;
-            height: 120vw;
-            width: 100vw;
-            .castle-header-at-goup-page{
-              .user-icon {
-                margin-left: 0.5rem;
-                float: left;
-                border-radius: 50%;
-                width:  2em;
-                height: 2em;
-                border: 3px solid #99FFCC;
-              }
-              .user-name{
-                margin-top: 1em;
-                margin-left: 0.5rem;
-                font-size: 1.5em;
-                cursor : pointer;
+              .edit-group-button{
+                background-color:	#CCFFFF;
+                //border-width: thin;
+                border: 0;
+                font-size: 1.5rem;
+                width:100%;
+                height:100%;
+                overflow: hidden;
+                text-overflow: clip;
+                white-space: nowrap;
                 &:hover {
-                  text-decoration: underline;
+                  opacity: 0.6;
+                  transition-duration: 0.3s;
                 }
               }
-              h2{
-                font-size: 1.7em;
-                margin-left: 1rem;
-              }
             }
-            .canvas{
-              background-color: #abd4e0;
-              margin-bottom: 0.5rem;
-              width: 90vw;
-              height: 90vw;
-              margin: 0px;
-              z-index: 1;
-            }
-          }
 
-        }
+            .add-task-button-wrapper{
+              width:24%;
+              height:100%;
+              padding: 0.5rem;
+              //add-task-button
+              .add-task-button {
+                font-size: 1.5rem;
+                width:90%;
+                height:80%;
+                border: 0;
+                border-radius: 10%;
+                background-color:	#CCFFFF;
+                overflow: hidden;
+                text-overflow: clip;
+                white-space: nowrap;
 
-        @media screen and (orientation: landscape) {
-          .castle_at_group{
-            float: left;
-            margin: 0.5rem 0.5rem 0.5rem 1rem;
-            height: 40vw;
-            width: 31vw;
-            .castle-header-at-goup-page{
 
-              .user-icon {
-                margin-left: 0.5rem;
-                float: left;
-                border-radius: 50%;
-                width:  2.5em;
-                height: 2.5em;
-                border: 3px solid #99FFCC;
-              }
-              .user-name{
-                margin-top: 1em;
-                margin-left: 0.5rem;
-                font-size: 1.5em;
-                cursor : pointer;
+                bottom: 0;
+                line-height: 120%;
+                text-decoration: none;
+                position:relative;
+                -webkit-border-radius: 24px;
+                -moz-border-radius: 24px;
+                border-style: none;
                 &:hover {
-                  text-decoration: underline;
+                  opacity: 0.6;
+                  transition-duration: 0.3s;
                 }
               }
-              h2{
-                font-size: 1.7em;
-                margin-left: 1rem;
-              }
             }
-            .canvas{
-              background-color: #abd4e0;
-              margin-bottom: 0.5rem;
-              width: 32vw;
-              height: 32vw;
-              margin: 0px;
-              z-index: 1;
-            }
+
           }
 
-        }
+          .group-header-spacer{
+            width: 100%;
+            height: 4rem;
+            z-index: 1;
+          }
 
-        @media screen and (orientation: landscape) and (max-width: 1100px){
-          .castle_at_group{
-            float: left;
-            margin: 0.5rem;
-            height: 60vw;
-            width: 47vw;
-            .castle-header-at-goup-page{
-
-              .user-icon {
-                margin-left: 0.5rem;
-                float: left;
-                border-radius: 50%;
-                width:  2.5em;
-                height: 2.5em;
-                border: 3px solid #99FFCC;
-              }
-              .user-name{
-                margin-top: 1em;
-                margin-left: 0.5rem;
-                font-size: 1.5em;
-                cursor : pointer;
-                &:hover {
-                  text-decoration: underline;
+          //castle
+          @media screen and (orientation: portrait) {
+            .castle_at_group{
+              float: left;
+              margin: 0.5rem;
+              height: 120vw;
+              width: 100vw;
+              .castle-header-at-goup-page{
+                .user-icon {
+                  margin-left: 0.5rem;
+                  float: left;
+                  border-radius: 50%;
+                  width:  2em;
+                  height: 2em;
+                  border: 3px solid #99FFCC;
+                }
+                .user-name{
+                  margin-top: 1em;
+                  margin-left: 0.5rem;
+                  font-size: 1.5em;
+                  cursor : pointer;
+                  &:hover {
+                    text-decoration: underline;
+                  }
+                }
+                h2{
+                  font-size: 1.7em;
+                  margin-left: 1rem;
                 }
               }
-              h2{
-                font-size: 1.7em;
-                margin-left: 1rem;
+              .canvas{
+                background-color: #abd4e0;
+                margin-bottom: 0.5rem;
+                width: 90vw;
+                height: 90vw;
+                margin: 0px;
+                z-index: 1;
               }
             }
-            .canvas{
-              /* 縦長 */
-              background-color: #abd4e0;
-              margin-bottom: 0.5rem;
-              width: 45vw;
-              height: 45vw;
-              margin: 0px;
-              z-index: 1;
-            }
+
           }
 
-        }
+          @media screen and (orientation: landscape) {
+            .castle_at_group{
+              float: left;
+              margin: 0.5rem 0.5rem 0.5rem 1rem;
+              height: 40vw;
+              width: 31vw;
+              .castle-header-at-goup-page{
 
+                .user-icon {
+                  margin-left: 0.5rem;
+                  float: left;
+                  border-radius: 50%;
+                  width:  2.5em;
+                  height: 2.5em;
+                  border: 3px solid #99FFCC;
+                }
+                .user-name{
+                  margin-top: 1em;
+                  margin-left: 0.5rem;
+                  font-size: 1.5em;
+                  cursor : pointer;
+                  &:hover {
+                    text-decoration: underline;
+                  }
+                }
+                h2{
+                  font-size: 1.7em;
+                  margin-left: 1rem;
+                }
+              }
+              .canvas{
+                background-color: #abd4e0;
+                margin-bottom: 0.5rem;
+                width: 32vw;
+                height: 32vw;
+                margin: 0px;
+                z-index: 1;
+              }
+            }
 
+          }
 
-        .massage-castle-is-empty{
-          margin-top: 3rem;
+          @media screen and (orientation: landscape) and (max-width: 1100px){
+            .castle_at_group{
+              float: left;
+              margin: 0.5rem;
+              height: 60vw;
+              width: 47vw;
+              .castle-header-at-goup-page{
+
+                .user-icon {
+                  margin-left: 0.5rem;
+                  float: left;
+                  border-radius: 50%;
+                  width:  2.5em;
+                  height: 2.5em;
+                  border: 3px solid #99FFCC;
+                }
+                .user-name{
+                  margin-top: 1em;
+                  margin-left: 0.5rem;
+                  font-size: 1.5em;
+                  cursor : pointer;
+                  &:hover {
+                    text-decoration: underline;
+                  }
+                }
+                h2{
+                  font-size: 1.7em;
+                  margin-left: 1rem;
+                }
+              }
+              .canvas{
+                /* 縦長 */
+                background-color: #abd4e0;
+                margin-bottom: 0.5rem;
+                width: 45vw;
+                height: 45vw;
+                margin: 0px;
+                z-index: 1;
+              }
+            }
+
+          }
+
+          .massage-castle-is-empty{
+            margin-top: 3rem;
+          }
         }
 
         //task
@@ -443,6 +451,12 @@
           .users-header{
             z-index: 2;
           }
+
+          .users-header-spacer{
+            width: 100%;
+            height: 4rem;
+            z-index: 1;
+          }
           .massage-castle-is-empty {
             margin-top: 0px;
           }
@@ -455,7 +469,7 @@
               display: -ms-flex;
               display: -o-flex;
               display: flex;
-              margin: 5rem 0.5rem;
+              margin: 2rem 0.5rem 5rem 0.5rem;
               height: 80vh;
               width: 100vw;
               button{
@@ -491,7 +505,7 @@
               display: -ms-flex;
               display: -o-flex;
               display: flex;
-              margin: 5rem 0.5rem;
+              margin: 2rem 0.5rem 5rem 0.5rem;
               height: 67vh;
               width: 100vw;
               button{
@@ -522,7 +536,7 @@
           /*スマホ*/
           @media screen and (orientation: portrait) {
             .castle_at_user_page{
-              margin: 5rem 0.5rem;
+              margin: 2rem 0.5rem 5rem 0.5rem;
               height: calc(100vw);
               width: 100vw;
               button{
@@ -573,7 +587,9 @@
         }
     }
 
-    .group-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+
+
+    .group-user-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
         display:none;
     }
 

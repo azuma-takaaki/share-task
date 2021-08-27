@@ -333,7 +333,7 @@ class GroupsList extends React.Component {
             </div>
           </Menu>
           <main id="page-wrap">
-            <div class="group-wrapper">
+            <div class="group-user-wrapper">
               {(() => {
                   if(this.state.menuOpen) {
                       return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＞</button>);

@@ -42,7 +42,7 @@ function Castle(props){
 
   const [selectedCastleToAdd, setSelectedCastleToAdd] = useState("")
 
-  var default_modal_content = <div>
+  let default_modal_content = <div>
                                 <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
                                 <h2>今日の積み上げ</h2>
                                 <textarea  value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
@@ -158,8 +158,8 @@ function Castle(props){
         return '';
       }
 
-      var model_name_list = [ "castle.glb", "castle.glb"]
-      //var model_name_list = [ "wall_01.glb", "castle.glb"]
+      let model_name_list = [ "castle.glb", "castle.glb"]
+      //let model_name_list = [ "wall_01.glb", "castle.glb"]
       const data = { castle_part: {
                             castle_id: props.castle_id,
                             three_d_model_name: new_model_name,
@@ -208,8 +208,8 @@ function Castle(props){
       return '';
     }
 
-    var update_castle_parts_list = []
-    for(var i=0; i<castleModels.length; i++){
+    let update_castle_parts_list = []
+    for(let i=0; i<castleModels.length; i++){
         update_castle_parts_list[i] = {id: castleModels[i].id,
                            castle_id: props.castle_id,
                            three_d_model_name: castleModels[i].three_d_model_name,
@@ -238,8 +238,8 @@ function Castle(props){
     })
   }
 
-  var UseModel = (props) =>{
-    var {model_number, position, rotation, modelpath} = props
+  let UseModel = (props) =>{
+    let {model_number, position, rotation, modelpath} = props
     if(!(rotation==null)){
       rotation[1] = rotation[1] - Math.PI / 4
     }
@@ -260,18 +260,18 @@ function Castle(props){
 
 
 
-  var castle = [];
-  for(var i=0; i<castleModels.length; i++){
+  let castle = [];
+  for(let i=0; i<castleModels.length; i++){
     if(!(castleModels[i]["three_d_model_name"]==null)){
       castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} />)
     }
   }
 
-  var castle_selected_to_add;
+  let castle_selected_to_add;
   if (selectedCastleToAdd!=""){
     castle_selected_to_add = <UseModel model_number={castleModels.length} position={[0, 1, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} />
   }
-  var user_infomation_on_castle = <div></div>
+  let user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
     user_infomation_on_castle = <div class="name-and-icon-of-user-built-castle-at-group-page">
                                    <img class = "user-icon" src={require("../../assets/images/default/" + props.user_icon)} />
@@ -315,8 +315,8 @@ function Castle(props){
   const [mouseIsDown, setMouseIsDown] = useState(false)
 
 
-  var move_amount_x;
-  var move_amount_y;
+  let move_amount_x;
+  let move_amount_y;
   if(mouseIsDown){
     move_amount_x = x-click_x
     move_amount_y = y-click_y
@@ -324,23 +324,23 @@ function Castle(props){
     move_amount_x = 0
     move_amount_y = 0
   }
-  var tabs = <div></div>;
-  var edit_castle_contents = <div></div>;
-  var castle_part_point = <div></div>;
-  var open_report_modal_button = <div></div>
-  var report_list = <div></div>
-  var save_castle_parts_button = <div></div>
-  var add_castle_button = <div></div>
-  var edit_castle_parts_sliders = <div></div>
+  let tabs = <div></div>;
+  let edit_castle_contents = <div></div>;
+  let castle_part_point = <div></div>;
+  let open_report_modal_button = <div></div>
+  let report_list = <div></div>
+  let save_castle_parts_button = <div></div>
+  let add_castle_button = <div></div>
+  let edit_castle_parts_sliders = <div></div>
   if(props.tag_class=="castle_at_user_page"){
-    var new_report_list = []
+    let new_report_list = []
     if (!(props.castle_reports[0].content == null)){
         for(let i=0; i<props.castle_reports.length; i++){
           new_report_list.push(<p class = "report-content p-3 mb-2 bg-info text-white">今日の積み上げ: {props.castle_reports[i].content}</p>)
         }
     }
-    var castle_part_price_list = []
-    var temppp = []
+    let castle_part_price_list = []
+    let temppp = []
     for(let i=0; i<props.castle_part_price_list.length; i++){
       castle_part_price_list.push(<div>
                                     <button class = "p-3 mb-2 bg-info text-white" onClick={() => {setSelectedCastleToAdd(props.castle_part_price_list[i])}}>
@@ -380,7 +380,7 @@ function Castle(props){
                                             onMouseMove={(e)=>{
                                               handleMouseMove(e);
                                               if(mouseIsDown){
-                                                var new_castle_models = castleModels
+                                                let new_castle_models = castleModels
                                                 new_castle_models[editModelNumber]["position_x"] = previousCountPosX+(x-click_x)*0.1
                                                 setCastleModels(new_castle_models)
                                               }
@@ -400,7 +400,7 @@ function Castle(props){
                                             onMouseMove={(e)=>{
                                               handleMouseMove(e);
                                               if(mouseIsDown){
-                                                var new_castle_models = castleModels
+                                                let new_castle_models = castleModels
                                                 new_castle_models[editModelNumber]["position_y"] = previousCountPosY+(x-click_x)*0.1
                                                 setCastleModels(new_castle_models)
                                               }
@@ -420,7 +420,7 @@ function Castle(props){
                                             onMouseMove={(e)=>{
                                               handleMouseMove(e);
                                               if(mouseIsDown){
-                                                var new_castle_models = castleModels
+                                                let new_castle_models = castleModels
                                                 new_castle_models[editModelNumber]["position_z"] = previousCountPosZ+(x-click_x)*0.1
                                                 setCastleModels(new_castle_models)
                                               }
@@ -441,7 +441,7 @@ function Castle(props){
                                             onMouseMove={(e)=>{
                                               handleMouseMove(e);
                                               if(mouseIsDown){
-                                                var new_castle_models = castleModels
+                                                let new_castle_models = castleModels
                                                 new_castle_models[editModelNumber]["angle_x"] = previousCountRotX+(x-click_x)*0.01
                                                 setCastleModels(new_castle_models)
                                               }
@@ -461,7 +461,7 @@ function Castle(props){
                                             onMouseMove={(e)=>{
                                               handleMouseMove(e);
                                               if(mouseIsDown){
-                                                var new_castle_models = castleModels
+                                                let new_castle_models = castleModels
                                                 new_castle_models[editModelNumber]["angle_y"] = previousCountRotY+(x-click_x)*0.01
                                                 setCastleModels(new_castle_models)
                                               }
@@ -481,7 +481,7 @@ function Castle(props){
                                             onMouseMove={(e)=>{
                                               handleMouseMove(e);
                                               if(mouseIsDown){
-                                                var new_castle_models = castleModels
+                                                let new_castle_models = castleModels
                                                 new_castle_models[editModelNumber]["angle_z"] = previousCountRotZ+(x-click_x)*0.01
                                                 setCastleModels(new_castle_models)
                                               }
@@ -505,7 +505,7 @@ function Castle(props){
 
   }
 
-  var modal_content;
+  let modal_content;
   if (modalType=="add_report"){
     modal_content = <div>
                                   <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>

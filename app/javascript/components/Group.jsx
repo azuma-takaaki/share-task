@@ -305,7 +305,7 @@ class Group extends React.Component {
 
 
     return (
-        <div>
+        <div class="group-wrapper">
           <div  class="group-header">
             <div class="group-name">{this.state.group_name}</div>
             <div class="group-members-list">
@@ -323,6 +323,8 @@ class Group extends React.Component {
             </div>
             {create_castle_or_task_button}
           </div>
+
+          <div class="group-header-spacer"></div>
 
           <div>
             {castles}

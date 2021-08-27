@@ -121,6 +121,8 @@ class User extends React.Component {
           <button class="edit-user-button"onClick={this.openModal}>・・・</button>
         </div>
 
+        <div class="users-header-spacer"></div>
+
         {castles}
 
 
