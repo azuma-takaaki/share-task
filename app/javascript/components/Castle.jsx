@@ -356,24 +356,24 @@ function Castle(props){
     edit_castle_contents= <div class="edit-castle-contents-wrapper">
                             <nav>
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                  <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
-                                  <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
-                                  <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
+                                  <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
+                                  <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
+                                  <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
                                 </div>
                               </nav>
                               <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name} role="tabpanel" aria-labelledby="nav-home-tab">
+                                <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-home-tab">
                                   <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
                                   {new_report_list}
                                   <button onClick = {() => openModal("add_report")}>積み上げを登録する</button>
                                 </div>
-                                <div class="tab-pane fade show add-3d-model" id={"nav-add-model-"+props.castle.castle_name} role="tabpanel" aria-labelledby="nav-add-model-tab">
+                                <div class="tab-pane fade show add-3d-model" id={"nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-add-model-tab">
                                   <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
                                   {castle_part_price_list}
                                   <p></p>
                                   <button onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
                                 </div>
-                                <div class="tab-pane fade show " id={"nav-move-model-"+props.castle.castle_name} role="tabpanel" aria-labelledby="nav-move-model-tab">
+                                <div class="tab-pane fade show " id={"nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-move-model-tab">
                                   <button onClick = {()=> updateCastleParts()}>変更を保存</button>
                                   <div>
                                       <div class = "move-sliders move-x-slider"
