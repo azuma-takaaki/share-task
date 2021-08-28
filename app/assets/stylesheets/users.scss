@@ -692,3 +692,11 @@
     }
   }
 }
+
+.progress-bar {
+  transition: width 1000s linear;
+  height: 100%;
+  padding: 5px 0px;
+  background-color: #337AB7;
+  border-radius: 4px;
+}

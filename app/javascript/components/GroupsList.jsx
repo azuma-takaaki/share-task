@@ -50,6 +50,7 @@ class GroupsList extends React.Component {
       menuOpen: false,
       relative_groups_list: [],
       value: '',
+      progress_percentage: "0",
       suggestions: [],
       error_messages: '',
       groups_castle_list: [],
@@ -67,6 +68,7 @@ class GroupsList extends React.Component {
     this.fetchRelativeGroup = this.fetchRelativeGroup.bind(this);
     this.handleChangeSearchGroups = this.handleChangeSearchGroups.bind(this);
     this.fetchCastles = this.fetchCastles.bind(this);
+    this.sleep = this.sleep.bind(this);
 
 
   }
@@ -97,6 +99,7 @@ class GroupsList extends React.Component {
   }
   openModal() {
     this.setState({modalIsOpen: true});
+    this.setState({input_value: ""});
   }
   afterOpenModal() {
     this.subtitle.style.color = '#fff000';
@@ -104,6 +107,7 @@ class GroupsList extends React.Component {
   closeModal() {
     this.setState({modalIsOpen: false});
     this.setState({error_messages: ''});
+    this.setState({progress_percentage: "0"})
   }
   handleChange(e){
     this.setState({input_value: e.target.value});
@@ -127,19 +131,31 @@ class GroupsList extends React.Component {
         this.fetchRelativeGroup()
     });
   }
-  postData(){
-    const data = { group: {name: this.state.input_value} };
 
-    const getCsrfToken = () => {
-      const metas = document.getElementsByTagName('meta');
-      for (let meta of metas) {
-          if (meta.getAttribute('name') === 'csrf-token') {
-              console.log('csrf-token:', meta.getAttribute('content'));
-              return meta.getAttribute('content');
-          }
+  sleep(waitSec) {
+      return new Promise(function (resolve) {
+
+          setTimeout(function() { resolve() }, waitSec);
+
+      });
+  }
+
+  postData(){
+
+    this.setState({progress_percentage: "20"})
+    this.sleep(500).then(() =>{
+      const data = { group: {name: this.state.input_value} };
+
+      const getCsrfToken = () => {
+        const metas = document.getElementsByTagName('meta');
+        for (let meta of metas) {
+            if (meta.getAttribute('name') === 'csrf-token') {
+                console.log('csrf-token:', meta.getAttribute('content'));
+                return meta.getAttribute('content');
+            }
+        }
+        return '';
       }
-      return '';
-    }
       fetch("/groups", {
         method: 'POST', // or 'PUT'
         headers: {
@@ -149,12 +165,19 @@ class GroupsList extends React.Component {
         body: JSON.stringify(data),
       }).then(res => res.json()).then((result) => {
         if(result[0] == "succeeded in creating a group"){
-          this.setState({modalIsOpen: false});
-          this.setState({input_value: ""});
-          this.getGroupList()
-          this.fetchRelativeGroup()
-          closeModal()
+          this.setState({progress_percentage: "60"})
+          this.sleep(1000).then(()=>{
+            this.setState({progress_percentage: "100"})
+            return this.sleep(1000)
+          }).then(()=>{
+            this.setState({modalIsOpen: false});
+            this.setState({input_value: ""});
+            this.getGroupList()
+            this.fetchRelativeGroup()
+            this.closeModal()
+          })
         }else if(result[0] == "failed to create a group"){
+          this.setState({progress_percentage: "0"})
           let error_massages = []
           for(let i in result[1]){
             error_massages.push(result[1][i])
@@ -164,6 +187,7 @@ class GroupsList extends React.Component {
           })
         }else{
         }
+      })
       })
   }
   switchDisplay(type, id){
@@ -380,6 +404,7 @@ class GroupsList extends React.Component {
           style={customStyles}
           contentLabel="Example Modal"
         >
+          <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
           {error_flash_content}
           <h2>新しいグループを作成</h2>
           <input type="text" placeholder="新しいグループの名前" value={this.state.input_value}  onChange={this.handleChange}/>
