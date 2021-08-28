@@ -694,8 +694,11 @@
 }
 
 .progress-bar {
-  transition: width 1000s linear;
-  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  transition-delay: width 1s ease;
+  height: 5px;
   padding: 5px 0px;
   background-color: #337AB7;
   border-radius: 4px;

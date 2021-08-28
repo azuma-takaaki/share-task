@@ -38,7 +38,8 @@ class Top extends React.Component {
       group_list: [],
       modal_type: '',
       error_messages: '',
-      success_messages: ''
+      success_messages: '',
+      progress_percentage: 0
     }
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -48,6 +49,7 @@ class Top extends React.Component {
     this.loginPost = this.loginPost.bind(this);
     this.logout = this.logout.bind(this);
     this.setGroupList = this.setGroupList.bind(this);
+    this.sleep = this.sleep.bind(this);
 
     if(is_logged_in){
       this.setGroupList()
@@ -70,6 +72,14 @@ class Top extends React.Component {
           });
         }
       )
+  }
+
+  sleep(waitSec) {
+      return new Promise(function (resolve) {
+
+          setTimeout(function() { resolve() }, waitSec);
+
+      });
   }
 
 
@@ -96,6 +106,7 @@ class Top extends React.Component {
   }
 
   signupPost(){
+    this.setState({progress_percentage: "20"})
     const data =
       {   user: {
             name: this.state.user_name,
@@ -125,28 +136,35 @@ class Top extends React.Component {
       .then(
         (result) => {
           if(result[0] == "アカウント登録できませんでした"){
-            let error_massages = []
-            for(let i in result[1]){
-              error_massages.push(result[1][i])
-            }
-            this.setState({
-              error_messages: error_massages
+            this.sleep(300).then(() =>{
+              this.setState({progress_percentage: "0"})
+              let error_massages = []
+              for(let i in result[1]){
+                error_massages.push(result[1][i])
+              }
+              this.setState({
+                error_messages: error_massages
+              })
             })
           }else{
-            let group_list = []
-            for(let i in result[0]){
-              group_list.push(result[0][i])
-            }
-            this.setState({
-              group_list: group_list
+            this.setState({progress_percentage: "100"})
+            this.sleep(100).then(() =>{
+              let group_list = []
+              for(let i in result[0]){
+                group_list.push(result[0][i])
+              }
+              this.setState({
+                group_list: group_list
+              })
+              this.setState({
+                current_user: result[1]
+              })
+              this.setState({
+                logged_in: true
+              })
+              this.closeModal()
+              this.setState({progress_percentage: "0"})
             })
-            this.setState({
-              current_user: result[1]
-            })
-            this.setState({
-              logged_in: true
-            })
-            this.closeModal()
           }
         })
   }
@@ -295,6 +313,7 @@ class Top extends React.Component {
                           style={customStyles}
                           contentLabel="Example Modal"
                         >
+                          <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
                           <button class="close-modal　btn-close btn btn-outline-secondary" onClick={this.closeModal}>×</button>
                           {error_flash_content}
                           {modal_content}

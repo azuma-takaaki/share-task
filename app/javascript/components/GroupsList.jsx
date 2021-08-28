@@ -143,19 +143,18 @@ class GroupsList extends React.Component {
   postData(){
 
     this.setState({progress_percentage: "20"})
-    this.sleep(500).then(() =>{
-      const data = { group: {name: this.state.input_value} };
+    const data = { group: {name: this.state.input_value} };
 
-      const getCsrfToken = () => {
-        const metas = document.getElementsByTagName('meta');
-        for (let meta of metas) {
-            if (meta.getAttribute('name') === 'csrf-token') {
-                console.log('csrf-token:', meta.getAttribute('content'));
-                return meta.getAttribute('content');
-            }
-        }
-        return '';
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+          }
       }
+      return '';
+    }
       fetch("/groups", {
         method: 'POST', // or 'PUT'
         headers: {
@@ -165,8 +164,7 @@ class GroupsList extends React.Component {
         body: JSON.stringify(data),
       }).then(res => res.json()).then((result) => {
         if(result[0] == "succeeded in creating a group"){
-          this.setState({progress_percentage: "60"})
-          this.sleep(1000).then(()=>{
+          this.sleep(300).then(()=>{
             this.setState({progress_percentage: "100"})
             return this.sleep(1000)
           }).then(()=>{
@@ -187,7 +185,6 @@ class GroupsList extends React.Component {
           })
         }else{
         }
-      })
       })
   }
   switchDisplay(type, id){
