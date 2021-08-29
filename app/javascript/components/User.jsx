@@ -23,7 +23,8 @@ class User extends React.Component {
     this.props.fetchCastles("user", this.props.current_user.id, false)
     this.state = {
       input_name: '',
-      castle_part_price_list: []
+      castle_part_price_list: [],
+      progress_percentage: "0"
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -31,6 +32,8 @@ class User extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.updateData = this.updateData.bind(this);
     this.setCastlePartPriceList = this.setCastlePartPriceList.bind(this);
+    this.logout = this.logout.bind(this);
+    this.sleep = this.sleep.bind(this);
 
     this.setCastlePartPriceList()
   }
@@ -69,6 +72,7 @@ class User extends React.Component {
   }
 
   updateData(content){
+    this.setState({progress_percentage: "20"})
     const data = { user: {name:this.state.input_name}};
 
     const getCsrfToken = () => {
@@ -89,14 +93,34 @@ class User extends React.Component {
         },
         body: JSON.stringify(data),
       }).then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({current_user: result[1]})
-          this.setState({input_name: result[1].name});
-        }).then(
+      .then((result) => {
+          this.sleep(300).then(()=>{
+            this.props.updateVisibleUser(result[0])
+            this.setState({progress_percentage: "100"})
+          }).then(()=>{
+            this.sleep(1000).then(()=>{
+              this.closeModal()
+              this.setState({progress_percentage: "0"})
+            })
+          })
+      })
+  }
 
-          this.closeModal()
-      )
+  sleep(waitSec) {
+      return new Promise(function (resolve) {
+          setTimeout(function() { resolve() }, waitSec);
+      });
+  }
+
+
+  logout(){
+    this.setState({progress_percentage: "20"})
+    this.sleep(300).then(() =>{
+      this.setState({progress_percentage: "100"})
+      return this.sleep(1000)
+    }).then(()=>{
+      this.props.logout()
+    })
   }
 
   render () {
@@ -133,11 +157,12 @@ class User extends React.Component {
           style={customStyles}
           contentLabel="Example Modal"
         >
+          <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
           <h2>ユーザー情報編集</h2>
           <input type="text" value={this.state.input_name}  onChange={this.handleChange}/>
           <button onClick={this.updateData}>更新</button>
           <p></p>
-          <button onClick={this.props.logout}>ログアウト</button>
+          <button onClick={this.logout}>ログアウト</button>
         </Modal>
       </div>
     );

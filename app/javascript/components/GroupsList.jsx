@@ -69,6 +69,7 @@ class GroupsList extends React.Component {
     this.handleChangeSearchGroups = this.handleChangeSearchGroups.bind(this);
     this.fetchCastles = this.fetchCastles.bind(this);
     this.sleep = this.sleep.bind(this);
+    this.updateVisibleUser = this.updateVisibleUser.bind(this);
 
 
   }
@@ -272,6 +273,11 @@ class GroupsList extends React.Component {
     }
   }
 
+  updateVisibleUser(new_visible_user){
+    this.setState({visible_user: new_visible_user})
+    this.props.updateCurrentUser(new_visible_user)
+  }
+
 
 
 
@@ -365,7 +371,7 @@ class GroupsList extends React.Component {
 
               {(() => {
                   if(this.state.visible_user_id>0) {
-                      return(<User user_id={this.state.visible_user_id} logout={this.props.logout} current_user={this.state.visible_user} users_castle_list={this.state.users_castle_list[this.state.visible_user_id]} fetchCastles={this.fetchCastles}/>);
+                      return(<User user_id={this.state.visible_user_id} logout={this.props.logout} current_user={this.state.visible_user} users_castle_list={this.state.users_castle_list[this.state.visible_user_id]} fetchCastles={this.fetchCastles} updateVisibleUser={this.updateVisibleUser}/>);
                   }
               })()}
               {

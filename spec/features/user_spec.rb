@@ -65,6 +65,7 @@ feature "Singup" , :js => true do
       expect(page).to have_content 'test_user1'
       click_button "・・・"
       click_button "ログアウト"
+      sleep 2
 
       visit "/"
       click_button "新規アカウント登録"

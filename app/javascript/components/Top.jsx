@@ -39,7 +39,7 @@ class Top extends React.Component {
       modal_type: '',
       error_messages: '',
       success_messages: '',
-      progress_percentage: 0
+      progress_percentage: "0"
     }
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -50,6 +50,7 @@ class Top extends React.Component {
     this.logout = this.logout.bind(this);
     this.setGroupList = this.setGroupList.bind(this);
     this.sleep = this.sleep.bind(this);
+    this.updateCurrentUser = this.updateCurrentUser.bind(this);
 
     if(is_logged_in){
       this.setGroupList()
@@ -133,8 +134,7 @@ class Top extends React.Component {
         },
         body: JSON.stringify(data),
       }).then(res => res.json())
-      .then(
-        (result) => {
+      .then((result) => {
           if(result[0] == "アカウント登録できませんでした"){
             this.sleep(300).then(() =>{
               this.setState({progress_percentage: "0"})
@@ -148,7 +148,7 @@ class Top extends React.Component {
             })
           }else{
             this.setState({progress_percentage: "100"})
-            this.sleep(100).then(() =>{
+            this.sleep(1000).then(() =>{
               let group_list = []
               for(let i in result[0]){
                 group_list.push(result[0][i])
@@ -170,6 +170,7 @@ class Top extends React.Component {
   }
 
   loginPost(){
+    this.setState({progress_percentage: "20"})
     const data =
       {   session: {
             email: this.state.email,
@@ -194,31 +195,37 @@ class Top extends React.Component {
         },
         body: JSON.stringify(data),
       }).then(res => res.json())
-      .then(
-        (result) => {
+      .then((result) => {
           if(result[0] == "ログインできませんでした"){
-            let error_massages = []
-            for(let i in result[1]){
-              error_massages.push(result[1][i])
-            }
-            this.setState({
-              error_messages: error_massages
+            this.sleep(300).then(() =>{
+              this.setState({progress_percentage: "0"})
+              let error_massages = []
+              for(let i in result[1]){
+                error_massages.push(result[1][i])
+              }
+              this.setState({
+                error_messages: error_massages
+              })
             })
           }else{
-            let group_list = []
-            for(let i in result[0]){
-              group_list.push(result[0][i])
-            }
-            this.setState({
-              group_list: group_list
+            this.setState({progress_percentage: "100"})
+            this.sleep(1000).then(() =>{
+              let group_list = []
+              for(let i in result[0]){
+                group_list.push(result[0][i])
+              }
+              this.setState({
+                group_list: group_list
+              })
+              this.setState({
+                current_user: result[1]
+              })
+              this.setState({
+                logged_in: true
+              })
+              this.closeModal()
+              this.setState({progress_percentage: "0"})
             })
-            this.setState({
-              current_user: result[1]
-            })
-            this.setState({
-              logged_in: true
-            })
-            this.closeModal()
           }
 
 
@@ -234,6 +241,10 @@ class Top extends React.Component {
           logged_in: false
         })
       )
+  }
+
+  updateCurrentUser(new_current_user){
+    this.setState({current_user: new_current_user})
   }
 
 
@@ -284,7 +295,7 @@ class Top extends React.Component {
     let main_content;
     if (this.state.logged_in&&(!(this.state.logged_in===null))) {
         main_content = <div>
-                          <div><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout} is_logged_in = {this.state.logged_in}/></div>
+                          <div><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout} is_logged_in = {this.state.logged_in} updateCurrentUser={this.updateCurrentUser}/></div>
                       </div>;
     } else {
       main_content = <div>

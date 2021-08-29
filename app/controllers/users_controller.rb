@@ -36,6 +36,7 @@ class UsersController < ApplicationController
       @user = User.find_by(id: params[:id])
       #if @user.update(secure_user_infomation)
       if @user.update(update_params)
+        logger.debug "アップデートしたユーザーの情報: #{@user.to_json}"
         render :json => [@user]
       else
         flash[:danger] = @user.errors.full_messages

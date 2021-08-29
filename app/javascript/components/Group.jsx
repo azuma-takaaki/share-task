@@ -27,7 +27,8 @@ class Group extends React.Component {
       other_users:[],
       group_tasks: [],
       input_value: '',
-      modal_type: ''
+      modal_type: '',
+      progress_percentage: "0"
     }
     this.getGroupInfo = this.getGroupInfo.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -42,8 +43,9 @@ class Group extends React.Component {
     this.openInputTaskModal = this.openInputTaskModal.bind(this);
     this.closeMenu = this.closeMenu.bind(this);
     this.createCastle = this.createCastle.bind(this);
-
+    this.sleep = this.sleep.bind(this);
   }
+
 
   openModal(modal_type) {
     this.getUsers();
@@ -210,7 +212,15 @@ class Group extends React.Component {
   closeMenu() {
     this.setState(state => ({menuOpen: false}))
   }
+
+  sleep(waitSec) {
+      return new Promise(function (resolve) {
+          setTimeout(function() { resolve() }, waitSec);
+      });
+  }
+
   createCastle() {
+    this.setState({progress_percentage: "20"})
     const getCsrfToken = () => {
       const metas = document.getElementsByTagName('meta');
       for (let meta of metas) {
@@ -231,9 +241,15 @@ class Group extends React.Component {
       },
       body: JSON.stringify(data)
     }).then(res => res.json()).then((result) => {
-      this.props.fetchCastles("group", this.props.group.id)
+      this.sleep(300).then(() =>{
+        this.setState({progress_percentage: "100"})
+        this.sleep(1000).then(()=>{
+          this.props.fetchCastles("group", this.props.group.id)
+          this.closeModal()
+          this.setState({progress_percentage: "0"})
+        })
+      })
     })
-    this.closeModal()
   }
 
   render () {
@@ -283,6 +299,7 @@ class Group extends React.Component {
                       </div>
     }else if(this.state.modal_type=="create_castle"){
       modal_content= <div class="react-modal">
+                        <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
                         <h2>城を建てる</h2>
                         <p></p>
                         <p>城の名前</p>
@@ -350,7 +367,6 @@ class Group extends React.Component {
           >
             {modal_content}
           </Modal>
-
         </div>
 
     );
