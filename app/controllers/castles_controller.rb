@@ -43,8 +43,10 @@ class CastlesController < ApplicationController
     counter = 0
     @tmp_castle_part.each do |part|
       reports = Report.where(castle_id: part[0]).order(created_at: :desc)
-      part[1][:report][:all_report_number] =  reports.size.to_s
-      part[1][:report][:current_report] =  {content: reports[0]["content"], created_at: reports[0]["created_at"]}
+      if (reports.size.to_i>0) then
+        part[1][:report][:all_report_number] =  reports.size.to_s
+        part[1][:report][:current_report] =  {content: reports[0]["content"], created_at: reports[0]["created_at"]}
+      end
       @castles[counter] = part[1]
       counter = counter + 1
     end
