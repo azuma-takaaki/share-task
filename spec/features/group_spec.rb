@@ -21,7 +21,7 @@ feature "Groups" , :js => true do
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
     expect(page).to have_content "programming"
-    sleep 0.5
+    sleep 1
   end
 
 

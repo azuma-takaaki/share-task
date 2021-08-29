@@ -349,8 +349,8 @@ function Castle(props){
     move_amount_y = 0
   }
   let tabs = <div></div>;
-  let edit_castle_contents = <div></div>;
-  let castle_part_point = <div></div>;
+  let edit_castle_contents = <div></div>
+  let castle_part_point = <div></div>
   let open_report_modal_button = <div></div>
   let report_list = <div></div>
   let save_castle_parts_button = <div></div>
@@ -529,6 +529,22 @@ function Castle(props){
 
   }
 
+  let report_infomation = <div></div>
+  if(props.tag_class=="castle_at_group"){
+    if(props.castle["report"]["current_report"]["content"]==null){
+      report_infomation = <div>
+                            最新の積み上げ: <div class="current-report-content">まだ積み上げがありません</div>
+                            総積み上げ数: <div class="all-report-number">0</div>
+                          </div>
+    }else{
+      report_infomation = <div>
+                            最新の積み上げ: <div class="current-report-content">{props.castle["report"]["current_report"]["content"]}</div>
+                            最新の積み上げ日: <div class="current-report-date">{props.castle["report"]["current_report"]["created_at"]}</div>
+                            総積み上げ数: <div class="all-report-number">{props.castle["report"]["all_report_number"]}</div>
+                          </div>
+    }
+  }
+
   let error_flash_content;
   if(errorMessages.arr.length>0){
     error_flash_content = <div class="alert alert-danger" id="error-flash">
@@ -586,6 +602,7 @@ function Castle(props){
         <div class="castle-header-at-goup-page">
           {user_infomation_on_castle}
           <h2>{props.castle_name} 城</h2>
+          {report_infomation}
         </div>
         <div class="canvas">
       		<Canvas >

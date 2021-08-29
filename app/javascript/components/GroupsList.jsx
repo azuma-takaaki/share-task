@@ -243,7 +243,7 @@ class GroupsList extends React.Component {
       let groups_castle_list = this.state.groups_castle_list
       fetch("get_group_castle_list/" + id, {
         method: 'GET'
-        }).then(res => res.json())
+      }).then(res => res.json())
         .then(
           (result) => {
             groups_castle_list[id] = result[0]
