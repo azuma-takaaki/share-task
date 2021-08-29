@@ -333,7 +333,7 @@ class GroupsList extends React.Component {
                     <div class= "switch-group-button-list">
                       {this.state.group_list.map((group) => {
                         return (
-                          <button   class="switch-group-button" onClick={() => this.fetchCastles("group", group.id)}>{group.name}</button>
+                          <button class="switch-group-button" onClick={() => this.fetchCastles("group", group.id)}>{group.name}</button>
                         )
                       })}
                     </div>
