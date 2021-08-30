@@ -89,6 +89,12 @@ feature "Castles" , :js => true do
     find('div.bm-overlay').click
     expect(page).to have_selector ".all-report-number", text: "5"
     expect(page).to have_selector ".current-report-content", text: "プログラミングを5時間勉強した！"
+
+    click_button "＜"
+    click_button "test_user1"
+    find('div.bm-overlay').click
+    click_button "・・・"
+    click_button "ログアウト"
   end
 
 
