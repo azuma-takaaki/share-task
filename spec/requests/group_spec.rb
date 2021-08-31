@@ -25,6 +25,7 @@ RSpec.describe GroupsController, type: :request do
       expect(response).to have_http_status(200)
       for i in 0..9 do
         expect(JSON.parse(response.body)[0][i]["name"]).to eq "group"+ (@groups_number-i).to_s
+        expect(JSON.parse(response.body)[0][i]["castles_number"]).to eq @groups_number-i
       end
     end
   end

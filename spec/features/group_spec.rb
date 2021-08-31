@@ -61,4 +61,34 @@ feature "Groups" , :js => true do
   end
 
 
+  example "グループ検索窓が空の時, 城の数が多い上位10グループが表示される" do
+    @groups = []
+    @user = FactoryBot.create(:user)
+    @groups_number = 20
+    for i in 1..@groups_number do
+      @groups[i] = FactoryBot.create(:group, name: "group"+ i.to_s)
+      for n in 1..i do
+        FactoryBot.create(:castle0, name: "group"+ i.to_s + "_castle" + n.to_s,
+                          castle_part_point: 0,
+                          user: @user,
+                          group: @groups[i])
+      end
+    end
+    visit "/"
+    click_button "＜"
+    click_on "グループを探す"
+    for i in 11..@groups_number do
+      expect(find('.switch-group-button').text).to eq "group"+ i.to_s
+    end
+    find("input[placeholder='グループを探す']").set("group")
+    expect(find('.switch-group-button').text).to eq "group1"
+    expect(find('.switch-group-button').text).to eq "group" + @groups_number.to_s
+    find("input[placeholder='グループを探す']").set("")
+    for i in 1..@groups_number do
+      expect(find('.switch-group-button').text).to eq "group"+ i.to_s
+    end
+    sleep 1
+  end
+
+
 end
