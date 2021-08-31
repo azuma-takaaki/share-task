@@ -38,7 +38,6 @@ class GroupsList extends React.Component {
     let current_user_id = this.props.current_user.id
     let current_user = this.props.current_user
 
-
     this.state = {
       group_list: props.groups,
       group_is_visible: arr_visible,
@@ -52,6 +51,7 @@ class GroupsList extends React.Component {
       value: '',
       progress_percentage: "0",
       suggestions: [],
+      popular_group_list: [],
       error_messages: '',
       groups_castle_list: [],
       users_castle_list: users_castle_list
@@ -72,6 +72,18 @@ class GroupsList extends React.Component {
     this.updateVisibleUser = this.updateVisibleUser.bind(this);
 
 
+  }
+
+  componentDidMount(){
+    fetch("/get_popular_groups")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            suggestions: result[0],
+            popular_group_list: result[0]
+          });
+        })
   }
 
   getGroupList() {
@@ -124,6 +136,8 @@ class GroupsList extends React.Component {
               new_suggestions.push(this.state.relative_groups_list[i])
             }
           }
+        }else{
+          new_suggestions = this.state.popular_group_list
         }
         this.setState({
           suggestions: new_suggestions
@@ -261,7 +275,6 @@ class GroupsList extends React.Component {
           (result) => {
             users_castle_list[id] = result[0]
             this.setState({users_castle_list: users_castle_list})
-            //alert("GL:" + users_castle_list[id][0]["models"].length)
             let visible_user = result[1]
             this.setState({visible_user: visible_user})
           }
@@ -289,13 +302,9 @@ class GroupsList extends React.Component {
 
 
   render () {
-    //auto suggest
-    const { value, suggestions } = this.state;
-
-    // Autosuggest will pass through all these props to the input.
     const inputProps = {
-    placeholder: 'グループを探す',
-        value,
+        placeholder: 'グループを探す',
+        value: this.state.value,
         onChange: this.onChange
     };
 
@@ -304,6 +313,13 @@ class GroupsList extends React.Component {
       error_flash_content = <div class="alert alert-danger" id="error-flash">
                                 { this.state.error_messages.map((error_message) => <li>{error_message}</li>)}
                             </div>
+    }
+
+    let searched_group_number = <div></div>;
+    if(this.state.input_value_search_groups == ''){
+      searched_group_number = <div class = "searched_group_number">人気のグループ</div>;
+    }else{
+      searched_group_number = <div class = "searched_group_number">検索結果: {this.state.suggestions.length}件</div>;
     }
 
 
@@ -342,6 +358,7 @@ class GroupsList extends React.Component {
                 </div>
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <input type="test" placeholder="グループを探す" value={this.state.input_value_search_groups} onChange={this.handleChangeSearchGroups}/>
+                    {searched_group_number}
                     <div class= "result-serch-groups">
                       {this.state.suggestions.map((group) => {
                         return (

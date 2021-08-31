@@ -74,6 +74,17 @@ class GroupsController < ApplicationController
     end
   end
 
+  def get_popular_groups
+    groups_limit = 10
+    @groups = Group.select('groups.name, groups.id, count(castles.id) AS castles_number')
+                   .left_joins(:castles)
+                   .group('groups.name, groups.id')
+                   .order('castles_number desc')
+                   .limit(groups_limit)
+
+    render :json => [@groups]
+  end
+
 
 
   private
