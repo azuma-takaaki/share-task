@@ -130,11 +130,16 @@ class User extends React.Component {
       castles = this.props.users_castle_list.map((castle) => {
         //alert("User: " + castle["models"].length)
         return (
-            <Castle castle={castle["castle"]} castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} castle_reports={castle["reports"]} tag_class="castle_at_user_page" fetchCastles={this.props.fetchCastles} user_id={this.props.current_user.id}  castle_part_price_list = {this.state.castle_part_price_list}/>
+            <Castle castle={castle["castle"]} castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} castle_reports={castle["reports"]} tag_class="castle_at_user_page" fetchCastles={this.props.fetchCastles} user_id={this.props.current_user.id}  castle_part_price_list = {this.state.castle_part_price_list} is_logged_in_user={this.props.is_logged_in_user}/>
         )
       })
     }else{
       castles = <h1 class = "massage-castle-is-empty">まだ城を持っていません</h1>
+    }
+
+    let edit_user_button = <div></div>
+    if(this.props.is_logged_in_user){
+      edit_user_button = <button class="edit-user-button"onClick={this.openModal}>・・・</button>
     }
 
     return (
@@ -142,7 +147,7 @@ class User extends React.Component {
         <div class="users-header">
           <img class = "user-icon" src={require("../../assets/images/default/" + this.props.current_user.icon)} />
           <div class="users-page-header-name">{this.props.current_user.name}</div>
-          <button class="edit-user-button"onClick={this.openModal}>・・・</button>
+          {edit_user_button}
         </div>
 
         <div class="users-header-spacer"></div>
