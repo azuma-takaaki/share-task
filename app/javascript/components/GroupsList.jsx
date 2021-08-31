@@ -371,7 +371,13 @@ class GroupsList extends React.Component {
 
               {(() => {
                   if(this.state.visible_user_id>0) {
-                      return(<User user_id={this.state.visible_user_id} logout={this.props.logout} current_user={this.state.visible_user} users_castle_list={this.state.users_castle_list[this.state.visible_user_id]} fetchCastles={this.fetchCastles} updateVisibleUser={this.updateVisibleUser}/>);
+                      let is_logged_in_user;
+                      if(this.props.current_user.id == this.state.visible_user_id){
+                        is_logged_in_user = true
+                      }else{
+                        is_logged_in_user = false
+                      }
+                      return(<User user_id={this.state.visible_user_id} logout={this.props.logout} current_user={this.state.visible_user} users_castle_list={this.state.users_castle_list[this.state.visible_user_id]} fetchCastles={this.fetchCastles} updateVisibleUser={this.updateVisibleUser} is_logged_in_user={is_logged_in_user}/>);
                   }
               })()}
               {
