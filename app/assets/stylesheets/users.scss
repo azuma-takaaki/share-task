@@ -125,6 +125,7 @@
       #nav-profile{
         height: 83vh;
         .switch-group-button{
+          background-color:#CFEFFF;
           font-size: 1em;
           padding: 0.5em;
           width:100%;
@@ -135,7 +136,9 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           &:hover {
-            opacity: 0.3;
+            color: white;
+            background-color:#009ceb;
+            opacity: 0.6;
             transition-duration: 0.3s;
           }
         }

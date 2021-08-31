@@ -275,7 +275,6 @@ class GroupsList extends React.Component {
           (result) => {
             users_castle_list[id] = result[0]
             this.setState({users_castle_list: users_castle_list})
-            //alert("GL:" + users_castle_list[id][0]["models"].length)
             let visible_user = result[1]
             this.setState({visible_user: visible_user})
           }
@@ -303,8 +302,6 @@ class GroupsList extends React.Component {
 
 
   render () {
-
-    // Autosuggest will pass through all these props to the input.
     const inputProps = {
         placeholder: 'グループを探す',
         value: this.state.value,
@@ -316,6 +313,13 @@ class GroupsList extends React.Component {
       error_flash_content = <div class="alert alert-danger" id="error-flash">
                                 { this.state.error_messages.map((error_message) => <li>{error_message}</li>)}
                             </div>
+    }
+
+    let searched_group_number = <div></div>;
+    if(this.state.input_value_search_groups == ''){
+      searched_group_number = <div class = "searched_group_number">人気のグループ</div>;
+    }else{
+      searched_group_number = <div class = "searched_group_number">検索結果: {this.state.suggestions.length}件</div>;
     }
 
 
@@ -354,6 +358,7 @@ class GroupsList extends React.Component {
                 </div>
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <input type="test" placeholder="グループを探す" value={this.state.input_value_search_groups} onChange={this.handleChangeSearchGroups}/>
+                    {searched_group_number}
                     <div class= "result-serch-groups">
                       {this.state.suggestions.map((group) => {
                         return (
