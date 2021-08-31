@@ -38,7 +38,6 @@ class GroupsList extends React.Component {
     let current_user_id = this.props.current_user.id
     let current_user = this.props.current_user
 
-
     this.state = {
       group_list: props.groups,
       group_is_visible: arr_visible,
@@ -52,6 +51,7 @@ class GroupsList extends React.Component {
       value: '',
       progress_percentage: "0",
       suggestions: [],
+      popular_group_list: [],
       error_messages: '',
       groups_castle_list: [],
       users_castle_list: users_castle_list
@@ -72,6 +72,18 @@ class GroupsList extends React.Component {
     this.updateVisibleUser = this.updateVisibleUser.bind(this);
 
 
+  }
+
+  componentDidMount(){
+    fetch("/get_popular_groups")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            suggestions: result[0],
+            popular_group_list: result[0]
+          });
+        })
   }
 
   getGroupList() {
@@ -124,6 +136,8 @@ class GroupsList extends React.Component {
               new_suggestions.push(this.state.relative_groups_list[i])
             }
           }
+        }else{
+          new_suggestions = this.state.popular_group_list
         }
         this.setState({
           suggestions: new_suggestions
@@ -289,13 +303,11 @@ class GroupsList extends React.Component {
 
 
   render () {
-    //auto suggest
-    const { value, suggestions } = this.state;
 
     // Autosuggest will pass through all these props to the input.
     const inputProps = {
-    placeholder: 'グループを探す',
-        value,
+        placeholder: 'グループを探す',
+        value: this.state.value,
         onChange: this.onChange
     };
 

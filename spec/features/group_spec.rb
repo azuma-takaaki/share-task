@@ -78,14 +78,14 @@ feature "Groups" , :js => true do
     click_button "＜"
     click_on "グループを探す"
     for i in 11..@groups_number do
-      expect(find('.switch-group-button').text).to eq "group"+ i.to_s
+      page.find('.switch-group-button', text: "group"+ i.to_s)
     end
     find("input[placeholder='グループを探す']").set("group")
-    expect(find('.switch-group-button').text).to eq "group1"
-    expect(find('.switch-group-button').text).to eq "group" + @groups_number.to_s
+    page.find('.switch-group-button', text: "group10")
+    page.find('.switch-group-button', text: "group" + @groups_number.to_s)
     find("input[placeholder='グループを探す']").set("")
-    for i in 1..@groups_number do
-      expect(find('.switch-group-button').text).to eq "group"+ i.to_s
+    for i in 11..@groups_number do
+      page.find('.switch-group-button', text: "group"+ i.to_s)
     end
     sleep 1
   end

@@ -39,7 +39,7 @@ class Top extends React.Component {
       modal_type: '',
       error_messages: '',
       success_messages: '',
-      progress_percentage: "0"
+      progress_percentage: "0",
     }
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -52,7 +52,11 @@ class Top extends React.Component {
     this.sleep = this.sleep.bind(this);
     this.updateCurrentUser = this.updateCurrentUser.bind(this);
 
-    if(is_logged_in){
+
+  }
+
+  componentDidMount() {
+    if(this.state.is_logged_in){
       this.setGroupList()
     }
   }
@@ -295,7 +299,7 @@ class Top extends React.Component {
     let main_content;
     if (this.state.logged_in&&(!(this.state.logged_in===null))) {
         main_content = <div>
-                          <div><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout} is_logged_in = {this.state.logged_in} updateCurrentUser={this.updateCurrentUser}/></div>
+                          <div><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout} is_logged_in = {this.state.logged_in} updateCurrentUser={this.updateCurrentUser} /></div>
                       </div>;
     } else {
       main_content = <div>
