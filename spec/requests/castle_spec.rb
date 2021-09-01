@@ -33,4 +33,41 @@ RSpec.describe CastlesController, type: :request do
     end
 
   end
+
+  describe "#create_castle" do
+    example "城を作成した際, group_userが存在しなければ追加する" do
+      @user = FactoryBot.create(:user)
+      @group = FactoryBot.create(:group)
+      pre_number_of_group_user = GroupUser.all.length
+      post "/castles", params: { name: "バックエンドマスター", group_id: @group.id }
+      expect(response).to have_http_status(200)
+      expect(GroupUser.all.length).to eq pre_number_of_group_user + 1
+
+      pre_number_of_group_user = GroupUser.all.length
+      post "/castles", params: { name: "フロントエンドマスター", group_id: @group.id }
+      expect(response).to have_http_status(200)
+      expect(GroupUser.all.length).to eq pre_number_of_group_user
+    end
+  end
+
+  describe "#remove_castle" do
+    example "城を削除しそのグループに自分の城がなくなる場合, group_userも削除する" do
+      @user = FactoryBot.create(:user)
+      @group = FactoryBot.create(:group)
+      @castle_0 = FactoryBot.create(:castle0, user:@user, group:@group)
+      @castle_1 = FactoryBot.create(:castle1, user:@user, group:@group)
+      @group_user = FactoryBot.create(:group_user, group_id: @group.id, user_id: @user.id)
+
+      pre_number_of_group_user = GroupUser.all.length
+      delete "/castles/" + @castle_0.id.to_s
+      expect(response).to have_http_status(200)
+      expect(GroupUser.all.length).to eq pre_number_of_group_user
+
+
+      pre_number_of_group_user = GroupUser.all.length
+      delete "/castles/" + @castle_1.id.to_s
+      expect(response).to have_http_status(200)
+      expect(GroupUser.all.length).to eq pre_number_of_group_user - 1
+    end
+  end
 end
