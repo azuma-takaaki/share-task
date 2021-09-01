@@ -39,12 +39,18 @@ RSpec.describe CastlesController, type: :request do
       @user = FactoryBot.create(:user)
       @group = FactoryBot.create(:group)
       pre_number_of_group_user = GroupUser.all.length
-      post "/castles", params: { name: "バックエンドマスター", group_id: @group.id }
+      post login_path , params: { session: {
+                                        email: @user.email,
+                                        password: @user.password,
+                                      }}
+
+      post "/castles", params: { castle: { name: "バックエンドマスター", group_id: @group.id }}
       expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)[0]).to eq "succeeded in creating a castle and group_user"
       expect(GroupUser.all.length).to eq pre_number_of_group_user + 1
 
       pre_number_of_group_user = GroupUser.all.length
-      post "/castles", params: { name: "フロントエンドマスター", group_id: @group.id }
+      post "/castles", params: { castle: {  name: "フロントエンドマスター", group_id: @group.id }}
       expect(response).to have_http_status(200)
       expect(GroupUser.all.length).to eq pre_number_of_group_user
     end
@@ -57,16 +63,22 @@ RSpec.describe CastlesController, type: :request do
       @castle_0 = FactoryBot.create(:castle0, user:@user, group:@group)
       @castle_1 = FactoryBot.create(:castle1, user:@user, group:@group)
       @group_user = FactoryBot.create(:group_user, group_id: @group.id, user_id: @user.id)
+      post login_path , params: { session: {
+                                        email: @user.email,
+                                        password: @user.password,
+                                      }}
 
       pre_number_of_group_user = GroupUser.all.length
-      delete "/castles/" + @castle_0.id.to_s
+      delete "/castles/" + @castle_0.id.to_s, params: { castle: { user_id: @user.id, group_id: @group.id }}
       expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)[0]).to eq "succeeded in destroying a castle"
       expect(GroupUser.all.length).to eq pre_number_of_group_user
 
 
       pre_number_of_group_user = GroupUser.all.length
-      delete "/castles/" + @castle_1.id.to_s
+      delete "/castles/" + @castle_1.id.to_s, params: { castle: { user_id: @user.id, group_id: @group.id }}
       expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)[0]).to eq "succeeded in destroying a castle and group_user"
       expect(GroupUser.all.length).to eq pre_number_of_group_user - 1
     end
   end

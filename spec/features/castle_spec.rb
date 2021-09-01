@@ -85,7 +85,9 @@ feature "Castles" , :js => true do
     click_button "＜"
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
+    sleep 1
     click_button "programming"
+    sleep 1
     find('div.bm-overlay').click
     expect(page).to have_selector ".all-report-number", text: "5"
     expect(page).to have_selector ".current-report-content", text: "プログラミングを5時間勉強した！"
