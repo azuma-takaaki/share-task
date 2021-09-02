@@ -153,8 +153,50 @@ function Castle(props){
   };
 
   const destroyCastle = () => {
-	 setCountPosX(countPosX-1)
- }
+    setProgressPercentage("20")
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+           }
+       }
+      return '';
+    }
+
+    //let model_name_list = [ "wall_01.glb", "castle.glb"]
+    const data = { castle: { user_id: props.user_id, group_id: props.group_id }}
+
+    fetch("/castles/" + props.castle_id,{
+      method: 'DELETE',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then((result) => {
+      sleep(300).then(() =>{
+        alert(result[0])
+        if(result[0] == "succeeded in destroying a castle and group_user" || result[0] == "succeeded in destroying a castle"){
+          setProgressPercentage("100")
+          sleep(1000).then(()=>{
+            setSelectedCastleToAdd("")
+            alert("城を削除しました")
+          })
+        }else{
+          setProgressPercentage("0")
+          alert("城の削除に失敗しました")
+          alert(result[1])
+        }
+      })
+    }).then(()=>{
+      setProgressPercentage("0")
+      props.fetchCastles("user", user_id, true)
+    })
+  }
 
   const showUserPage = (user_id) =>{
      props.fetchCastles("user", user_id, true)
@@ -334,6 +376,7 @@ function Castle(props){
       }
   }
 
+
   const {x, y, handleMouseMove} = useMove()
   const {click_x, click_y, handleMouseClick} = useClick()
   const [mouseIsDown, setMouseIsDown] = useState(false)
@@ -383,6 +426,7 @@ function Castle(props){
                                     <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
                                     <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
                                     <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
+                                    <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-edit-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">編集</a>
                                   </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -522,6 +566,9 @@ function Castle(props){
                                             🔄 Z ({Math.floor(castleModels[editModelNumber]["angle_z"] / Math.PI * 180 * 100)/100})度 🔄
                                         </div>
                                     </div>
+                                  </div>
+                                  <div class="tab-pane fade show add-3d-model" id={"nav-edit-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-add-model-tab">
+                                    <button onClick={()=>destroyCastle()}>城を削除</button>
                                   </div>
                                 </div>
                             </div>

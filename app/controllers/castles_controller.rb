@@ -5,10 +5,59 @@ class CastlesController < ApplicationController
       initial_castle_part_point = 0
       @castle.castle_part_point = initial_castle_part_point
       @castle.user_id = current_user().id
-      if @castle.save
-        render json: ["城を立てました！"]
-      else
-        render json: ["失敗しました！"]
+      begin
+        ActiveRecord::Base.transaction do
+          @group_user_is_nil = GroupUser.find_by(group_id: params[:castle][:group_id], user_id:@castle.user_id).nil?
+          if @group_user_is_nil
+            @group_user = GroupUser.new(group_id: params[:castle][:group_id], user_id:@castle.user_id)
+            @group_user.save!
+          end
+          @castle.save!
+        end
+        if @group_user_is_nil
+          render :json => ['succeeded in creating a castle and group_user']
+        else
+          render :json => ['succeeded in creating a castle']
+        end
+      rescue => e
+        error_messages = []
+        if @group_user_is_nil
+          error_messages = [@castle.errors.full_messages]
+        else
+          error_messages = [@castle.errors.full_messages, @group_user.errors.full_messages]
+        end
+        render :json => ['failed to create a castle or group_user', error_messages]
+      end
+    else
+      render :json => ["その操作はログインしていないとできません"]
+    end
+  end
+
+  def destroy
+    if logged_in?
+      begin
+        ActiveRecord::Base.transaction do
+          @castles_number = Castle.where(group_id: params[:castle][:group_id], user_id: params[:castle][:user_id]).count
+          if @castles_number == 1
+            @group_user = GroupUser.find_by(group_id: params[:castle][:group_id], user_id: params[:castle][:user_id])
+            @group_user.destroy!
+          end
+          @castle = Castle.find_by(params[:id])
+          @castle.destroy!
+        end
+        if @castles_number == 1
+          render :json => ['succeeded in destroying a castle and group_user']
+        else
+          render :json => ['succeeded in destroying a castle']
+        end
+      rescue => e
+        castles_number = []
+        if @castles_number == 1
+          error_messages = [@castle.errors.full_messages, @group_user.errors.full_messages]
+        else
+          error_messages = [@castle.errors.full_messages]
+        end
+        render :json => ['failed to destroy a castle or group_user', error_messages]
       end
     else
       render :json => ["その操作はログインしていないとできません"]

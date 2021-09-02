@@ -197,10 +197,11 @@ feature "Show-other-user-castles" , :js => true do
     expect(page).to have_content "SQLをマスターする 城"
     expect(page).to have_css '.edit-user-button'
     expect(page).to have_css '.edit-castle-contents-wrapper'
-
+    sleep 1
     click_button "＜"
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
+    sleep 2
     click_button "programming"
     find('div.bm-overlay').click
     page.find('.user-name', text: 'test_user1').click
