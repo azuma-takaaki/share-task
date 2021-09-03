@@ -140,5 +140,23 @@ feature "Castles" , :js => true do
     click_button "ログアウト"
   end
 
+  example "城の名前を変更できる" do
+    @group = FactoryBot.create(:programming)
+    click_button "＜"
+    click_on "グループを探す"
+    find("input[placeholder='グループを探す']").set("progra")
+    click_button "programming"
+    find('div.bm-overlay').click
+    click_button "城を建てる"
+    fill_in "城の名前(目標)", with:"web開発エンジニアになる"
+    find(".post-castle-data-button").click
+    expect(page).to have_content "web開発エンジニアになる 城"
+    expect(page).to have_selector ".castle_at_group", text: "test_user1"
+    page.find('.user-name', text: 'test_user1').click
+
+    page.find('.nav-link', text: '編集').click
+    
+  end
+
 
 end

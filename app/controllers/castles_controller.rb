@@ -64,6 +64,23 @@ class CastlesController < ApplicationController
     end
   end
 
+  def update
+    if logged_in?
+      @castle = Castle.find_by(id: params[:id], user_id: current_user().id)
+      if @castle.nil?
+        render :json => ["Failed to update the castle", ["編集する城が見つかりませんでした"]]
+      else
+        if @castle.update(update_parameters)
+          render :json => ["Succeeded in updating the castle"]
+        else
+          render :json => ["Failed to update the castle", @castle.errors.full_messages]
+        end
+      end
+    else
+      render :json => ["Failed to update the castle", ["その操作はログインしていないとできません"]]
+    end
+  end
+
   def get_group_castle_list
     @castle_part_list = Castle.left_joins(:castle_parts, :user)
                      .select("users.id AS user_id, users.name AS user_name, users.icon, castles.name, castles.id AS castle_id, castle_parts.three_d_model_name, castle_parts.position_x, castle_parts.position_y, castle_parts.position_z, castle_parts.angle_x, castle_parts.angle_y, castle_parts.angle_z")
@@ -162,5 +179,9 @@ class CastlesController < ApplicationController
   private
     def castle_parameters
       params.require(:castle).permit(:name, :group_id)
+    end
+
+    def update_parameters
+      params.require(:castle).permit(:name)
     end
 end

@@ -38,6 +38,7 @@ const LoadModel = (modelpath) => {
 function Castle(props){
 
   const [castleModels, setCastleModels] = useState(props.castle_models)
+  const [castleName, setCastleName] = useState(props.castle_name)
   const [editModelNumber, setEditModelNumber] = useState(0)
 
   const [selectedCastleToAdd, setSelectedCastleToAdd] = useState("")
@@ -83,6 +84,9 @@ function Castle(props){
   }
 
   const openModal = (type) =>  {
+    if(type == "edit_castle"){
+      setModalInput(castleName)
+    }
     setErrorMessages({arr: []})
     setModalType(type)
     setModalIsOpen(true)
@@ -179,12 +183,13 @@ function Castle(props){
     .then(res => res.json())
     .then((result) => {
       sleep(300).then(() =>{
-        alert(result[0])
+        alert("城の削除に成功しました")
         if(result[0] == "succeeded in destroying a castle and group_user" || result[0] == "succeeded in destroying a castle"){
           setProgressPercentage("100")
           sleep(1000).then(()=>{
             setSelectedCastleToAdd("")
-            alert("城を削除しました")
+            props.fetchCastles("user", props.user_id, false)
+            setProgressPercentage("0")
           })
         }else{
           setProgressPercentage("0")
@@ -192,9 +197,6 @@ function Castle(props){
           alert(result[1])
         }
       })
-    }).then(()=>{
-      setProgressPercentage("0")
-      props.fetchCastles("user", user_id, true)
     })
   }
 
@@ -252,6 +254,50 @@ function Castle(props){
           }
         })
       })
+  }
+
+  const changeCastleName = () => {
+    setProgressPercentage("20")
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+           }
+       }
+      return '';
+    }
+
+    let model_name_list = [ "castle.glb", "castle.glb"]
+    //let model_name_list = [ "wall_01.glb", "castle.glb"]
+    const data = { castle:{name: modalInput}}
+
+    fetch('/castles/' + props.castle_id,{
+      method: 'PATCH',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then((result) => {
+      sleep(300).then(() =>{
+        if(result[0] == "Failed to update the castle"){
+          setProgressPercentage("0")
+          setErrorMessages({arr: result[1]})
+        }else{
+          setProgressPercentage("100")
+          sleep(1000).then(()=>{
+            setCastleName(modalInput)
+            props.fetchCastles("user", props.user_id, false)
+            setProgressPercentage("0")
+            closeModal()
+          })
+        }
+      })
+    })
   }
 
 
@@ -392,6 +438,7 @@ function Castle(props){
     move_amount_y = 0
   }
   let tabs = <div></div>;
+  let edit_castle_button = <div></div>
   let edit_castle_contents = <div></div>
   let castle_part_point = <div></div>
   let open_report_modal_button = <div></div>
@@ -400,6 +447,8 @@ function Castle(props){
   let add_castle_button = <div></div>
   let edit_castle_parts_sliders = <div></div>
   if(props.tag_class=="castle_at_user_page"){
+    edit_castle_button = <button onClick={()=>openModal("edit_castle")}>⋯</button>
+
     let new_report_list = []
     if (!(props.castle_reports[0].content == null)){
         for(let i=0; i<props.castle_reports.length; i++){
@@ -641,6 +690,16 @@ function Castle(props){
                           </div>
                       </div>
     }
+  }else if(modalType=="edit_castle"){
+    modal_content = <div>
+                        <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
+                        {error_flash_content}
+                        <h2>城を編集</h2>
+                        <div>
+                          城の名前: <input type="text" value={modalInput}  onChange={handleChange}/>
+                        </div>
+                        <button onClick={()=>{changeCastleName()}}>城の名前を変更</button>
+                    </div>
   }
 
 
@@ -649,7 +708,8 @@ function Castle(props){
       <div class="header-and-canvas-wrapper">
         <div class="castle-header-at-goup-page">
           {user_infomation_on_castle}
-          <h2>{props.castle_name} 城</h2>
+          <h2>{castleName} 城</h2>
+          {edit_castle_button}
           {report_infomation}
         </div>
         <div class="canvas">
