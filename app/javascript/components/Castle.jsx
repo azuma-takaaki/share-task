@@ -183,7 +183,6 @@ function Castle(props){
     .then(res => res.json())
     .then((result) => {
       sleep(300).then(() =>{
-        alert("城の削除に成功しました")
         if(result[0] == "succeeded in destroying a castle and group_user" || result[0] == "succeeded in destroying a castle"){
           setProgressPercentage("100")
           sleep(1000).then(()=>{
@@ -447,7 +446,7 @@ function Castle(props){
   let add_castle_button = <div></div>
   let edit_castle_parts_sliders = <div></div>
   if(props.tag_class=="castle_at_user_page"){
-    edit_castle_button = <button onClick={()=>openModal("edit_castle")}>⋯</button>
+    edit_castle_button = <button id={"edit-"+props.castle.castle_name.replace(/\s+/g,"")} onClick={()=>openModal("edit_castle")}>⋯</button>
 
     let new_report_list = []
     if (!(props.castle_reports[0].content == null)){
@@ -475,7 +474,6 @@ function Castle(props){
                                     <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
                                     <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
                                     <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
-                                    <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-edit-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">編集</a>
                                   </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -616,9 +614,6 @@ function Castle(props){
                                         </div>
                                     </div>
                                   </div>
-                                  <div class="tab-pane fade show add-3d-model" id={"nav-edit-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-add-model-tab">
-                                    <button onClick={()=>destroyCastle()}>城を削除</button>
-                                  </div>
                                 </div>
                             </div>
     }
@@ -696,9 +691,20 @@ function Castle(props){
                         {error_flash_content}
                         <h2>城を編集</h2>
                         <div>
-                          城の名前: <input type="text" value={modalInput}  onChange={handleChange}/>
+                          城の名前: <input type="text" value={modalInput}  onChange={handleChange} placeholder="城の名前"/>
                         </div>
                         <button onClick={()=>{changeCastleName()}}>城の名前を変更</button>
+                        <button onClick={()=>{openModal("delete_castle")}}>城を削除</button>
+                    </div>
+  }else if(modalType=="delete_castle"){
+    modal_content = <div>
+                        <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
+                        {error_flash_content}
+                        <h2>本当に城を削除してよろしいですか？</h2>
+                        <div>城を削除するとその城の積み上げ, 追加した城の部品など全てのデータが削除されます</div>
+                        <div>この操作は取り消すことができませんが, 本当に削除してよろしいですか？</div>
+                        <button onClick={()=>{destroyCastle()}}>城を削除する</button>
+                        <button onClick={()=>{openModal("edit_castle")}}>キャンセル</button>
                     </div>
   }
 
