@@ -87,18 +87,11 @@ feature "Castles" , :js => true do
     fill_in "城の名前(目標)", with:"web開発エンジニアになる"
     find(".post-castle-data-button").click
     expect(page).to have_content "web開発エンジニアになる 城"
-
     page.find('.user-name', text: 'test_user1').click
-    expect(page).to have_selector ".users-page-header-name", text: "test_user1"
-
-    expect(page).to have_selector ".castle-point-at-user-page", text: "0"
-    click_button "積み上げを登録する"
-    fill_in "今日の積み上げ", with:"プログラミングを5時間勉強した！"
-    click_button "登録する"
-    expect(page).to have_selector ".castle-point-at-user-page", text: "1"
-    expect(page).to have_selector ".report-content", text: "プログラミングを5時間勉強した！"
-
-    page.find('.nav-link', text: '編集').click
+    find("#edit-web開発エンジニアになる").click
+    click_button "城を削除"
+    click_button "城を削除する"
+    expect(page).not_to have_content "web開発エンジニアになる 城"
   end
 
 
@@ -153,9 +146,10 @@ feature "Castles" , :js => true do
     expect(page).to have_content "web開発エンジニアになる 城"
     expect(page).to have_selector ".castle_at_group", text: "test_user1"
     page.find('.user-name', text: 'test_user1').click
-
-    page.find('.nav-link', text: '編集').click
-    
+    find("#edit-web開発エンジニアになる").click
+    fill_in "城の名前", with:"unityエンジニアになる"
+    click_button "城の名前を変更"
+    expect(page).to have_content "unityエンジニアになる 城"
   end
 
 
