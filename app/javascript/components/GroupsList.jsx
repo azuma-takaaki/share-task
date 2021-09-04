@@ -273,12 +273,14 @@ class GroupsList extends React.Component {
         }).then(res => res.json())
         .then(
           (result) => {
-            users_castle_list[id] = result[0]
+            users_castle_list[id] = []
             this.setState({users_castle_list: users_castle_list})
+            users_castle_list[id] = result[0]
             let visible_user = result[1]
             this.setState({visible_user: visible_user})
           }
         ).then(()=>{
+          this.setState({users_castle_list: users_castle_list})
           if(switchDisplay){
             this.switchDisplay(type, id)
           }
