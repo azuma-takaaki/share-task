@@ -357,7 +357,7 @@ class GroupsList extends React.Component {
 
                 </div>
                 <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    <input type="test" placeholder="グループを探す" value={this.state.input_value_search_groups} onChange={this.handleChangeSearchGroups}/>
+                    <input type="test" class="form-control" placeholder="グループを探す" value={this.state.input_value_search_groups} onChange={this.handleChangeSearchGroups}/>
                     {searched_group_number}
                     <div class= "result-serch-groups">
                       {this.state.suggestions.map((group) => {
@@ -433,8 +433,8 @@ class GroupsList extends React.Component {
           <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
           {error_flash_content}
           <h2>新しいグループを作成</h2>
-          <input type="text" placeholder="新しいグループの名前" value={this.state.input_value}  onChange={this.handleChange}/>
-          <button onClick={this.postData}>グループを作成</button>
+          <input type="text" class="form-control" placeholder="新しいグループの名前" value={this.state.input_value}  onChange={this.handleChange}/>
+          <button class="btn btn-primary" onClick={this.postData}>グループを作成</button>
         </Modal>
       </div>
     );

@@ -95,6 +95,7 @@ function Castle(props){
 
   }
   const closeModal = () =>  {
+    setProgressPercentage("0")
     setModalInput("")
     setModalIsOpen(false)
   }
@@ -446,7 +447,7 @@ function Castle(props){
   let add_castle_button = <div></div>
   let edit_castle_parts_sliders = <div></div>
   if(props.tag_class=="castle_at_user_page"){
-    edit_castle_button = <button id={"edit-"+props.castle.castle_name.replace(/\s+/g,"")} onClick={()=>openModal("edit_castle")}>⋯</button>
+    edit_castle_button = <button class="btn btn-secondary" id={"edit-"+props.castle.castle_name.replace(/\s+/g,"")} onClick={()=>openModal("edit_castle")}>⋯</button>
 
     let new_report_list = []
     if (!(props.castle_reports[0].content == null)){
@@ -480,16 +481,16 @@ function Castle(props){
                                   <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-home-tab">
                                     <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
                                     {new_report_list}
-                                    <button onClick = {() => openModal("add_report")}>積み上げを登録する</button>
+                                    <button class="btn btn-primary" onClick = {() => openModal("add_report")}>積み上げを登録する</button>
                                   </div>
                                   <div class="tab-pane fade show add-3d-model" id={"nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-add-model-tab">
                                     <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
                                     {castle_part_price_list}
                                     <p></p>
-                                    <button onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
+                                    <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
                                   </div>
                                   <div class="tab-pane fade show " id={"nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-move-model-tab">
-                                    <button onClick = {()=> updateCastleParts()}>変更を保存</button>
+                                    <button class="btn btn-primary" onClick = {()=> updateCastleParts()}>変更を保存</button>
                                     <div>
                                         <div class = "move-sliders move-x-slider"
                                               onMouseMove={(e)=>{
@@ -651,8 +652,8 @@ function Castle(props){
                       {error_flash_content}
                       <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
                       <h2>今日の積み上げ</h2>
-                      <textarea  value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
-                      <button onClick={() => postReport()}>登録する</button>
+                      <textarea  class="form-control" 　value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
+                      <button class="btn btn-primary" onClick={() => postReport()}>登録する</button>
                     </div>
   }else if(modalType=="confirmation_to_add_model"){
     if(selectedCastleToAdd==""){
@@ -672,7 +673,7 @@ function Castle(props){
                           <div>
                             積み上げポイント: {props.castle.castle_part_point} → {props.castle.castle_part_point-selectedCastleToAdd["castle_part_point"]}
                           </div>
-                          <button onClick={()=>addCastle(selectedCastleToAdd["three_d_model_name"])}>城に追加する</button>
+                          <button class="btn btn-primary" onClick={()=>addCastle(selectedCastleToAdd["three_d_model_name"])}>城に追加する</button>
                       </div>
     }else{
       modal_content = <div>
@@ -691,10 +692,10 @@ function Castle(props){
                         {error_flash_content}
                         <h2>城を編集</h2>
                         <div>
-                          城の名前: <input type="text" value={modalInput}  onChange={handleChange} placeholder="城の名前"/>
+                          城の名前: <input type="text" class="form-control" value={modalInput}  onChange={handleChange} placeholder="城の名前"/>
                         </div>
-                        <button onClick={()=>{changeCastleName()}}>城の名前を変更</button>
-                        <button onClick={()=>{openModal("delete_castle")}}>城を削除</button>
+                        <button class="btn btn-primary" onClick={()=>{changeCastleName()}}>城の名前を変更</button>
+                        <button class="btn btn-danger" onClick={()=>{openModal("delete_castle")}}>城を削除</button>
                     </div>
   }else if(modalType=="delete_castle"){
     modal_content = <div>
@@ -703,8 +704,8 @@ function Castle(props){
                         <h2>本当に城を削除してよろしいですか？</h2>
                         <div>城を削除するとその城の積み上げ, 追加した城の部品など全てのデータが削除されます</div>
                         <div>この操作は取り消すことができませんが, 本当に削除してよろしいですか？</div>
-                        <button onClick={()=>{destroyCastle()}}>城を削除する</button>
-                        <button onClick={()=>{openModal("edit_castle")}}>キャンセル</button>
+                        <button class="btn btn-danger" onClick={()=>{destroyCastle()}}>城を削除する</button>
+                        <button class="btn btn-primary" onClick={()=>{openModal("edit_castle")}}>キャンセル</button>
                     </div>
   }
 
@@ -714,8 +715,9 @@ function Castle(props){
       <div class="header-and-canvas-wrapper">
         <div class="castle-header-at-goup-page">
           {user_infomation_on_castle}
-          <h2>{castleName} 城</h2>
-          {edit_castle_button}
+          <div class="header-wrapper">
+            <div>{castleName} 城  {edit_castle_button}</div>
+          </div>
           {report_infomation}
         </div>
         <div class="canvas">

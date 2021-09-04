@@ -270,8 +270,8 @@ class Group extends React.Component {
                         <h2>グループを編集</h2>
                         <p></p>
                         <p>グループ名</p>
-                        <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
-                        <button onClick={this.updateData}>グループ名を変更する</button>
+                        <input type="text" class="form-control" value={this.state.input_value}  onChange={this.handleChange}/>
+                        <button class="btn btn-primary" onClick={this.updateData}>グループ名を変更する</button>
                         <p></p>
                         <p>グループメンバー</p>
                         {this.state.group_members.map((group_member)=>{
@@ -279,7 +279,7 @@ class Group extends React.Component {
                             <p>
                               <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
                               {group_member.name}
-                              <button onClick = {() => this.removeUser(group_member.id)}>退会させる</button>
+                              <button class="btn btn-danger" onClick = {() => this.removeUser(group_member.id)}>退会させる</button>
                             </p>
                           )
                         })}
@@ -290,12 +290,12 @@ class Group extends React.Component {
                           return (
                             <p>
                               <img class = "user-icon" src={require("../../assets/images/default/" + user.icon)} />
-                              {user.name}<button onClick={() => this.inviteUser(user.id)}>招待する</button>
+                              {user.name}<button class="btn btn-primary" onClick={() => this.inviteUser(user.id)}>招待する</button>
                             </p>
                           )
                         })}
                         <p></p>
-                        <button onClick={this.deleteGroup}>このグループを削除する</button>
+                        <button class="btn btn-danger" onClick={this.deleteGroup}>このグループを削除する</button>
                       </div>
     }else if(this.state.modal_type=="create_castle"){
       modal_content= <div class="react-modal">
@@ -303,8 +303,8 @@ class Group extends React.Component {
                         <h2>城を建てる</h2>
                         <p></p>
                         <p>城の名前</p>
-                        <input type="text" value={this.state.input_value} placeholder="城の名前(目標)" onChange={this.handleChange}/>
-                        <button class="btn btn-primary post-castle-data-button" onClick={this.createCastle}>城を建てる</button>
+                        <input type="text" class="form-control" value={this.state.input_value} placeholder="城の名前(目標)" onChange={this.handleChange}/>
+                        <button class="btn btn-primary" class="btn btn-primary post-castle-data-button" onClick={this.createCastle}>城を建てる</button>
                       </div>
     }
 

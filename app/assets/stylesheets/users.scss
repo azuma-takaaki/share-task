@@ -463,7 +463,7 @@
             z-index: 1;
           }
           .massage-castle-is-empty {
-            margin-top: 0px;
+            margin-top: 3rem;
           }
 
 
@@ -477,6 +477,15 @@
               margin: 2rem 0.5rem 5rem 0.5rem;
               height: 80vh;
               width: 100vw;
+              .header-and-canvas-wrapper{
+                .header-wrapper{
+                  display: flex;
+                  div{
+                      font-size: 2rem;
+                    width: 100%;
+                  }
+                }
+              }
               button{
                 z-index: 3;
               }
@@ -513,6 +522,15 @@
               margin: 2rem 0.5rem 5rem 0.5rem;
               height: 67vh;
               width: 100vw;
+              .header-and-canvas-wrapper{
+                .header-wrapper{
+                  display: flex;
+                  div{
+                      font-size: 2rem;
+                    width: 100%;
+                  }
+                }
+              }
               button{
                 z-index: 3;
               }
@@ -544,6 +562,15 @@
               margin: 2rem 0.5rem 5rem 0.5rem;
               height: calc(100vw);
               width: 100vw;
+              .header-and-canvas-wrapper{
+                .header-wrapper{
+                  display: flex;
+                  div{
+                      font-size: 2rem;
+                    width: 100%;
+                  }
+                }
+              }
               button{
                   z-index: 3;
                 }
@@ -622,9 +649,7 @@
   width: 100vw;
 }
 .react-modal {
-  max-height: 80vh;
-  overflow: scroll;
-  height: 100vh;
+
 }
 
 
@@ -679,18 +704,6 @@
     white-space: nowrap;
   }
   .edit-user-button{
-    background-color:	#CCFFFF;
-    //border-width: thin;
-    border: 0;
-    font-size: 1.5rem;
-    width:10%;
-    height:80%;
-    margin: 0% 1.5% 0% 1.5% ;
-    overflow: hidden;
-    text-overflow: clip;
-    white-space: nowrap;
-    -webkit-border-radius: 24px;
-    -moz-border-radius: 24px;
     &:hover {
       opacity: 0.6;
       transition-duration: 0.3s;
@@ -707,4 +720,8 @@
   padding: 5px 0px;
   background-color: #337AB7;
   border-radius: 4px;
+}
+
+.form-control{
+  margin:1rem 0rem;
 }
