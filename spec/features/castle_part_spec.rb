@@ -65,6 +65,7 @@ feature "CastleParts" , :js => true do
     click_button "3Dモデルを追加"
     click_button "城に追加する"
     page.find('.nav-link', text: '移動').click
+    sleep 1
     click_button "変更を保存"
   end
 
