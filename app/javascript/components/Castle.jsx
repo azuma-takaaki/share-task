@@ -188,6 +188,7 @@ function Castle(props){
           setProgressPercentage("100")
           sleep(1000).then(()=>{
             setSelectedCastleToAdd("")
+            closeModal()
             props.fetchCastles("user", props.user_id, false)
             setProgressPercentage("0")
           })
