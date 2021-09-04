@@ -231,11 +231,9 @@ class GroupsList extends React.Component {
     this.getGroupList()
     this.fetchRelativeGroup()
     this.setState(state => ({menuOpen: !state.menuOpen}))
-    this.GroupRef.current.toggleMenu();
   }
   closeMenu () {
     this.setState(state => ({menuOpen: false}))
-    this.GroupRef.current.closeMenu();
   }
   fetchRelativeGroup(){
     let groups_list = []
@@ -342,12 +340,12 @@ class GroupsList extends React.Component {
             <div class="side-menu">
               <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">マイグループ</a>
-                  <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">グループを探す</a>
+                  <a class="nav-link active" id="nav-my-group-tab" data-bs-toggle="tab" href="#nav-my-group" role="tab" aria-controls="nav-my-group" aria-selected="true">マイグループ</a>
+                  <a class="nav-link" id="nav-search-group-tab" data-bs-toggle="tab" href="#nav-search-group" role="tab" aria-controls="nav-search-group" aria-selected="false">グループを探す</a>
                 </div>
               </nav>
               <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tab-pane fade show active" id="nav-my-group" role="tabpanel" aria-labelledby="nav-my-group-tab">
                     <div class= "switch-group-button-list">
                       {this.state.group_list.map((group) => {
                         return (
@@ -358,8 +356,8 @@ class GroupsList extends React.Component {
                     <button  class = "btn btn-primary add-group-button" onClick={this.openModal}>＋group</button>
 
                 </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    <input type="test" class="form-control" placeholder="グループを探す" value={this.state.input_value_search_groups} onChange={this.handleChangeSearchGroups}/>
+                <div class="tab-pane fade" id="nav-search-group" role="tabpanel" aria-labelledby="nav-search-group-tab">
+                    <input type="test" class="form-control search-window-at-side-menu" placeholder="グループを探す" value={this.state.input_value_search_groups} onChange={this.handleChangeSearchGroups}/>
                     {searched_group_number}
                     <div class= "result-serch-groups">
                       {this.state.suggestions.map((group) => {
