@@ -139,7 +139,7 @@ class User extends React.Component {
 
     let edit_user_button = <div></div>
     if(this.props.is_logged_in_user){
-      edit_user_button = <button class="edit-user-button"onClick={this.openModal}>・・・</button>
+      edit_user_button = <button class="btn btn-secondary edit-user-button" onClick={this.openModal}>⋯</button>
     }
 
     return (
@@ -164,10 +164,10 @@ class User extends React.Component {
         >
           <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
           <h2>ユーザー情報編集</h2>
-          <input type="text" value={this.state.input_name}  onChange={this.handleChange}/>
-          <button onClick={this.updateData}>更新</button>
+          <input type="text" class="form-control" value={this.state.input_name}  onChange={this.handleChange}/>
+          <button class="btn btn-primary" onClick={this.updateData}>更新</button>
           <p></p>
-          <button onClick={this.logout}>ログアウト</button>
+          <button class="btn btn-secondary" onClick={this.logout}>ログアウト</button>
         </Modal>
       </div>
     );

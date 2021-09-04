@@ -11,7 +11,7 @@ feature "Login-Logout" , :js => true do
       fill_in "password", with:"password"
       fill_in "password_confirm", with:"password"
       click_button "登録"
-      click_button "・・・"
+      page.find('.edit-user-button', text: '⋯').click
       click_button "ログアウト"
       click_button "ログイン"
       fill_in "email", with:"hogehoge1@hoge.com"
@@ -63,7 +63,7 @@ feature "Singup" , :js => true do
       fill_in "password_confirm", with:"password"
       click_button "登録"
       expect(page).to have_content 'test_user1'
-      click_button "・・・"
+      page.find('.edit-user-button', text: '⋯').click
       click_button "ログアウト"
       sleep 2
 
@@ -172,7 +172,7 @@ feature "Show-other-user-castles" , :js => true do
     click_button "＜"
     find(".side-menu-user-icon").click
     find('div.bm-overlay').click
-    click_button "・・・"
+    page.find('.edit-user-button', text: '⋯').click
     click_button "ログアウト"
 
     click_button "新規アカウント登録"

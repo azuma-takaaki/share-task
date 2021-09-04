@@ -57,7 +57,7 @@ feature "Castles" , :js => true do
     click_button "＜"
     click_button "test_user1"
     find('div.bm-overlay').click
-    click_button "・・・"
+    page.find('.edit-user-button', text: '⋯').click
     click_button "ログアウト"
 
     click_button "新規アカウント登録"
@@ -129,7 +129,7 @@ feature "Castles" , :js => true do
     click_button "＜"
     click_button "test_user1"
     find('div.bm-overlay').click
-    click_button "・・・"
+    page.find('.edit-user-button', text: '⋯').click
     click_button "ログアウト"
   end
 

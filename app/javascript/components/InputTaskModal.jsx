@@ -79,8 +79,8 @@ class InputTaskModal extends React.Component {
         >
           <h2>新しいタスクを追加</h2>
           <form onSubmit={this.postData}>
-            <input type="text" value={this.state.input_value}  onChange={this.handleChange}/>
-            <input type="submit" value="Submit" />
+            <input class="form-control" type="text" value={this.state.input_value}  onChange={this.handleChange}/>
+            <input class="form-control" type="submit" value="Submit" />
           </form>
         </Modal>
       </div>
