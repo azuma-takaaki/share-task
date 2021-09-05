@@ -271,8 +271,7 @@ class GroupsList extends React.Component {
         }).then(res => res.json())
         .then(
           (result) => {
-            users_castle_list[id] = []
-            this.setState({users_castle_list: users_castle_list})
+            
             users_castle_list[id] = result[0]
             let visible_user = result[1]
             this.setState({visible_user: visible_user})
@@ -380,9 +379,9 @@ class GroupsList extends React.Component {
             <div class="group-user-wrapper">
               {(() => {
                   if(this.state.menuOpen) {
-                      return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＞</button>);
+                      return(<button class="btn side-menu-toggle active" onClick={this.toggleMenu}><span></span><span></span><span></span></button>);
                   } else {
-                      return(<button class="btn btn-info side-menu-toggle" onClick={this.toggleMenu}>＜</button>);
+                      return(<button class="btn side-menu-toggle " onClick={this.toggleMenu}><span></span><span></span><span></span></button>);
                   }
               })()}
 

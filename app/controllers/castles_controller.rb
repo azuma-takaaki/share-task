@@ -42,7 +42,7 @@ class CastlesController < ApplicationController
             @group_user = GroupUser.find_by(group_id: params[:castle][:group_id], user_id: params[:castle][:user_id])
             @group_user.destroy!
           end
-          @castle = Castle.find_by(params[:id])
+          @castle = Castle.find_by(id: params[:id])
           @castle.destroy!
         end
         if @castles_number == 1

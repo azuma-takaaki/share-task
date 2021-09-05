@@ -84,6 +84,7 @@ function Castle(props){
   }
 
   const openModal = (type) =>  {
+    alert(props.castle["castle_id"])
     if(type == "edit_castle"){
       setModalInput(castleName)
     }
@@ -173,7 +174,7 @@ function Castle(props){
     //let model_name_list = [ "wall_01.glb", "castle.glb"]
     const data = { castle: { user_id: props.user_id, group_id: props.group_id }}
 
-    fetch("/castles/" + props.castle_id,{
+    fetch("/castles/" + props.castle["castle_id"],{
       method: 'DELETE',
       headers: {
                 'Content-Type': 'application/json',
@@ -453,14 +454,14 @@ function Castle(props){
     let new_report_list = []
     if (!(props.castle_reports[0].content == null)){
         for(let i=0; i<props.castle_reports.length; i++){
-          new_report_list.push(<p class = "report-content p-3 mb-2 bg-info text-white">今日の積み上げ: {props.castle_reports[i].content}</p>)
+          new_report_list.push(<p class = "report-content p-3 text-white">今日の積み上げ: {props.castle_reports[i].content}</p>)
         }
     }
     let castle_part_price_list = []
     let temppp = []
     for(let i=0; i<props.castle_part_price_list.length; i++){
       castle_part_price_list.push(<div>
-                                    <button class = "p-3 mb-2 bg-info text-white" onClick={() => {setSelectedCastleToAdd(props.castle_part_price_list[i])}}>
+                                    <button class = "castle-price-button p-3  text-white" onClick={() => {setSelectedCastleToAdd(props.castle_part_price_list[i])}}>
                                         {props.castle_part_price_list[i]["displayed_name"]+"  必要ポイント: "+ props.castle_part_price_list[i]["castle_part_point"]}
                                     </button>
                                   </div>)
@@ -480,12 +481,14 @@ function Castle(props){
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
                                   <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-home-tab">
-                                    <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
-                                    {new_report_list}
+                                    <div class="castle-point-wrapper  p-3">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
+                                    <div class="report-wrapper">
+                                      {new_report_list}
+                                    </div>
                                     <button class="btn btn-primary" onClick = {() => openModal("add_report")}>積み上げを登録する</button>
                                   </div>
                                   <div class="tab-pane fade show add-3d-model" id={"nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-add-model-tab">
-                                    <div class="bg-warning">積み上げポイント <div class="castle-point-at-user-page">{props.castle.castle_part_point}</div></div>
+                                    <div class="castle-point-wrapper  p-3">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
                                     {castle_part_price_list}
                                     <p></p>
                                     <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>

@@ -75,12 +75,14 @@
       #nav-tab{
         height: 7vh;
       }
+      .nav-tabs{
+        margin-bottom: 1vh;
+      }
 
       .search-group-form{
         width:100%;
         height:5%;
       }
-
       .nav-link{
         font-size: 0.8rem;
         color: #808080;
@@ -91,14 +93,14 @@
         }
       }
       .nav-link.active{
-        border-bottom: solid 8px #80ceff;
+        border-bottom: solid 8px #5089C6;
         font-size: 1rem;
         color: #000000;
         width: 50%;
       }
 
       #nav-my-group{
-        height: 83vh;
+        height: 82vh;
         .switch-group-button-list{
           width:100%;
           height:88%;
@@ -179,7 +181,7 @@
           border-radius: 50%;
           width:  3em;
           height: 3em;
-          border: 4px solid #99FFCC;
+          border: 4px solid #5089C6;
         }
       }
 
@@ -191,7 +193,7 @@
 
     //main-display
     .group-user-wrapper{
-        background-color:#B3CEE3;
+        background-color:white;
         width:100vw;
         height: 100%;
         margin-left:0px;
@@ -201,12 +203,53 @@
         scrollbar-width: none;       /* Firefox 対応 */
 
         .side-menu-toggle {
+          background-color:#035397;
+          color:white;
+          font-size: 2rem;
           position: fixed;
           width: 4rem;
           height: 4rem;
-          z-index: 3;
           top:0;
           z-index: 5;
+          span {
+            margin-left:0.9rem;
+            z-index: 6;
+            display: inline-block;
+            transition: all .4s;
+            box-sizing: border-box;
+            position: absolute;
+            left: 0;
+            width: 55%;
+            height: 4px;
+            background-color: #fff;
+            border-radius: 4px;
+          }
+
+          span:nth-of-type(1) {
+            top: 0.95rem;
+          }
+          span:nth-of-type(2) {
+            top: 1.8rem;
+          }
+          span:nth-of-type(3) {
+            bottom: 0.95rem;
+          }
+
+        }
+        .side-menu-toggle.active span:nth-of-type(1) {
+          transform: translateY(20px) rotate(-315deg);
+          margin-left:0.5rem;
+          top: 0.585rem;
+          width: 77%;
+        }
+        .side-menu-toggle.active span:nth-of-type(2) {
+          opacity: 0;
+        }
+        .side-menu-toggle.active span:nth-of-type(3) {
+          transform: translateY(-20px) rotate(315deg);
+          margin-left:0.5rem;
+          bottom: 0.585rem;
+          width: 77%;
         }
 
 
@@ -216,11 +259,11 @@
           .group-header{
             width: 100%;
             height: 4rem;
-            margin-bottm: 1rem;
             display:flex;
             position: fixed;
             top:0;
-            background-color:#9be5f2;
+            color:white;
+            background-color:#001E6C;
             z-index: 4;
 
 
@@ -229,7 +272,7 @@
               font-size: 2rem;
               width: 30%;
               height: 100%;
-              margin: 1% 5%;
+              margin: 0.5% 0%;
               white-space: nowrap;
               margin-left: 5rem;
             }
@@ -256,7 +299,7 @@
                 border-radius: 50%;
                 width:  3em;
                 height: 3em;
-                border: 4px solid #99FFCC;
+                border: 4px solid #5089C6;
               }
             }
 
@@ -335,7 +378,7 @@
                   border-radius: 50%;
                   width:  2em;
                   height: 2em;
-                  border: 3px solid #99FFCC;
+                  border: 3px solid #5089C6;
                 }
                 .user-name{
                   margin-top: 1em;
@@ -377,7 +420,7 @@
                   border-radius: 50%;
                   width:  2.5em;
                   height: 2.5em;
-                  border: 3px solid #99FFCC;
+                  border: 3px solid #5089C6;
                 }
                 .user-name{
                   margin-top: 1em;
@@ -419,7 +462,7 @@
                   border-radius: 50%;
                   width:  2.5em;
                   height: 2.5em;
-                  border: 3px solid #99FFCC;
+                  border: 3px solid #5089C6;
                 }
                 .user-name{
                   margin-top: 1em;
@@ -487,21 +530,29 @@
           .massage-castle-is-empty {
             margin-top: 3rem;
           }
+          .nav-tabs{
+            margin-bottom: 1rem;
+          }
 
 
           @media screen and (orientation: landscape) {
             .castle_at_user_page{
+              border: solid;
+              border-color: #5089C6;
               background-color:white;
               display: -webkit-flex;
               display: -moz-flex;
               display: -ms-flex;
               display: -o-flex;
               display: flex;
-              margin: 1rem 0.5rem 5rem 0.5rem;
+              margin: 0.5rem 0.5rem 5rem 0.5rem;
               height: 90vh;
-              width: 100vw;
+              width: 99vw;
               .header-and-canvas-wrapper{
                 .header-wrapper{
+                  width: 80vh;
+                  color:white;
+                  background-color:#5089C6;
                   display: flex;
                   div{
                       font-size: 2rem;
@@ -525,19 +576,19 @@
                 margin-bottom: 0.5rem;
                 width: 80vh;
                 height: 80vh;
-                margin: 10px;
+                margin: 0px 0px 10px 0px;
                 z-index: 1;
-                border: solid;
-                border-color: #80ceff;
+                border-right: solid;
+                border-color: #5089C6;
               }
               .edit-castle-contents-wrapper{
+                margin-left:0;
                 width: calc(100vw - 80vh);
                 height: 100%;
                 margin: 0rem 1rem;
                 background-color:white;
                 .nav-link{
                   height: 3rem;
-                  margin-bottom: 1rem;
                   font-size: 0.8rem;
                   color: #808080;
                   width: 33.3%;
@@ -547,9 +598,35 @@
                   }
                 }
                 .nav-link.active{
-                  border-bottom: solid 8px #80ceff;
+                  border-bottom: solid 8px #5089C6;
                   font-size: 1rem;
                   color: #000000;
+                }
+                .castle-point-wrapper{
+                  color:white;
+                  background-color:#035397;
+                  margin: 0px 0px 15px 0px;
+                }
+                .castle-price-button{
+                  background-color:#5089C6;
+                  margin: 0px 0px 5px 0px;
+                }
+                .report-wrapper{
+                  height:60vh;
+                  margin-bottom: 1rem;
+                  overflow:hidden;
+                  overflow-y : scroll;
+                  /* IE, Edge 対応 */
+                  -ms-overflow-style: none;
+                  /* Firefox 対応 */
+                  scrollbar-width: none;
+                  .report-content{
+                    background-color:#5089C6;
+                    margin: 5px 0px;
+                  }
+                }
+                .report-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+                    display:none;
                 }
               }
             }
@@ -557,16 +634,20 @@
 
           @media screen and (orientation: landscape) and (max-width: 1000px){
             .castle_at_user_page{
+              border: solid;
+              border-color: #5089C6;
               display: -webkit-flex;
               display: -moz-flex;
               display: -ms-flex;
               display: -o-flex;
               display: flex;
               margin: 2rem 0.5rem 5rem 0.5rem;
-              height: 67vh;
+              height: 70vh;
               width: 100vw;
               .header-and-canvas-wrapper{
                 .header-wrapper{
+                  width: 50vw;
+                  background-color:#5089C6;
                   display: flex;
                   div{
                       font-size: 2rem;
@@ -590,16 +671,17 @@
                 margin-bottom: 0.5rem;
                 width: 50vw;
                 height: 50vw;
-                margin: 10px;
+                margin: 0px 0px 10px 0px;
                 z-index: 1;
               }
               .edit-castle-contents-wrapper{
+                padding: 1rem 1rem 0rem 1rem;
+                height:70vh;
                 width: calc(100vw - 50vw);
-                margin: 0rem 1rem;
+                margin: 0rem 0rem;
                 background-color:white;
                 .nav-link{
                   height: 3rem;
-                  margin-bottom: 1rem;
                   font-size: 0.8rem;
                   color: #808080;
                   width: 33.3%;
@@ -609,9 +691,34 @@
                   }
                 }
                 .nav-link.active{
-                  border-bottom: solid 8px #80ceff;
+                  border-bottom: solid 8px #5089C6;
                   font-size: 1rem;
                   color: #000000;
+                }
+                .castle-point-wrapper{
+                  background-color:#035397;
+                  margin: 0px 0px 5px 0px;
+                }
+                .castle-price-button{
+                  background-color:#5089C6;
+                  margin: 0px 0px 5px 0px;
+                }
+                .report-wrapper{
+                  height:35vw;
+                  margin-bottom: 1rem;
+                  overflow:hidden;
+                  overflow-y : scroll;
+                  /* IE, Edge 対応 */
+                  -ms-overflow-style: none;
+                  /* Firefox 対応 */
+                  scrollbar-width: none;
+                  .report-content{
+                    background-color:#5089C6;
+                    margin: 5px 0px;
+                  }
+                }
+                .report-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+                    display:none;
                 }
               }
             }
@@ -620,10 +727,15 @@
           @media screen and (orientation: portrait) {
             .castle_at_user_page{
               margin: 2rem 0.5rem 5rem 0.5rem;
-              height: calc(100vw);
+              height: calc(200vw);
               width: 100vw;
               .header-and-canvas-wrapper{
                 .header-wrapper{
+                  height: calc(10vw);
+                  width: 90vw;
+                  margin-left:10px;
+                  color:white;
+                  background-color:#5089C6;
                   display: flex;
                   div{
                       font-size: 2rem;
@@ -640,17 +752,22 @@
               .canvas{
                   margin-bottom: 0.5rem;
                   width: 90vw;
-                  height: 50vw;
-                  margin: 5px;
+                  height:90vw;
+                  margin: 0px 10px 10px 10px;
                   z-index: 1;
+                  border: solid;
+                  border-color: #5089C6;
                 }
               .edit-castle-contents-wrapper{
-                width: 92vw;
-                margin: 0rem 1rem;
+                border: solid;
+                border-color: #5089C6;
+                padding: 1rem;
+                height: 100vw;
+                width: 90vw;
+                margin: 0rem 10px;
                 background-color:white;
                 .nav-link{
                   height: 3rem;
-                  margin-bottom: 1rem;
                   font-size: 0.8rem;
                   color: #808080;
                   width: 33.3%;
@@ -660,9 +777,35 @@
                   }
                 }
                 .nav-link.active{
-                  border-bottom: solid 8px #80ceff;
+                  border-bottom: solid 8px #5089C6;
                   font-size: 1rem;
                   color: #000000;
+                }
+                .castle-point-wrapper{
+                  color:white;
+                  background-color:#035397;
+                  margin: 0px 0px 5px 0px;
+                }
+                .castle-price-button{
+                  background-color:#5089C6;
+                  margin: 0px 0px 5px 0px;
+                }
+                .report-wrapper{
+                  height:65vw;
+                  margin-bottom: 1rem;
+                  overflow:hidden;
+                  overflow-y : scroll;
+                  /* IE, Edge 対応 */
+                  -ms-overflow-style: none;
+                  /* Firefox 対応 */
+                  scrollbar-width: none;
+                  .report-content{
+                    background-color:#5089C6;
+                    margin: 5px 0px;
+                  }
+                }
+                .report-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+                    display:none;
                 }
               }
             }
@@ -755,13 +898,14 @@
 //User.jsx
 
 .users-header{
+  color: white;
   width: 100%;
   height: 4rem;
   margin-bottm: 1rem;
   display:flex;
   position: fixed;
   top:0;
-  background-color:#9be5f2;
+  background-color:#001E6C;
   z-index: 4;
   align-items: center;
 
@@ -771,7 +915,7 @@
     width:  3.8em;
     height: 3.8em;
     margin-left: 5rem;
-    border: 4px solid #99FFCC;
+    border: 4px solid #5089C6;
   }
   .users-page-header-name{
     font-size: 2rem;
