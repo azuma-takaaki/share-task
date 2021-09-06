@@ -84,7 +84,6 @@ function Castle(props){
   }
 
   const openModal = (type) =>  {
-    alert(props.castle["castle_id"])
     if(type == "edit_castle"){
       setModalInput(castleName)
     }
