@@ -12,6 +12,7 @@
     "bootstrap": "^5.0.0-beta3",
     "drei": "^2.2.21",
     "prop-types": "^15.7.2",
+    "rc-slider": "^9.7.2",
     "react": "^17.0.2",
     "react-autosuggest": "^10.1.0",
     "react-burger-menu": "^3.0.6",

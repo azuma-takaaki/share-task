@@ -6,6 +6,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import PropTypes from "prop-types";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Modal from 'react-modal'
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 const CameraController = () => {
   const { camera, gl } = useThree();
@@ -63,6 +65,7 @@ function Castle(props){
   const [clickCoordinateX, setclickCoordinateX] = useState(0)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [modalInput, setModalInput] = useState("")
+  const [sliderValue, setSliderValue] = useState(10)
 
   const [errorMessages, setErrorMessages] = useState({arr: []})
 
@@ -102,6 +105,10 @@ function Castle(props){
   }
   const handleChange = (e) => {
     setModalInput(e.target.value)
+  }
+
+  const handleChangeSlider = (e) => {
+    setSliderValue(e)
   }
 
   const sleep = (waitSec) => {
@@ -468,10 +475,28 @@ function Castle(props){
 
     }
 
+    const style = { width: 700, margin: 50 };
+const marks = {
+  0: <strong>0%</strong>,
+  25: '25%',
+  50: '50%',
+  75: '75%',
+  100: {
+    style: {
+      color: 'red',
+    },
+    label: <strong>100%</strong>,
+  },
+};
+
 
 
     if(props.is_logged_in_user){
       edit_castle_contents= <div class="edit-castle-contents-wrapper">
+      <div style={style}>
+            <p>slider value:{sliderValue}</p>
+            <Slider  value={sliderValue} min={-100} max={100} step={0.01} onChange={handleChangeSlider}  />
+            </div>
                               <nav>
                                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
