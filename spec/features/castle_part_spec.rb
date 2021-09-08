@@ -14,7 +14,7 @@ feature "CastleParts" , :js => true do
 
   example "castle_part_pointを使ってcastle_partを追加できる" do
     @group = FactoryBot.create(:programming)
-    click_button "＜"
+    page.find('.side-menu-toggle').click
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
     click_button "programming"
@@ -34,6 +34,8 @@ feature "CastleParts" , :js => true do
     expect(page).to have_selector ".castle-point-at-user-page", text: "1"
     expect(page).to have_selector ".report-content", text: "プログラミングを5時間勉強した！"
 
+
+    sleep 1000
     page.find('.nav-link', text: '増築').click
     click_button ('城の門 必要ポイント: 1')
     click_button "3Dモデルを追加"
@@ -44,7 +46,7 @@ feature "CastleParts" , :js => true do
 
   example "複数のcastle_partを一度にアップデートできる" do
     @group = FactoryBot.create(:programming)
-    click_button "＜"
+    page.find('.side-menu-toggle').click
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
     click_button "programming"
