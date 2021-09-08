@@ -56,7 +56,7 @@
 .all-group-area-wrapper{
     position: fixed;
     display:flex;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     width:100%;
     margin: 0;
 
@@ -69,14 +69,14 @@
 
     .bm-item{
       width:100%;
-      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
       text-align:center;
       background-color:white;
       #nav-tab{
-        height: 7vh;
+        height: calc(var(--vh, 1vh) * 7);
       }
       .nav-tabs{
-        margin-bottom: 1vh;
+        margin-bottom: calc(var(--vh, 1vh) * 1);
       }
 
       .search-group-form{
@@ -100,7 +100,7 @@
       }
 
       #nav-my-group{
-        height: 82vh;
+        height: calc(var(--vh, 1vh) * 82);
         .switch-group-button-list{
           width:100%;
           height:88%;
@@ -140,9 +140,9 @@
       }
 
       #nav-search-group{
-        height: 80vh;
+        height: calc(var(--vh, 1vh) * 80);
         .search-window-at-side-menu{
-          margin-top: 3vh;
+          margin-top: calc(var(--vh, 1vh) * 3);
         }
         .searched_group_number{
         }
@@ -169,7 +169,7 @@
 
       .side-menu-user-icon{
         width:100%;
-        height:10vh;
+        height: calc(var(--vh, 1vh) * 10);
         background-color:#339966;
         align-items: center;
         margin: auto;
@@ -498,7 +498,7 @@
 
         //task
         .task-wrapper{
-          margin-bottom: 10vh;
+          margin-bottom: calc(var(--vh, 1vh) * 10);
           .task {
             font-size: 1.5rem;
             background-color:#6C93E0;
@@ -546,11 +546,11 @@
               display: -o-flex;
               display: flex;
               margin: 0.5rem 0.5rem 5rem 0.5rem;
-              height: 90vh;
+              height: calc(var(--vh, 1vh) * 90);
               width: 99vw;
               .header-and-canvas-wrapper{
                 .header-wrapper{
-                  width: 80vh;
+                  width: calc(var(--vh, 1vh) * 80);
                   color:white;
                   background-color:#5089C6;
                   display: flex;
@@ -574,8 +574,8 @@
               }
               .canvas{
                 margin-bottom: 0.5rem;
-                width: 80vh;
-                height: 80vh;
+                width: calc(var(--vh, 1vh) * 80);
+                height: calc(var(--vh, 1vh) * 80);
                 margin: 0px 0px 10px 0px;
                 z-index: 1;
                 border-right: solid;
@@ -583,7 +583,7 @@
               }
               .edit-castle-contents-wrapper{
                 margin-left:0;
-                width: calc(100vw - 80vh);
+                width: calc(100vw - calc(var(--vh, 1vh) * 80));
                 height: 100%;
                 margin: 0rem 1rem;
                 background-color:white;
@@ -612,7 +612,7 @@
                   margin: 0px 0px 5px 0px;
                 }
                 .report-wrapper{
-                  height:60vh;
+                  height:calc(var(--vh, 1vh) * 60);
                   margin-bottom: 1rem;
                   overflow:hidden;
                   overflow-y : scroll;
@@ -642,7 +642,7 @@
               display: -o-flex;
               display: flex;
               margin: 2rem 0.5rem 5rem 0.5rem;
-              height: 70vh;
+              height: calc(var(--vh, 1vh) * 70);
               width: 100vw;
               .header-and-canvas-wrapper{
                 .header-wrapper{
@@ -676,7 +676,7 @@
               }
               .edit-castle-contents-wrapper{
                 padding: 1rem 1rem 0rem 1rem;
-                height:70vh;
+                height:calc(var(--vh, 1vh) * 70);
                 width: calc(100vw - 50vw);
                 margin: 0rem 0rem;
                 background-color:white;
@@ -849,7 +849,7 @@
 
 
 #add-catsle-button{
-  margin-top:10vh;
+  margin-top:calc(var(--vh, 1vh) * 10);
   z-index: 4;
   p{
     font-size: 3rem;
@@ -865,7 +865,7 @@
 
 .ReactModal__Body--open {
   position: fixed;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   width: 100vw;
 }
 .react-modal {
