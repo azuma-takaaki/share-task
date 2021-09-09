@@ -255,7 +255,7 @@ class Group extends React.Component {
   render () {
     let create_castle_or_task_button;
     if (this.props.is_logged_in) {
-      create_castle_or_task_button = <button class="btn btn-primary" onClick={() => this.openModal("create_castle")}>城を建てる</button>
+      create_castle_or_task_button = <button class="add-castle-button btn btn-primary" onClick={() => this.openModal("create_castle")}>城を建てる</button>
     } else {
       create_castle_or_task_button = <div class="add-task-button-wrapper">
                                       <button class="add-task-button"onClick={this.openInputTaskModal}>＋task</button>
@@ -335,9 +335,7 @@ class Group extends React.Component {
                 )
               })}
             </div>
-            <div class="edit-group-button-wrapper">
 
-            </div>
             {create_castle_or_task_button}
           </div>
 
