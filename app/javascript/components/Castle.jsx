@@ -15,8 +15,8 @@ const CameraController = () => {
     () => {
       const controls = new OrbitControls(camera, gl.domElement);
 
-      controls.minDistance = 1;
-      controls.maxDistance = 30;
+      controls.minDistance = -100;
+      controls.maxDistance = 100;
       return () => {
         controls.dispose();
       };
@@ -71,6 +71,9 @@ function Castle(props){
 
   const [progressPercentage, setProgressPercentage] = useState("0")
 
+  const limit_castle_position = 50
+  const limit_castle_angle = 360
+
   useEffect(() => {
     setCastleModels(props.castle_models)
   });
@@ -106,8 +109,31 @@ function Castle(props){
     setModalInput(e.target.value)
   }
 
-  const handleChangeSlider = (e) => {
+  const handleChangeBySlider = (e, edit_property, edited_by_slider) => {
     setSliderValue(e)
+    let new_castle_models = castleModels
+    if(edited_by_slider){
+      new_castle_models[editModelNumber][edit_property] = e
+    }else if (edit_property=="angle_y"){
+      if(e.target.value==''){
+        new_castle_models[editModelNumber][edit_property] = ''
+      }else if(e.target.value > limit_castle_angle){
+        new_castle_models[editModelNumber][edit_property] = limit_castle_angle / 180 * Math.PI
+      }else if(e.target.value <= 0){
+        new_castle_models[editModelNumber][edit_property] = 0
+      }else{
+        new_castle_models[editModelNumber][edit_property] = e.target.value / 180 * Math.PI
+      }
+    }else{
+      if(e.target.value > limit_castle_position){
+        new_castle_models[editModelNumber][edit_property] = limit_castle_position
+      }else if(e.target.value <  -limit_castle_position){
+        new_castle_models[editModelNumber][edit_property] = -limit_castle_position
+      }else{
+        new_castle_models[editModelNumber][edit_property] = e.target.value
+      }
+    }
+    setCastleModels(new_castle_models)
   }
 
   const sleep = (waitSec) => {
@@ -313,6 +339,7 @@ function Castle(props){
     setPreviousCountPosX(castleModels[model_number]["position_x"])
     setPreviousCountPosY(castleModels[model_number]["position_y"])
     setPreviousCountPosZ(castleModels[model_number]["position_z"])
+    setPreviousCountRotY(castleModels[model_number]["angle_y"])
     setEditModelNumber(model_number)
   }
 
@@ -474,28 +501,17 @@ function Castle(props){
 
     }
 
-    const style = { width: 700, margin: 50 };
-const marks = {
-  0: <strong>0%</strong>,
-  25: '25%',
-  50: '50%',
-  75: '75%',
-  100: {
-    style: {
-      color: 'red',
-    },
-    label: <strong>100%</strong>,
-  },
-};
-
+    const convertFromRadianToDegree = (radian, property) =>{
+      if(castleModels[editModelNumber][property] == ''){
+        return ''
+      }else{
+        return Math.floor(castleModels[editModelNumber][property] / Math.PI * 180)
+      }
+    }
 
 
     if(props.is_logged_in_user){
       edit_castle_contents= <div class="edit-castle-contents-wrapper">
-      <div style={style}>
-            <p>slider value:{sliderValue}</p>
-            <Slider  value={sliderValue} min={-100} max={100} step={0.01} onChange={handleChangeSlider}  />
-            </div>
                               <nav>
                                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
@@ -505,143 +521,112 @@ const marks = {
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
                                   <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-home-tab">
-                                    <div class="castle-point-wrapper  p-3">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
+                                    <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
                                     <div class="report-wrapper">
                                       {new_report_list}
                                     </div>
                                     <button class="btn btn-primary" onClick = {() => openModal("add_report")}>積み上げを登録する</button>
                                   </div>
                                   <div class="tab-pane fade show add-3d-model" id={"nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-add-model-tab">
-                                    <div class="castle-point-wrapper  p-3">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
+                                    <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
                                     {castle_part_price_list}
                                     <p></p>
                                     <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
                                   </div>
                                   <div class="tab-pane fade show " id={"nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-move-model-tab">
-                                    <button class="btn btn-primary" onClick = {()=> updateCastleParts()}>変更を保存</button>
-                                    <div>
-                                        <div class = "move-sliders move-x-slider"
-                                              onMouseMove={(e)=>{
-                                                handleMouseMove(e);
-                                                if(mouseIsDown){
-                                                  let new_castle_models = castleModels
-                                                  new_castle_models[editModelNumber]["position_x"] = previousCountPosX+(x-click_x)*0.1
-                                                  setCastleModels(new_castle_models)
-                                                }
+                                    <div class="slider-to-edit-castle">
+                                          <div class="display-castle-infomation">
+                                              左右:
+                                              <input
+                                                value={castleModels[editModelNumber]["position_x"]}
+                                                onChange={(e)=>{
+                                                  handleChangeBySlider(e,"position_x", false);
+                                                }}
+                                                type="number"
+                                                min={-50}
+                                                max={50}
+                                              />
+                                          </div>
+                                          <Slider
+                                              value={castleModels[editModelNumber]["position_x"]}
+                                              min={-50}
+                                              max={50}
+                                              step={0.01}
+                                              onChange={(e)=>{
+                                                handleChangeBySlider(e,"position_x" ,true);
                                               }}
-                                              onMouseDown={(e) => {
-                                                handleMouseClick(e);
-                                                setMouseIsDown(true);
-                                              }}
-                                              onMouseUp={()=>{
-                                                setMouseIsDown(false);
-                                                setPreviousCountPosX(castleModels[editModelNumber]["position_x"])
-                                              }}
-                                        >
-                                            ← X ({Math.floor(castleModels[editModelNumber]["position_x"] * 100)/100}) →
-                                        </div>
-                                        <div class = "move-sliders move-y-slider"
-                                              onMouseMove={(e)=>{
-                                                handleMouseMove(e);
-                                                if(mouseIsDown){
-                                                  let new_castle_models = castleModels
-                                                  new_castle_models[editModelNumber]["position_y"] = previousCountPosY+(x-click_x)*0.1
-                                                  setCastleModels(new_castle_models)
-                                                }
-                                              }}
-                                              onMouseDown={(e) => {
-                                                handleMouseClick(e);
-                                                setMouseIsDown(true);
-                                              }}
-                                              onMouseUp={()=>{
-                                                setMouseIsDown(false);
-                                                setPreviousCountPosY(castleModels[editModelNumber]["position_y"])
-                                              }}
-                                        >
-                                            ← Y ({Math.floor(castleModels[editModelNumber]["position_y"] * 100)/100}) →
-                                        </div>
-                                        <div class = "move-sliders move-z-slider"
-                                              onMouseMove={(e)=>{
-                                                handleMouseMove(e);
-                                                if(mouseIsDown){
-                                                  let new_castle_models = castleModels
-                                                  new_castle_models[editModelNumber]["position_z"] = previousCountPosZ+(x-click_x)*0.1
-                                                  setCastleModels(new_castle_models)
-                                                }
-                                              }}
-                                              onMouseDown={(e) => {
-                                                handleMouseClick(e);
-                                                setMouseIsDown(true);
-                                              }}
-                                              onMouseUp={()=>{
-                                                setMouseIsDown(false);
-                                                setPreviousCountPosZ(castleModels[editModelNumber]["position_z"])
-                                              }}
-                                        >
-                                            ← Z ({Math.floor(castleModels[editModelNumber]["position_z"] * 100)/100}) →
-                                        </div>
-
-                                        <div class = "move-sliders move-x-slider"
-                                              onMouseMove={(e)=>{
-                                                handleMouseMove(e);
-                                                if(mouseIsDown){
-                                                  let new_castle_models = castleModels
-                                                  new_castle_models[editModelNumber]["angle_x"] = previousCountRotX+(x-click_x)*0.01
-                                                  setCastleModels(new_castle_models)
-                                                }
-                                              }}
-                                              onMouseDown={(e) => {
-                                                handleMouseClick(e);
-                                                setMouseIsDown(true);
-                                              }}
-                                              onMouseUp={()=>{
-                                                setMouseIsDown(false);
-                                                setPreviousCountRotX(castleModels[editModelNumber]["angle_x"])
-                                              }}
-                                        >
-                                            🔄 X ({Math.floor(castleModels[editModelNumber]["angle_x"] / Math.PI * 180 * 100)/100})度 🔄
-                                        </div>
-                                        <div class = "move-sliders move-y-slider"
-                                              onMouseMove={(e)=>{
-                                                handleMouseMove(e);
-                                                if(mouseIsDown){
-                                                  let new_castle_models = castleModels
-                                                  new_castle_models[editModelNumber]["angle_y"] = previousCountRotY+(x-click_x)*0.01
-                                                  setCastleModels(new_castle_models)
-                                                }
-                                              }}
-                                              onMouseDown={(e) => {
-                                                handleMouseClick(e);
-                                                setMouseIsDown(true);
-                                              }}
-                                              onMouseUp={()=>{
-                                                setMouseIsDown(false);
-                                                setPreviousCountRotY(castleModels[editModelNumber]["angle_y"])
-                                              }}
-                                        >
-                                            🔄 Y ({Math.floor(castleModels[editModelNumber]["angle_y"] / Math.PI * 180 * 100)/100})度 🔄
-                                        </div>
-                                        <div class = "move-sliders move-z-slider"
-                                              onMouseMove={(e)=>{
-                                                handleMouseMove(e);
-                                                if(mouseIsDown){
-                                                  let new_castle_models = castleModels
-                                                  new_castle_models[editModelNumber]["angle_z"] = previousCountRotZ+(x-click_x)*0.01
-                                                  setCastleModels(new_castle_models)
-                                                }
-                                              }}
-                                              onMouseDown={(e) => {
-                                                handleMouseClick(e);
-                                                setMouseIsDown(true);
-                                              }}
-                                              onMouseUp={()=>{
-                                                setMouseIsDown(false);
-                                                setPreviousCountRotZ(castleModels[editModelNumber]["angle_z"])
-                                              }}
-                                        >
-                                            🔄 Z ({Math.floor(castleModels[editModelNumber]["angle_z"] / Math.PI * 180 * 100)/100})度 🔄
-                                        </div>
+                                          />
                                     </div>
+                                    <div class="slider-to-edit-castle">
+                                          <div class="display-castle-infomation">
+                                              前後:
+                                              <input
+                                                value={castleModels[editModelNumber]["position_z"]}
+                                                onChange={(e)=>{
+                                                  handleChangeBySlider(e,"position_z", false);
+                                                }}
+                                                type="number"
+                                                min={-50}
+                                                max={50}
+                                              />
+                                          </div>
+                                          <Slider
+                                              value={castleModels[editModelNumber]["position_z"]}
+                                              min={-50}
+                                              max={50}
+                                              step={0.01}
+                                              onChange={(e)=>{
+                                                handleChangeBySlider(e,"position_z", true);
+                                              }}
+                                          />
+                                    </div>
+                                    <div class="slider-to-edit-castle">
+                                          <div class="display-castle-infomation">
+                                              高さ:
+                                              <input
+                                                value={castleModels[editModelNumber]["position_y"]}
+                                                onChange={(e)=>{
+                                                  handleChangeBySlider(e,"position_y", false);
+                                                }}
+                                                type="number"
+                                                min={-50}
+                                                max={50}
+                                              />
+                                          </div>
+                                          <Slider
+                                              value={castleModels[editModelNumber]["position_y"]}
+                                              min={0}
+                                              max={25}
+                                              step={0.01}
+                                              onChange={(e)=>{
+                                                handleChangeBySlider(e,"position_y", true);
+                                              }}
+                                          />
+                                    </div>
+                                    <div class="slider-to-edit-castle">
+                                          <div class="display-castle-infomation">
+                                              角度:
+                                              <input
+                                                value={convertFromRadianToDegree(castleModels[editModelNumber]["angle_y"],"angle_y")}
+                                                onChange={(e)=>{
+                                                  handleChangeBySlider(e,"angle_y", false);
+                                                }}
+                                                type="number"
+                                                min={0}
+                                                max={360}
+                                              />
+                                          </div>
+                                          <Slider
+                                              value={castleModels[editModelNumber]["angle_y"]}
+                                              min={0}
+                                              max={Math.PI*2}
+                                              step={0.01}
+                                              onChange={(e)=>{
+                                                handleChangeBySlider(e,"angle_y", true);
+                                              }}
+                                          />
+                                    </div>
+                                    <button class="btn btn-primary" onClick = {()=> updateCastleParts()}>変更を保存</button>
                                   </div>
                                 </div>
                             </div>
