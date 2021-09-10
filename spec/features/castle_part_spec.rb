@@ -9,6 +9,8 @@ feature "CastleParts" , :js => true do
     fill_in "password", with:"password"
     fill_in "password_confirm", with:"password"
     click_button "登録"
+    @castle_part_price0 = FactoryBot.create(:castle_part_price0)
+    @castle_part_price1 = FactoryBot.create(:castle_part_price1)
   end
 
 
@@ -35,7 +37,6 @@ feature "CastleParts" , :js => true do
     expect(page).to have_selector ".report-content", text: "プログラミングを5時間勉強した！"
 
 
-    sleep 1000
     page.find('.nav-link', text: '増築').click
     click_button ('城の門 必要ポイント: 1')
     click_button "3Dモデルを追加"
