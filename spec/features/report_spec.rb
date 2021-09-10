@@ -15,7 +15,7 @@ feature "Report" , :js => true do
   describe "#valid_infomation" do
     example "新規のReportを追加できる" do
       @group = FactoryBot.create(:programming)
-      click_button "＜"
+       page.find('.side-menu-toggle').click
       click_on "グループを探す"
       find("input[placeholder='グループを探す']").set("progra")
       click_button "programming"

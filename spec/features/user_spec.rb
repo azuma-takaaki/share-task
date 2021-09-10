@@ -19,7 +19,7 @@ feature "Login-Logout" , :js => true do
       find("#modal-login-button").click
       visit "/"
       expect(page).to have_content 'test_user1'
-      click_button "＜"
+       page.find('.side-menu-toggle').click
     end
   end
 
@@ -119,7 +119,7 @@ feature "Show-own-castles" , :js => true do
 
   example "ユーザーページに自分の建てた城が一覧で表示される" do
     @group = FactoryBot.create(:programming)
-    click_button "＜"
+     page.find('.side-menu-toggle').click
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
     click_button "programming"
@@ -129,7 +129,7 @@ feature "Show-own-castles" , :js => true do
     find(".post-castle-data-button").click
 
     @group = FactoryBot.create(:study)
-    click_button "＜"
+     page.find('.side-menu-toggle').click
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("stu")
     click_button "study"
@@ -138,7 +138,7 @@ feature "Show-own-castles" , :js => true do
     fill_in "城の名前(目標)", with:"東大合格"
     find(".post-castle-data-button").click
 
-    click_button "＜"
+     page.find('.side-menu-toggle').click
     find(".side-menu-user-icon").click
     find('div.bm-overlay').click
     expect(page).to have_content "web開発エンジニアになる 城"
@@ -160,7 +160,7 @@ feature "Show-other-user-castles" , :js => true do
 
   example "他のユーザーのユーザーページには編集機能に関わるHTML要素を表示しない" do
     @group = FactoryBot.create(:programming)
-    click_button "＜"
+     page.find('.side-menu-toggle').click
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
     click_button "programming"
@@ -169,7 +169,7 @@ feature "Show-other-user-castles" , :js => true do
     fill_in "城の名前(目標)", with:"web開発エンジニアになる"
     find(".post-castle-data-button").click
 
-    click_button "＜"
+     page.find('.side-menu-toggle').click
     find(".side-menu-user-icon").click
     find('div.bm-overlay').click
     page.find('.edit-user-button', text: '⋯').click
@@ -182,7 +182,7 @@ feature "Show-other-user-castles" , :js => true do
     fill_in "password_confirm", with:"password"
     click_button "登録"
 
-    click_button "＜"
+     page.find('.side-menu-toggle').click
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
     click_button "programming"
@@ -191,14 +191,14 @@ feature "Show-other-user-castles" , :js => true do
     fill_in "城の名前(目標)", with:"SQLをマスターする"
     find(".post-castle-data-button").click
 
-    click_button "＜"
+     page.find('.side-menu-toggle').click
     find(".side-menu-user-icon").click
     find('div.bm-overlay').click
     expect(page).to have_content "SQLをマスターする 城"
     expect(page).to have_css '.edit-user-button'
     expect(page).to have_css '.edit-castle-contents-wrapper'
     sleep 1
-    click_button "＜"
+     page.find('.side-menu-toggle').click
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
     sleep 2

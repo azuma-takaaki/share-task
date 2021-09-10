@@ -638,15 +638,16 @@ function Castle(props){
   let report_infomation = <div></div>
   if(props.tag_class=="castle_at_group"){
     if(props.castle["report"]["current_report"]["content"]==null){
-      report_infomation = <div>
-                            最新の積み上げ: <div class="current-report-content">まだ積み上げがありません</div>
-                            総積み上げ数: <div class="all-report-number">0</div>
+      report_infomation = <div class="report-infomation">
+                            <div class="current-report-date">最新の積み上げ : --/--/--</div>
+                            <div class="current-report-content">まだ積み上げがありません</div>
+                            <div class="all-report-number">総積み上げ数 : 0</div>
                           </div>
     }else{
-      report_infomation = <div>
-                            最新の積み上げ: <div class="current-report-content">{props.castle["report"]["current_report"]["content"]}</div>
-                            最新の積み上げ日: <div class="current-report-date">{props.castle["report"]["current_report"]["created_at"]}</div>
-                            総積み上げ数: <div class="all-report-number">{props.castle["report"]["all_report_number"]}</div>
+      report_infomation = <div class="report-infomation">
+                            <div class="current-report-date">{"最新の積み上げ : " + props.castle["report"]["current_report"]["created_at"]}</div>
+                            <div class="current-report-content">{props.castle["report"]["current_report"]["content"]}</div>
+                            <div class="all-report-number">{"総積み上げ数 : " + props.castle["report"]["all_report_number"]}</div>
                           </div>
     }
   }
@@ -725,9 +726,9 @@ function Castle(props){
 
   return (
     <div class={props.tag_class}>
+      {user_infomation_on_castle}
       <div class="header-and-canvas-wrapper">
         <div class="castle-header-at-goup-page">
-          {user_infomation_on_castle}
           <div class="header-wrapper">
             <div>{castleName} 城  {edit_castle_button}</div>
           </div>
