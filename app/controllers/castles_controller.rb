@@ -83,14 +83,27 @@ class CastlesController < ApplicationController
 
   def get_group_castle_list
     @castle_part_list = Castle.left_joins(:castle_parts, :user)
-                     .select("users.id AS user_id, users.name AS user_name, users.icon, castles.name, castles.id AS castle_id, castle_parts.three_d_model_name, castle_parts.position_x, castle_parts.position_y, castle_parts.position_z, castle_parts.angle_x, castle_parts.angle_y, castle_parts.angle_z")
-                     .where(group_id: params[:group_id])
+                              .select("users.id AS user_id, users.name AS user_name, users.icon, castles.name, castles.id AS castle_id, castle_parts.three_d_model_name, castle_parts.position_x, castle_parts.position_y, castle_parts.position_z, castle_parts.angle_x, castle_parts.angle_y, castle_parts.angle_z")
+                              .where(group_id: params[:group_id])
 
 
 
     @tmp_castle_part = {}
     @castle_part_list.each do |castle_part|
-      @tmp_castle_part[(castle_part.castle_id).to_s] = {castle: {castle_name: castle_part.name, castle_id: castle_part.castle_id}, models:[], user:{user_id:castle_part.user_id, user_name:castle_part.user_name, user_icon:castle_part.icon}, report:{current_report: {content: nil, created_at: nil}, all_report_number: nil}}
+      @tmp_castle_part[(castle_part.castle_id).to_s] = {castle:
+                                                          {castle_name: castle_part.name,
+                                                           castle_id: castle_part.castle_id},
+                                                        models:[],
+                                                        user:
+                                                          {user_id:castle_part.user_id,
+                                                           user_name:castle_part.user_name,
+                                                           user_icon:castle_part.icon},
+                                                        report:
+                                                          {current_report:
+                                                            {content: nil,
+                                                             created_at: nil},
+                                                          all_report_number: nil}
+                                                        }
       logger.debug(castle_part.name+"/"+castle_part.castle_id.to_s)
     end
 
@@ -107,13 +120,17 @@ class CastlesController < ApplicationController
 
     @castles = []
     counter = 0
-    @tmp_castle_part.each do |part|
-      reports = Report.where(castle_id: part[0]).order(created_at: :desc)
+    all_reports = Report.all.order(created_at: :desc).to_a
+    all_reports.each do |report|
+      logger.debug("castle_id: "+ report.castle_id.to_s + "/ "+ report.content)
+    end
+    @tmp_castle_part.each do |castle_part|
+      reports = all_reports.select {|report| report.castle_id == castle_part[0].to_i}
       if (reports.size.to_i>0) then
-        part[1][:report][:all_report_number] =  reports.size.to_s
-        part[1][:report][:current_report] =  {content: reports[0]["content"], created_at: reports[0]["created_at"].strftime('%Y/%m/%d')}
+        castle_part[1][:report][:all_report_number] =  reports.size.to_s
+        castle_part[1][:report][:current_report] =  {content: reports[0]["content"], created_at: reports[0]["created_at"].strftime('%Y/%m/%d')}
       end
-      @castles[counter] = part[1]
+      @castles[counter] = castle_part[1]
       counter = counter + 1
     end
 
@@ -121,7 +138,6 @@ class CastlesController < ApplicationController
       logger.debug(castle)
     end
 
-    @user = User.find_by(id: params[:user_id])
     render json: [@castles]
   end
 
