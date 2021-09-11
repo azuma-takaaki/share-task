@@ -313,7 +313,7 @@ class Group extends React.Component {
     if(!(this.props.castle_list.length==0)){
       castles = this.props.castle_list.map((castle) => {
         return (
-            <Castle castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} castle={castle}user_id = {castle["user"]["user_id"]} user_name={castle["user"]["user_name"]} user_icon={castle["user"]["user_icon"]} tag_class="castle_at_group" fetchCastles={this.props.fetchCastles} group_id ={this.props.group.id}/>
+            <Castle castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} castle={castle} user_id = {castle["user"]["user_id"]} user_name={castle["user"]["user_name"]} user_icon={castle["user"]["user_icon"]} tag_class="castle_at_group" fetchCastles={this.props.fetchCastles} group_id ={this.props.group.id} current_user_id={this.props.current_user_id}/>
         )
       })
     }else{

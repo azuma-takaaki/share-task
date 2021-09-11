@@ -3,9 +3,10 @@ class LikesController < ApplicationController
     if logged_in?
       @like = Like.new(secure_like_infomation)
       if @like.save
-        render :json => ["Successful registration of like"]
+        likes_number = Like.where(report_id: params[:like][:report_id]).count
+        render :json => ["Successful registration of like", likes_number]
       else
-        render :json => ["failed to register like"]
+        render :json => ["Failed to register like"]
       end
     else
       render :json => ["this operation cannot be performed without logging in"]
@@ -14,11 +15,12 @@ class LikesController < ApplicationController
 
   def destroy
     if logged_in?
-      @like = Like.find_by(id: params[:id])
+      @like = Like.find_by(secure_like_infomation)
       if @like.destroy
-        render :json => ["success to destroy like"]
+        likes_number = Like.where(report_id: params[:like][:report_id]).count
+        render :json => ["Success to destroy like", likes_number]
       else
-        render :json => ["failed to destroy like"]
+        render :json => ["Failed to destroy like"]
       end
     else
       render :json => ["this operation cannot be performed without logging in"]

@@ -100,8 +100,10 @@ class CastlesController < ApplicationController
                                                            user_icon:castle_part.icon},
                                                         report:
                                                           {current_report:
-                                                            {content: nil,
+                                                            {id:nil,
+                                                             content: nil,
                                                              created_at: nil,
+                                                             is_liked:nil,
                                                              all_like_number: nil},
                                                           all_report_number: nil}
                                                         }
@@ -119,7 +121,7 @@ class CastlesController < ApplicationController
                                                                   })
     end
 
-
+    @current_user = current_user()
     @castles = []
     counter = 0
     all_reports = Report.all.order(created_at: :desc).to_a
@@ -131,8 +133,10 @@ class CastlesController < ApplicationController
       reports = all_reports.select {|report| report.castle_id == castle_part[0].to_i}
       if (reports.size.to_i>0) then
         castle_part[1][:report][:all_report_number] =  reports.size.to_s
-        castle_part[1][:report][:current_report] =  {content: reports[0]["content"],
+        castle_part[1][:report][:current_report] =  {id: reports[0]["id"],
+                                                     content: reports[0]["content"],
                                                      created_at: reports[0]["created_at"].strftime('%Y/%m/%d'),
+                                                     is_liked: !(all_likes.select{|like| like.report_id == reports[0]["id"] && like.user_id == @current_user.id}.empty?),
                                                      all_like_number: (all_likes.select { |like| like.report_id == reports[0]["id"] }).count
                                                     }
       end

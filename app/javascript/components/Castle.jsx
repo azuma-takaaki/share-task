@@ -8,6 +8,9 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Modal from 'react-modal'
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart as LikeImage} from '@fortawesome/free-solid-svg-icons'
+import { faHeart as UnikeImage } from "@fortawesome/free-regular-svg-icons";
 
 const CameraController = () => {
   const { camera, gl } = useThree();
@@ -41,6 +44,9 @@ function Castle(props){
 
   const [castleModels, setCastleModels] = useState(props.castle_models)
   const [castleName, setCastleName] = useState(props.castle_name)
+  const [isLiked, setIsLiked] = useState(true)
+  const [currentReportLikes, setCurrentReportLikes] = useState(-1000)
+
   const [editModelNumber, setEditModelNumber] = useState(0)
 
   const [selectedCastleToAdd, setSelectedCastleToAdd] = useState("")
@@ -76,6 +82,10 @@ function Castle(props){
 
   useEffect(() => {
     setCastleModels(props.castle_models)
+    if (props.tag_class=="castle_at_group" && currentReportLikes<0){
+      setIsLiked(props.castle["report"]["current_report"]["is_liked"])
+      setCurrentReportLikes(props.castle["report"]["current_report"]["all_like_number"])
+    }
   });
 
   const customStyles = {
@@ -443,6 +453,49 @@ function Castle(props){
       }
   }
 
+  const clickLikeButton = () =>{
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+           }
+       }
+      return '';
+    }
+    const data = { like: {user_id: props.current_user_id, report_id: props.castle["report"]["current_report"]["id"]}}
+    let method_type = ''
+    let fetch_route = ''
+    if(isLiked){
+      fetch_route = '/likes/' + props.castle["report"]["current_report"]["id"]
+      method_type = 'DELETE'
+    }else{
+      fetch_route = '/likes'
+      method_type = 'POST'
+    }
+    setIsLiked(!isLiked)
+
+    fetch(fetch_route,{
+      method: method_type,
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then((result) => {
+      if(result[0] == "Successful registration of like" || result[0] == "Success to destroy like"){
+        setCurrentReportLikes(result[1])
+      }else if(result[0] == "Failed to register like" || result[0] == "Failed to destroy like"){
+        alert("server error")
+      }else{
+        alert("error")
+      }
+    })
+  }
+
   const useClick = () => {
     const [clickCoordinate, setClickCoordinate] = useState({x: 0, y: 0})
 
@@ -635,6 +688,21 @@ function Castle(props){
 
   }
 
+  let liked_button = <div></div>
+  if (isLiked){
+    liked_button = <div>
+                       <button onClick={()=>{clickLikeButton()}}>
+                          <FontAwesomeIcon icon={LikeImage} />
+                       </button>
+                   </div>
+  }else{
+    liked_button = <div>
+                       <button onClick={()=>{clickLikeButton()}}>
+                          <FontAwesomeIcon  icon={UnikeImage} />
+                       </button>
+                   </div>
+  }
+
   let report_infomation = <div></div>
   if(props.tag_class=="castle_at_group"){
     if(props.castle["report"]["current_report"]["content"]==null){
@@ -646,7 +714,13 @@ function Castle(props){
     }else{
       report_infomation = <div class="report-infomation">
                             <div class="current-report-date">{"最新の積み上げ : " + props.castle["report"]["current_report"]["created_at"]}</div>
-                            <div class="current-report-content">{props.castle["report"]["current_report"]["content"]}</div>
+                            <div class="current-report-content">
+                              {props.castle["report"]["current_report"]["content"]}
+                              <div class="like-button-and-likes-number">
+                                {liked_button}
+                                {currentReportLikes}
+                              </div>
+                            </div>
                             <div class="all-report-number">{"総積み上げ数 : " + props.castle["report"]["all_report_number"]}</div>
                           </div>
     }

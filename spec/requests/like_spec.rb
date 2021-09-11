@@ -69,7 +69,10 @@ RSpec.describe LikesController, type: :request do
 
         pre_number_of_like = Like.all.length
         @likes = Like.find_by(user_id: @user.id, report_id: @report.id)
-        delete "/likes/" + @likes.id.to_s
+        delete "/likes/" + @likes.id.to_s, params: {like: {
+                                                      user_id: @user.id,
+                                                      report_id: @report.id
+                                                   }}
         expect(response).to have_http_status(200)
         expect(Like.all.length).to eq pre_number_of_like-1
       end

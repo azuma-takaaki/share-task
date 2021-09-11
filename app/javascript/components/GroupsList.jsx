@@ -271,7 +271,7 @@ class GroupsList extends React.Component {
         }).then(res => res.json())
         .then(
           (result) => {
-            
+
             users_castle_list[id] = result[0]
             let visible_user = result[1]
             this.setState({visible_user: visible_user})
@@ -400,7 +400,7 @@ class GroupsList extends React.Component {
                 this.state.group_list.map((group) => {
                   return (
                       <div>
-                        {(this.state.group_is_visible[group.id] && this.state.visible_user_id<0)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in} castle_list={this.state.groups_castle_list[group.id]} fetchCastles={this.fetchCastles}/> }
+                        {(this.state.group_is_visible[group.id] && this.state.visible_user_id<0)&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in} castle_list={this.state.groups_castle_list[group.id]} fetchCastles={this.fetchCastles} current_user_id={this.props.current_user.id} /> }
                       </div>
                   )
                 })
@@ -410,7 +410,7 @@ class GroupsList extends React.Component {
                   return (
                     //<p class="users-group"><a href={"/groups/" + group.id }>{group.name}</a></p>
                       <div>
-                        {(this.state.serched_group_is_visible[group.id])&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in}  castle_list={this.state.groups_castle_list[group.id]} fetchCastles={this.fetchCastles}/> }
+                        {(this.state.serched_group_is_visible[group.id])&& <Group group={group} ref={this.GroupRef} updateGroupList={() => this.getGroupList}  current_user={this.current_user} is_logged_in = {this.props.is_logged_in}  castle_list={this.state.groups_castle_list[group.id]} fetchCastles={this.fetchCastles} current_user_id={this.props.current_user.id} /> }
                       </div>
                   )
                 })

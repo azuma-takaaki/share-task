@@ -152,5 +152,19 @@ feature "Castles" , :js => true do
     expect(page).to have_content "unityエンジニアになる 城"
   end
 
+  example "自分および他ユーザーのいいねが反映される" do
+    @group = FactoryBot.create(:programming)
+    page.find('.side-menu-toggle').click
+    click_on "グループを探す"
+    find("input[placeholder='グループを探す']").set("progra")
+    click_button "programming"
+    find('div.bm-overlay').click
+    click_button "城を建てる"
+    fill_in "城の名前(目標)", with:"web開発エンジニアになる"
+    find(".post-castle-data-button").click
+    expect(page).to have_content "web開発エンジニアになる 城"
+    expect(page).to have_selector ".castle_at_group", text: "test_user1"
+    expect(page).to have_selector ".report-infomation"
+  end
 
 end
