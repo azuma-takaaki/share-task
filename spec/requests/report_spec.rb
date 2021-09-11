@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SessionsController, type: :request do
+RSpec.describe ReportsController, type: :request do
   describe "#create" do
     before do
       @user = FactoryBot.create(:user)

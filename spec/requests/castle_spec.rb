@@ -4,11 +4,12 @@ RSpec.describe CastlesController, type: :request do
   describe "#get_castles" do
     before do
       @user = FactoryBot.create(:user)
+      @other_user = FactoryBot.create(:rails)
       @group = FactoryBot.create(:group)
       @castle = FactoryBot.create(:castle0, user: @user, group: @group)
     end
 
-    example "グループの城に最新の積み上げ, 投稿の時間, 総積み上げ数が表示される" do
+    example "グループの城に最新の積み上げ, 投稿の時間, 総積み上げ数, いいねの数取得できる" do
       post login_path , params: { session: {
                                         email: @user.email,
                                         password: @user.password,
@@ -26,10 +27,24 @@ RSpec.describe CastlesController, type: :request do
         expect(Report.all.length).to eq pre_number_of_record+1
         travel_to Time.now + 1.day
       end
+
+      @report = Report.find_by(content: "プログラミングを5時間した！")
+      post likes_path, params: {like: {
+                                  user_id: @user.id,
+                                  report_id: @report.id
+                               }}
+      expect(response).to have_http_status(200)
+      post likes_path, params: {like: {
+                                 user_id: @other_user.id,
+                                 report_id: @report.id
+                               }}
+      expect(response).to have_http_status(200)
+
       get "/get_group_castle_list/" + @group.id.to_s
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)[0][0]["report"]["all_report_number"]).to eq "5"
       expect(JSON.parse(response.body)[0][0]["report"]["current_report"]["content"]).to eq "プログラミングを5時間した！"
+      expect(JSON.parse(response.body)[0][0]["report"]["current_report"]["all_like_number"]).to eq 2
     end
 
   end
@@ -82,4 +97,6 @@ RSpec.describe CastlesController, type: :request do
       expect(GroupUser.all.length).to eq pre_number_of_group_user - 1
     end
   end
+
+
 end
