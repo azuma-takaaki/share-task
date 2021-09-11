@@ -101,7 +101,8 @@ class CastlesController < ApplicationController
                                                         report:
                                                           {current_report:
                                                             {content: nil,
-                                                             created_at: nil},
+                                                             created_at: nil,
+                                                             all_like_number: nil},
                                                           all_report_number: nil}
                                                         }
       logger.debug(castle_part.name+"/"+castle_part.castle_id.to_s)
@@ -118,9 +119,11 @@ class CastlesController < ApplicationController
                                                                   })
     end
 
+
     @castles = []
     counter = 0
     all_reports = Report.all.order(created_at: :desc).to_a
+    all_likes = Like.all.to_a
     all_reports.each do |report|
       logger.debug("castle_id: "+ report.castle_id.to_s + "/ "+ report.content)
     end
@@ -128,7 +131,10 @@ class CastlesController < ApplicationController
       reports = all_reports.select {|report| report.castle_id == castle_part[0].to_i}
       if (reports.size.to_i>0) then
         castle_part[1][:report][:all_report_number] =  reports.size.to_s
-        castle_part[1][:report][:current_report] =  {content: reports[0]["content"], created_at: reports[0]["created_at"].strftime('%Y/%m/%d')}
+        castle_part[1][:report][:current_report] =  {content: reports[0]["content"],
+                                                     created_at: reports[0]["created_at"].strftime('%Y/%m/%d'),
+                                                     all_like_number: (all_likes.select { |like| like.report_id == reports[0]["id"] }).count
+                                                    }
       end
       @castles[counter] = castle_part[1]
       counter = counter + 1
