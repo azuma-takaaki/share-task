@@ -36,7 +36,15 @@ const LoadModel = (modelpath) => {
 	)
 }
 
-
+const Camera = (props) => {
+  const ref = useRef()
+  const set = useThree((state) => state.set);
+  useEffect(() => void set({ camera: ref.current }), []);
+  useFrame(() => {
+    ref.current.updateMatrixWorld()
+  })
+  return <perspectiveCamera ref={ref} {...props} />
+}
 
 
 
@@ -83,16 +91,6 @@ function Castle(props){
   const limit_castle_position = 50
   const limit_castle_angle = 360
 
-  let test_pos_v;
-  const Camera = (props) => {
-    const ref = useRef()
-    const set = useThree((state) => state.set);
-    useEffect(() => void set({ camera: ref.current }), []);
-    useFrame(() => {
-      ref.current.updateMatrixWorld()
-    })
-    return <perspectiveCamera ref={ref} {...props} />
-  }
 
   useEffect(() => {
     setCastleModels(props.castle_models)
