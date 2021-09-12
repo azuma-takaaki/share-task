@@ -40,6 +40,7 @@ const LoadModel = (modelpath) => {
 
 
 
+
 function Castle(props){
 
   const [castleModels, setCastleModels] = useState(props.castle_models)
@@ -77,8 +78,21 @@ function Castle(props){
 
   const [progressPercentage, setProgressPercentage] = useState("0")
 
+
+
   const limit_castle_position = 50
   const limit_castle_angle = 360
+
+  let test_pos_v;
+  const Camera = (props) => {
+    const ref = useRef()
+    const set = useThree((state) => state.set);
+    useEffect(() => void set({ camera: ref.current }), []);
+    useFrame(() => {
+      ref.current.updateMatrixWorld()
+    })
+    return <perspectiveCamera ref={ref} {...props} />
+  }
 
   useEffect(() => {
     setCastleModels(props.castle_models)
@@ -692,13 +706,13 @@ function Castle(props){
   if (isLiked){
     liked_button = <div>
                        <button onClick={()=>{clickLikeButton()}}>
-                          <FontAwesomeIcon icon={LikeImage} />
+                          <FontAwesomeIcon icon={LikeImage} style={{"color": "red"}}/>
                        </button>
                    </div>
   }else{
     liked_button = <div>
                        <button onClick={()=>{clickLikeButton()}}>
-                          <FontAwesomeIcon  icon={UnikeImage} />
+                          <FontAwesomeIcon  icon={UnikeImage} style={{"color": "red"}}/>
                        </button>
                    </div>
   }
@@ -810,8 +824,8 @@ function Castle(props){
         </div>
         <div class="canvas">
       		<Canvas >
-    				<CameraController />
-      			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*(countRotX-6), Math.PI/24*countRotY, Math.PI/24*countRotZ]}/>
+            {props.tag_class=="castle_at_user_page" && <CameraController />}
+      			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*-2, Math.PI/24*0, Math.PI/24*0]}/>
       			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
       			<pointLight position={[10, -20, 70]} />
     				<pointLight position={[0, 100, -150]} />
@@ -836,17 +850,6 @@ function Castle(props){
       </Modal>
     </div>
   )
-}
-
-
-
-
-function Camera(props) {
-  const ref = useRef()
-  const set = useThree((state) => state.set);
-  useEffect(() => void set({ camera: ref.current }), []);
-  useFrame(() => ref.current.updateMatrixWorld())
-  return <perspectiveCamera ref={ref} {...props} />
 }
 
 
