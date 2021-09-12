@@ -102,10 +102,7 @@ class GroupsList extends React.Component {
           group_list: group_list
         });
 
-        let new_visible_group = []
-        group_list.map((group) =>{
-          new_visible_group[group.id] = false
-        })
+      
 
         this.setState({group_is_visible: new_visible_group})
       })

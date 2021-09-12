@@ -371,6 +371,22 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                       background-color: #5089C6;
                       width:100%;
                     }
+                    .current-report-content{
+                      padding: 0.5rem;
+                      height:5vw;
+                      color: white;
+                      background-color: #5089C6;
+                      width:100%;
+                    }
+                    .like-button-and-likes-number{
+                      display: flex;
+                      justify-content:flex-end;
+                      margin-right: 1rem;
+                      button{
+                        background-color: transparent;
+                        border: none;
+                      }
+                    }
                     .all-report-number{
 
                     }
@@ -447,6 +463,15 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                       color: white;
                       background-color: #5089C6;
                       width:100%;
+                    }
+                    .like-button-and-likes-number{
+                      display: flex;
+                      justify-content:flex-end;
+                      margin-right: 1rem;
+                      button{
+                        background-color: transparent;
+                        border: none;
+                      }
                     }
                     .all-report-number{
 
