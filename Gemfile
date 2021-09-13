@@ -36,6 +36,8 @@ gem 'react-rails'
 
 gem 'rails-i18n'
 
+gem 'rename'
+
 
 group :production do
   gem 'mysql2'
