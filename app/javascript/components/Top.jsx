@@ -25,6 +25,9 @@ window.addEventListener('resize', () => {
     document.documentElement.style.setProperty('--vh', `${vh}px`);
 });
 
+
+
+
 class Top extends React.Component {
   constructor(props) {
     super(props);
@@ -49,6 +52,7 @@ class Top extends React.Component {
       error_messages: '',
       success_messages: '',
       progress_percentage: "0",
+      animation_point: "0"
     }
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -260,12 +264,11 @@ class Top extends React.Component {
     this.setState({current_user: new_current_user})
   }
 
-
-
-
-
-
-
+  sleep(waitSec) {
+      return new Promise(function (resolve) {
+          setTimeout(function() { resolve() }, waitSec);
+      });
+  }
 
 
 
@@ -311,7 +314,7 @@ class Top extends React.Component {
                           <div><GroupsList groups={this.state.group_list} current_user={this.state.current_user} logout={this.logout} is_logged_in = {this.state.logged_in} updateCurrentUser={this.updateCurrentUser} /></div>
                       </div>;
     } else {
-      main_content = <div>
+      main_content = <div style={{display:"none"}}>
                         <h1 class ="display-1 top-page-title">積み上げ城</h1>
                         <div class = "top-page-content">
                            1日の努力を記録すると<br/>
@@ -346,8 +349,119 @@ class Top extends React.Component {
                       </div>;
     }
 
+    let delay_changing_animation_point_2 = 3500 * window.innerWidth / 1300
+    if(this.state.animation_point == 0){
+      this.sleep(10).then(() =>{
+        let delay_changing_animation_point_2 = 3500
+        if(window.innerWidth<470){
+          delay_changing_animation_point_2 = 2000
+        }else if(window.innerWidth<550){
+          delay_changing_animation_point_2 = 2500
+        }
+        this.setState({animation_point: 1})
+        this.sleep(delay_changing_animation_point_2).then(() =>{
+          this.setState({animation_point: 2})
+          this.sleep(1000).then(() =>{
+          })
+        })
+      })
+    }
+
+    window.addEventListener('resize', () => {
+      let ofset_height = 1;
+      document.documentElement.style.setProperty('--ofsetH', `${ofset_height}rem`);
+    });
+
+    let top_page_sentence = "1日の努力を記録すると城の壁が1つ積み上がります。あなたの城が完成した時、現実のあなたのスキルや習慣も、その城のように高く強固になっていることでしょう。一歩踏み出してみましょう。同じ目標を持つお城の建築士たちがあなたを待っています。"
+    let top_page_sentence_reserve = "このアプリケーションは筆者がSNSにて今日の積み上げというハッシュタグで学習進捗を報告し合うSNSの文化が素晴らしいと感じ、それにちなんだアプリを作ろうという考えから生まれました。これを書いている2021年9月14日現在、筆者は50日以上毎日欠かさずこのアプリケーションのリポジトリにcommitし続け、コツコツと今日の積み上げを重ねていきました。まさにこのアプリケーション自体が積み上げ城そのものというわけです。このアプリケーションをきっかけにしてプログラミングないし何か新しいチャレンジをする人が1人でも増え、目標を達成するために必要な習慣が1日でも長く継続できることを願います。"
+    let top_page_title = "積み上げ城"
+
+    let top_page_elements = []
+    let line_number = 1
+    let limit_number_of_character = 35
+    let rem_px_ratio = 16
+    if(window.innerWidth < 35 * rem_px_ratio){
+      let new_limit_number_of_character = Math.round(window.innerWidth / rem_px_ratio) - 5
+      if(new_limit_number_of_character % 2 == 0){
+        new_limit_number_of_character += 1
+      }
+      limit_number_of_character = new_limit_number_of_character
+    }
+
+    if(this.state.animation_point == 0 || this.state.animation_point == 1){
+      let margin_of_character_line = (window.innerWidth - limit_number_of_character * rem_px_ratio)/2/rem_px_ratio
+      let character_counter = 0
+      for(let i=0; i < (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length; i++){
+        if(i < (top_page_title+top_page_sentence).split('').length){
+          top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+        }else{
+          top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+        }
+        if(limit_number_of_character<=1){
+          i += (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length
+        }
+        character_counter += 1
+        if(character_counter==limit_number_of_character){
+          character_counter = 0
+          line_number += 1
+          limit_number_of_character -= 2
+        }
+      }
+    }else{
+      let font_size_of_title = 4
+      let font_size_of_character = 1.2
+      let margin_of_character_line = (window.innerWidth - limit_number_of_character * rem_px_ratio * font_size_of_character)/2/rem_px_ratio
+      let title_number = 5
+      let break_number_array = [5, 16, 30, 42, 57, 66, 81, 94, 109, 130]
+      let margin_of_title  = (window.innerWidth - font_size_of_title * rem_px_ratio * title_number)/2/rem_px_ratio
+      let character_counter = 0
+      let delay_animation_point_2 = 1
+      for(let i=0; i < (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length; i++){
+        if(i < (top_page_title+top_page_sentence).split('').length){
+          if(i<break_number_array[0]){
+            top_page_elements.push(<span style={{"font-size": font_size_of_title + "rem", left: margin_of_title + i * font_size_of_title + "rem", top: "3rem", "transition-duration": delay_animation_point_2 + "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else if(i<break_number_array[1]){
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[1]-break_number_array[0]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[0]) * font_size_of_character) + "rem", top: 10 + 1 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else if(i<break_number_array[2]){
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[2]-break_number_array[1]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[1]) * font_size_of_character) + "rem", top: 10 + 2 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else if(i<break_number_array[3]){
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[3]-break_number_array[2]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[2]) * font_size_of_character) + "rem", top: 10 + 3 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else if(i<break_number_array[4]){
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[4]-break_number_array[3]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[3]) * font_size_of_character) + "rem", top: 10 + 4 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else if(i<break_number_array[5]){
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[5]-break_number_array[4]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[4]) * font_size_of_character) + "rem", top: 10 + 5 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else if(i<break_number_array[6]){
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[6]-break_number_array[5]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[5]) * font_size_of_character) + "rem", top: 10 + 6 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else if(i<break_number_array[7]){
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[7]-break_number_array[6]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[6]) * font_size_of_character) + "rem", top: 10 + 7 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else if(i<break_number_array[8]){
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[8]-break_number_array[7]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[7]) * font_size_of_character) + "rem", top: 10 + 8 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else if(i<break_number_array[9]){
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[9]-break_number_array[8]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[8]) * font_size_of_character + 5) + "rem", top: 10 + 9 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }
+        }else{
+          top_page_elements.push(<span style={{left: "10rem", top: "10rem","transition-delay": "0s", "transition-duration": "1.5s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number + " hide-sentence"}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+        }
+        if(limit_number_of_character<=1){
+          i += (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length
+        }
+        character_counter += 1
+        if(character_counter==limit_number_of_character){
+          character_counter = 0
+          line_number += 1
+          limit_number_of_character -= 2
+        }
+      }
+    }
+
+
+    let test_content = <div class="top-page-sentence-and-title-wrapper">
+                          {top_page_elements}
+                       </div>
+
     return (
       <div>
+        {test_content}
         {success_flash_content}
         {main_content}
       </div>
