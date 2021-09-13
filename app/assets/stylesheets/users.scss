@@ -314,12 +314,13 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
           @media screen and (orientation: portrait) {
             .castle_at_group{
               float: left;
-              margin: 0.5rem 0.5rem 0.5rem 1rem;
+              margin: 0.5rem 0.5rem 0.5rem 0.5rem;
               height: 150vw;
+              min-height: calc(var(--vh, 1vh) * 85);
               width: 93vw;
               .name-and-icon-of-user-built-castle-at-group-page{
                 padding-top:0.2rem;
-                height:3rem;
+                height:5%;
                 background-color:#001E6C;
                 .user-icon {
                   margin-left: 0.5rem;
@@ -341,44 +342,40 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                 }
               }
               .header-and-canvas-wrapper{
+                height:95%;
                 border: solid;
                 border-color: #001E6C;
                 z-index: 4;
                 .castle-header-at-goup-page{
-                  height:40vw;
+                  height:calc(100% - 91.5vw);
                   .header-wrapper{
+                    background-color:#001E6C;
+                    height:15%;
                     div{
                       padding-left:0.5rem;
                       color: white;
-                      background-color:#001E6C;
-                      font-size:1.7rem;
+                      font-size:1.3rem;
                     }
                   }
                   .report-infomation{
                     padding: 0.5rem;
-                    height: 20vw;
+                    height: 85%;
                     .current-report-date{
                       padding: 0.5rem;
-                      height:7vw;
+                      height:20%;
                       color: white;
                       background-color: #5089C6;
                       width:100%;
                     }
                     .current-report-content{
                       padding: 0.5rem;
-                      height:13vw;
-                      color: white;
-                      background-color: #5089C6;
-                      width:100%;
-                    }
-                    .current-report-content{
-                      padding: 0.5rem;
-                      height:5vw;
+                      height:50%;
                       color: white;
                       background-color: #5089C6;
                       width:100%;
                     }
                     .like-button-and-likes-number{
+                      height:10%;
                       display: flex;
                       justify-content:flex-end;
                       margin-right: 1rem;
@@ -388,17 +385,17 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                       }
                     }
                     .all-report-number{
-
+                      height:10%;
                     }
                   }
                 }
 
                 .canvas{
                   margin-bottom: 0.5rem;
-                  width: 92.5vw;
-                  height: 92.5vw;
+                  width: 91.5vw;
+                  height: 91.5vw;
                   margin: 0px;
-                  z-index: 1;
+                  z-index: 0;
                 }
               }
             }
