@@ -1116,6 +1116,11 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
 }
 
 //"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point
+.top-page-sentence-and-title-wrapper{
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .top-page-character{
   font-size:1rem;
