@@ -28,13 +28,18 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
   }
 }
 .top-page-buttons{
-  text-align: center;
-  margin: 2rem auto;
+  padding-top: 500px;
+  width:100%;
+  display: flex;
+  justify-content: center;
+  margin-left:0;
+
 }
-.top-page-signup-button{
+.top-page-singup-button{
   margin: 1rem;
 }
 .top-page-login-button{
+
   margin: 1rem;
 }
 .signup-login-modal{
@@ -1116,11 +1121,6 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
 }
 
 //"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point
-.top-page-sentence-and-title-wrapper{
-  display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .top-page-character{
   font-size:1rem;
@@ -1131,6 +1131,8 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
   top: -50px;
   left: -50px;
 }
+
+
 
 .animation-point-0{
   top: -30px;

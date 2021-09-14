@@ -38,7 +38,7 @@ class Top extends React.Component {
     }
 
 
-
+    const window_width = window.innerWidth
     let tmp = props.logged_in_user
     this.state = {
       current_user: tmp,
@@ -52,7 +52,8 @@ class Top extends React.Component {
       error_messages: '',
       success_messages: '',
       progress_percentage: "0",
-      animation_point: "0"
+      animation_point: "0",
+      window_width: window_width
     }
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -64,7 +65,7 @@ class Top extends React.Component {
     this.setGroupList = this.setGroupList.bind(this);
     this.sleep = this.sleep.bind(this);
     this.updateCurrentUser = this.updateCurrentUser.bind(this);
-
+    this.resizeWindow = this.resizeWindow.bind(this);
 
   }
 
@@ -270,9 +271,15 @@ class Top extends React.Component {
       });
   }
 
+  resizeWindow(){
+    this.setState({window_width: window.innerWidth})
+  }
+
 
 
   render () {
+    window.addEventListener('resize', this.resizeWindow);
+
     let modal_content;
     if(this.state.modal_type=="signup") {
         modal_content =
@@ -319,7 +326,7 @@ class Top extends React.Component {
           delay_changing_animation_point_2 = 2500
         }
         this.setState({animation_point: 1})
-        this.sleep(delay_changing_animation_point_2).then(() =>{
+        this.sleep(5000).then(() =>{
           this.setState({animation_point: 2})
           this.sleep(1000).then(() =>{
           })
@@ -331,11 +338,13 @@ class Top extends React.Component {
       let ofset_height = 1;
       document.documentElement.style.setProperty('--ofsetH', `${ofset_height}rem`);
     });
-
+    let login_signup_buttons = <div class="top-page-buttons" style={{"pointer-events": "none","transition-duration": 1.5 + "s", opacity: 0}}>
+                                  <button class="btn btn-primary top-page-singup-button" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
+                                  <button class="btn btn-outline-success top-page-login-button" onClick={()=>this.openModal("login")}>ログイン</button>
+                                </div>
     let top_page_sentence = "1日の努力を記録すると城の壁が1つ積み上がります。あなたの城が完成した時、現実のあなたのスキルや習慣も、その城のように高く強固になっていることでしょう。一歩踏み出してみましょう。同じ目標を持つお城の建築士たちがあなたを待っています。"
     let top_page_sentence_reserve = "このアプリケーションは筆者がSNSにて今日の積み上げというハッシュタグで学習進捗を報告し合うSNSの文化が素晴らしいと感じ、それにちなんだアプリを作ろうという考えから生まれました。これを書いている2021年9月14日現在、筆者は50日以上毎日欠かさずこのアプリケーションのリポジトリにcommitし続け、コツコツと今日の積み上げを重ねていきました。まさにこのアプリケーション自体が積み上げ城そのものというわけです。このアプリケーションをきっかけにしてプログラミングないし何か新しいチャレンジをする人が1人でも増え、目標を達成するために必要な習慣が1日でも長く継続できることを願います。"
     let top_page_title = "積み上げ城"
-
     let top_page_elements = []
     let line_number = 1
     let limit_number_of_character = 35
@@ -351,29 +360,14 @@ class Top extends React.Component {
     if(this.state.animation_point == 0 || this.state.animation_point == 1){
       let margin_of_character_line = (window.innerWidth - limit_number_of_character * rem_px_ratio)/2/rem_px_ratio
       let character_counter = 0
-
-      let array_index_counter = 0
-      let one_line_elements = []
-
       for(let i=0; i < (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length; i++){
-        if(array_index_counter==break_number_array.length){
-          if(limit_number_of_character<=0){
-            i += (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length
-          }else{
-            top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
-          }
+        if(i < (top_page_title+top_page_sentence).split('').length){
+          top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
         }else{
-          if(break_number_array[array_index_counter]==i){
-            top_page_elements.push(<div>{one_line_elements}</div>)
-            array_index_counter+=1
-            if(array_index_counter==break_number_array.length){
-              top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
-            }else{
-              one_line_elements = [<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>]
-            }
-          }else{
-            one_line_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
-          }
+          top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number + " hide-character"}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+        }
+        if(limit_number_of_character<=1){
+          i += (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length
         }
         character_counter += 1
         if(character_counter==limit_number_of_character){
@@ -393,13 +387,13 @@ class Top extends React.Component {
       for(let i=0; i < (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length; i++){
         if(i < (top_page_title+top_page_sentence).split('').length){
           if(i<break_number_array[0]){
-            top_page_elements.push(<span style={{position: "relative","font-size": font_size_of_title + "rem", left: "0%", top: "3rem", "transition-duration": delay_animation_point_2 + "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+            top_page_elements.push(<span style={{left:((window.innerWidth - break_number_array[0] * rem_px_ratio * font_size_of_title)/2/rem_px_ratio + i * font_size_of_title) + "rem", top: "3rem", "transition-duration": delay_animation_point_2 + "s", "font-size": font_size_of_title+"rem"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
           }else if(i<break_number_array[1]){
-            top_page_elements.push(<span style={{position: "relative",  left: "0%", top: margin_of_character_line +8 + 1 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[1]-break_number_array[0]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[0]) * font_size_of_character) + "rem", top: margin_of_character_line * 1 +8 + 1 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
           }else if(i<break_number_array[2]){
-            top_page_elements.push(<span style={{position: "relative",  left: "0%", top: margin_of_character_line * 2 +8 + 2 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[2]-break_number_array[1]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[1]) * font_size_of_character) + "rem", top: margin_of_character_line * 2 +8 + 2 +"rem"　}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
           }else if(i<break_number_array[3]){
-            top_page_elements.push(<span style={{position: "relative",  left: "0%", top: margin_of_character_line * 3 +8 + 3 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[3]-break_number_array[2]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[2]) * font_size_of_character) + "rem", top: margin_of_character_line * 3 +8 + 3 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
           }else if(i<break_number_array[4]){
             top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[4]-break_number_array[3]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[3]) * font_size_of_character) + "rem", top: margin_of_character_line * 4 +8 + 4 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
           }else if(i<break_number_array[5]){
@@ -411,7 +405,7 @@ class Top extends React.Component {
           }else if(i<break_number_array[8]){
             top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[8]-break_number_array[7]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[7]) * font_size_of_character) + "rem", top: margin_of_character_line * 8 +8 + 8 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
           }else if(i<break_number_array[9]){
-            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[9]-break_number_array[8]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[8]) * font_size_of_character + 5 * font_size_of_character) + "rem", top: margin_of_character_line * 9 +8 + 9 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+            top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[9]-break_number_array[8]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[8]) * font_size_of_character ) + "rem", top: margin_of_character_line * 9 +8 + 9 +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
           }
         }else{
           top_page_elements.push(<span style={{"font-size": 0, left: margin_of_title + (break_number_array[0]+0.2) * font_size_of_title + "rem", top: "4.8rem", "transition-duration": delay_animation_point_2 + "s","transition-delay": "0s", "transition-duration": "1.5s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number + " hide-sentence"}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
@@ -426,8 +420,12 @@ class Top extends React.Component {
           limit_number_of_character -= 2
         }
       }
-    }
 
+      login_signup_buttons = <div class="top-page-buttons" style={{"transition-duration": 3.5 + "s", opacity: 1}}>
+                                  <button class="btn btn-primary top-page-singup-button" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
+                                  <button class="btn btn-outline-success top-page-login-button" onClick={()=>this.openModal("login")}>ログイン</button>
+                             </div>
+    }
 
 
     let main_content;
@@ -437,14 +435,10 @@ class Top extends React.Component {
                       </div>;
     } else {
       main_content = <div>
-                        <div class="top-page-sentence-and-title-wrapper">
+                        <div>
                             {top_page_elements}
                          </div>
-                         <div class="top-page-buttons" style={{position: "absolute",top: 30 +"rem",left:10+"rem"}}>
-                           <button class="btn btn-primary top-page-singup-button" onClick={()=>this.openModal("signup")}>新規アカウント登録</button>
-                           <button class="btn btn-outline-success top-page-login-button" onClick={()=>this.openModal("login")}>ログイン</button>
-                         </div>
-
+                         {login_signup_buttons}
                         <Modal
                           isOpen={this.state.modalIsOpen}
                           onAfterOpen={this.afterOpenModal}
