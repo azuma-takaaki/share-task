@@ -409,9 +409,7 @@ function Castle(props){
 
   let UseModel = (props) =>{
     let {model_number, position, rotation, modelpath} = props
-    if(!(rotation==null)){
-      rotation[1] = rotation[1] + Math.PI / 8
-    }
+    
 
     //-Math.PI / 2
     if(modelpath==null){
