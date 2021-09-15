@@ -28,8 +28,7 @@ class Group extends React.Component {
       group_tasks: [],
       input_value: '',
       modal_type: '',
-      progress_percentage: "0",
-      error_messages: ''
+      progress_percentage: "0"
     }
     this.getGroupInfo = this.getGroupInfo.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -57,7 +56,6 @@ class Group extends React.Component {
     this.subtitle.style.color = '#fff000';
   }
   closeModal() {
-    this.setState({error_messages: ""})
     this.setState({modalIsOpen: false});
     this.setState({input_value: ""});
   }
@@ -243,21 +241,14 @@ class Group extends React.Component {
       },
       body: JSON.stringify(data)
     }).then(res => res.json()).then((result) => {
-      if(result[0]=="succeeded in creating a castle and group_user" || result[0]=="succeeded in creating a castle"){
-        this.sleep(300).then(() =>{
-          this.setState({progress_percentage: "100"})
-          this.sleep(1000).then(()=>{
-            this.props.fetchCastles("group", this.props.group.id)
-            this.closeModal()
-            this.setState({progress_percentage: "0"})
-          })
-        })
-      }else {
-        this.sleep(300).then(() =>{
-          this.setState({error_messages: result[1]})
+      this.sleep(300).then(() =>{
+        this.setState({progress_percentage: "100"})
+        this.sleep(1000).then(()=>{
+          this.props.fetchCastles("group", this.props.group.id)
+          this.closeModal()
           this.setState({progress_percentage: "0"})
         })
-      }
+      })
     })
   }
 
@@ -269,13 +260,6 @@ class Group extends React.Component {
       create_castle_or_task_button = <div class="add-task-button-wrapper">
                                       <button class="add-task-button"onClick={this.openInputTaskModal}>＋task</button>
                                     </div>
-    }
-
-    let error_flash_content;
-    if (!(this.state.error_messages=='')){
-      error_flash_content = <div class="alert alert-danger" id="error-flash">
-                                { this.state.error_messages.map((error_message) => <li>{error_message}</li>)}
-                            </div>
     }
 
     let modal_content;
@@ -379,7 +363,6 @@ class Group extends React.Component {
             style={customStyles}
             contentLabel="Example Modal"
           >
-            {error_flash_content}
             {modal_content}
           </Modal>
         </div>
