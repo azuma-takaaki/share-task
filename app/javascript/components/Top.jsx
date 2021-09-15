@@ -52,7 +52,7 @@ class Top extends React.Component {
       error_messages: '',
       success_messages: '',
       progress_percentage: "0",
-      animation_point: "0",
+      animation_point: "2",
       window_width: window_width
     }
     this.openModal = this.openModal.bind(this);

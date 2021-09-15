@@ -102,7 +102,7 @@ class GroupsList extends React.Component {
           group_list: group_list
         });
 
-      
+
 
         this.setState({group_is_visible: new_visible_group})
       })

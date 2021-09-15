@@ -21,7 +21,7 @@ class CastlesController < ApplicationController
         end
       rescue => e
         error_messages = []
-        if @group_user_is_nil
+        if @group_user.errors.full_messages.empty?
           error_messages = [@castle.errors.full_messages]
         else
           error_messages = [@castle.errors.full_messages, @group_user.errors.full_messages]
