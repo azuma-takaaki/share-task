@@ -17,7 +17,7 @@ feature "Groups" , :js => true do
     @group = FactoryBot.create(:programming)
     expect(@group.valid?)
     visit "/"
-     page.find('.side-menu-toggle').click
+    page.find('.side-menu-toggle').click
     click_on "グループを探す"
     find("input[placeholder='グループを探す']").set("progra")
     expect(page).to have_content "programming"
@@ -29,7 +29,7 @@ feature "Groups" , :js => true do
     @group = FactoryBot.create(:programming)
     expect(@group.valid?)
     visit "/"
-     page.find('.side-menu-toggle').click
+    page.find('.side-menu-toggle').click
     click_on "マイグループ"
     click_button "＋group"
     fill_in "新しいグループの名前", with:"programming"
@@ -38,7 +38,7 @@ feature "Groups" , :js => true do
   end
 
   example "作成したグループが即座にマイグループ欄へ反映される" do
-     page.find('.side-menu-toggle').click
+    page.find('.side-menu-toggle').click
     click_on "マイグループ"
     click_button "＋group"
     fill_in "新しいグループの名前", with:"programming"
@@ -48,7 +48,7 @@ feature "Groups" , :js => true do
 
   example "検索したGroupをクリックするとそのグループのページが表示される" do
     visit "/"
-     page.find('.side-menu-toggle').click
+    page.find('.side-menu-toggle').click
     click_on "マイグループ"
     click_button "＋group"
     fill_in "新しいグループの名前", with:"プログラミング"
@@ -75,7 +75,7 @@ feature "Groups" , :js => true do
       end
     end
     visit "/"
-     page.find('.side-menu-toggle').click
+    page.find('.side-menu-toggle').click
     click_on "グループを探す"
     for i in 11..@groups_number do
       page.find('.switch-group-button', text: "group"+ i.to_s)
@@ -90,5 +90,13 @@ feature "Groups" , :js => true do
     sleep 1
   end
 
+  example "グループの名前が空白の場合エラーメッセージが出力される" do
+    visit "/"
+    page.find('.side-menu-toggle').click
+    click_on "マイグループ"
+    click_button "＋group"
+    click_button "グループを作成"
+    expect(page).to have_content "グループ名を入力してください"
+  end
 
 end
