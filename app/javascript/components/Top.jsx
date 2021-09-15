@@ -348,7 +348,7 @@ class Top extends React.Component {
     let top_page_elements = []
     let line_number = 1
     let limit_number_of_character = 35
-    let rem_px_ratio = 16
+    let rem_px_ratio = 15
     if(window.innerWidth < 35 * rem_px_ratio){
       let new_limit_number_of_character = Math.round(window.innerWidth / rem_px_ratio) - 5
       if(new_limit_number_of_character % 2 == 0){
