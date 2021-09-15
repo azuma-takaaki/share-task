@@ -434,7 +434,7 @@ function Castle(props){
 
 
   let castle = [];
-  castle.push(<UseModel model_number={-1} position={[0, 0, 0]} rotation={[0, 0, 0]} modelpath={"ground.glb"} />)
+  castle.push(<UseModel model_number={-1} position={[0, -0.01, 0]} rotation={[0, 0, 0]} modelpath={"ground.glb"} />)
   for(let i=0; i<castleModels.length; i++){
     if(!(castleModels[i]["three_d_model_name"]==null)){
       castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} />)
