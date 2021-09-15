@@ -22,9 +22,9 @@ class CastlesController < ApplicationController
       rescue => e
         error_messages = []
         if @group_user_is_nil
-          error_messages = [@castle.errors.full_messages]
-        else
           error_messages = [@castle.errors.full_messages, @group_user.errors.full_messages]
+        else
+          error_messages = [@castle.errors.full_messages]
         end
         render :json => ['failed to create a castle or group_user', error_messages]
       end

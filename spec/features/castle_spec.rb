@@ -167,4 +167,16 @@ feature "Castles" , :js => true do
     expect(page).to have_selector ".report-infomation"
   end
 
+  example "城の名前が空白の場合エラーメッセージが出力される" do
+    @group = FactoryBot.create(:programming)
+    page.find('.side-menu-toggle').click
+    click_on "グループを探す"
+    find("input[placeholder='グループを探す']").set("progra")
+    click_button "programming"
+    find('div.bm-overlay').click
+    click_button "城を建てる"
+    find(".post-castle-data-button").click
+    expect(page).to have_content "城の名前を入力してください"
+  end
+
 end
