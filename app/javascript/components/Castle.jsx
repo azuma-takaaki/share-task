@@ -29,10 +29,11 @@ const CameraController = () => {
   return null;
 };
 
+const model_scale = 0.07
 const LoadModel = (modelpath) => {
 	const gltf = useLoader(GLTFLoader, modelpath.modelpath)
 	return (
-		<primitive scale={[0.07, 0.07, 0.07]}  object={gltf.scene.clone(true)} dispose={null} />
+		<primitive scale={[model_scale, model_scale, model_scale]}  object={gltf.scene.clone(true)} dispose={null} />
 	)
 }
 
@@ -68,6 +69,7 @@ function Castle(props){
   const [previousCountRotY,setPreviousCountRotY] = useState(0)
 	const [countRotZ,setCountRotZ] = useState(0)
   const [previousCountRotZ,setPreviousCountRotZ] = useState(0)
+  const [displayGrid, setDisplayGrid] = useState(false)
 
 	const [countPosX,setCountPosX] = useState(0)
   const [previousCountPosX,setPreviousCountPosX] = useState(0)
@@ -365,6 +367,8 @@ function Castle(props){
     setEditModelNumber(model_number)
   }
 
+
+
   const updateCastleParts = () =>{
     const getCsrfToken = () => {
       const metas = document.getElementsByTagName('meta');
@@ -430,6 +434,7 @@ function Castle(props){
 
 
   let castle = [];
+  castle.push(<UseModel model_number={-1} position={[0, 0, 0]} rotation={[0, 0, 0]} modelpath={"ground.glb"} />)
   for(let i=0; i<castleModels.length; i++){
     if(!(castleModels[i]["three_d_model_name"]==null)){
       castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} />)
@@ -575,13 +580,22 @@ function Castle(props){
     }
 
 
+    const changeEditNavTab = (nav_tab_type) => {
+      setSelectedCastleToAdd("")
+      if(nav_tab_type=="move-model"||nav_tab_type=="add-model"){
+        setDisplayGrid(true)
+      }else{
+        setDisplayGrid(false)
+      }
+    }
+
     if(props.is_logged_in_user){
       edit_castle_contents= <div class="edit-castle-contents-wrapper">
                               <nav>
                                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                    <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
-                                    <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
-                                    <a onClick={()=>setSelectedCastleToAdd("")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
+                                    <a onClick={()=>changeEditNavTab("tumiage")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
+                                    <a onClick={()=>changeEditNavTab("add-model")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
+                                    <a onClick={()=>changeEditNavTab("move-model")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
                                   </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -816,7 +830,7 @@ function Castle(props){
       <div class="header-and-canvas-wrapper">
         <div class="castle-header-at-goup-page">
           <div class="header-wrapper">
-            <div>{castleName} 城  {edit_castle_button}</div>
+            <div onClick={()=>showUserPage(props.user_id)}>{castleName} 城  {edit_castle_button}</div>
           </div>
           {report_infomation}
         </div>
@@ -824,9 +838,11 @@ function Castle(props){
       		<Canvas >
             {props.tag_class=="castle_at_user_page" && <CameraController />}
       			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*-2, Math.PI/24*0, Math.PI/24*0]}/>
-      			<gridHelper args={[100, 100, 0X696969, 0X696969]} position={[0, 0, 0]}/>
-      			<pointLight position={[10, -20, 70]} />
-    				<pointLight position={[0, 100, -150]} />
+            {displayGrid && <gridHelper args={[model_scale * 1000, model_scale * 1000, 0X000000, 0X000000]} position={[0, 0, 0]}/>}
+            <pointLight position={[500, 500, 0]} intensity={0.3}/>
+    				<pointLight position={[-500, 500, 0]} intensity={0.3}/>
+            <pointLight position={[0, 500, 500]} intensity={1}/>
+            <pointLight position={[0, 500, -500]} intensity={0.3}/>
 
             {castle}
             {castle_selected_to_add}

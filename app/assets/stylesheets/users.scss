@@ -360,6 +360,10 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                       padding-left:0.5rem;
                       color: white;
                       font-size:1.3rem;
+                      cursor : pointer;
+                      &:hover {
+                        text-decoration: underline;
+                      }
                     }
                   }
                   .report-infomation{
@@ -447,6 +451,10 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                       color: white;
                       background-color:#001E6C;
                       font-size:1.7rem;
+                      cursor : pointer;
+                      &:hover {
+                        text-decoration: underline;
+                      }
                     }
                   }
                   .report-infomation{
@@ -534,6 +542,10 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                       color: white;
                       background-color:#001E6C;
                       font-size:1.7rem;
+                      cursor : pointer;
+                      &:hover {
+                        text-decoration: underline;
+                      }
                     }
                   }
                   .report-infomation{
