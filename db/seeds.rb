@@ -70,8 +70,15 @@ report_list.each do |report|
     Report.create(report)
 end
 
-prices_list = [{three_d_model_name: "castle.glb", displayed_name: "城の門", castle_part_point: 1, ruby_point: 0},
-               {three_d_model_name: "wall_01.glb", displayed_name: "城の壁", castle_part_point: 1, ruby_point: 0}
+prices_list = [{three_d_model_name: "wooden_gate.glb", displayed_name: "城の門", castle_part_point: 1, ruby_point: 0},
+               {three_d_model_name: "wall_0.glb", displayed_name: "壁 (低)", castle_part_point: 1, ruby_point: 0},
+               {three_d_model_name: "wall_1.glb", displayed_name: "壁 (高)", castle_part_point: 1, ruby_point: 0},
+               {three_d_model_name: "cylindrical_building_0.glb", displayed_name: "円筒型の建物①", castle_part_point: 1, ruby_point: 0},
+               {three_d_model_name: "cylindrical_building_1.glb", displayed_name: "円筒型の建物②", castle_part_point: 1, ruby_point: 0},
+               {three_d_model_name: "cylindrical_building_2.glb", displayed_name: "円筒型の建物③", castle_part_point: 1, ruby_point: 0},
+               {three_d_model_name: "cylindrical_tower_0.glb", displayed_name: "屋根付きの建物", castle_part_point: 1, ruby_point: 0},
+               {three_d_model_name: "square_building_0.glb", displayed_name: "四角い建物①", castle_part_point: 1, ruby_point: 0},
+               {three_d_model_name: "square_building_1.glb", displayed_name: "城の四角い建物②", castle_part_point: 1, ruby_point: 0}
               ]
 prices_list.each do |price|
   CastlePartPrice.create(price)

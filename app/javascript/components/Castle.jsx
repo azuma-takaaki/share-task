@@ -608,7 +608,9 @@ function Castle(props){
                                   </div>
                                   <div class="tab-pane fade show add-3d-model" id={"nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-add-model-tab">
                                     <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
-                                    {castle_part_price_list}
+                                    <div class="castle-price-button-wrapper">
+                                      {castle_part_price_list}
+                                    </div>
                                     <p></p>
                                     <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
                                   </div>
