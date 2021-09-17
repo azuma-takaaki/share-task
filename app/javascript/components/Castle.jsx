@@ -557,7 +557,15 @@ function Castle(props){
     let new_report_list = []
     if (!(props.castle_reports[0].content == null)){
         for(let i=0; i<props.castle_reports.length; i++){
-          new_report_list.push(<p class = "report-content p-3 text-white">今日の積み上げ: {props.castle_reports[i].content}</p>)
+          new_report_list.push(<div class="report-wrapper">
+                                    <p class = "report-content p-3 text-white">
+                                      今日の積み上げ: {props.castle_reports[i].content}
+                                    </p>
+                                    <div class="like-button-and-created-at-wrapper">
+                                      ここに日付といいねボタンが入るよ
+                                    </div>
+                              </div>
+                              )
         }
     }
     let castle_part_price_list = []
@@ -601,7 +609,7 @@ function Castle(props){
                                 <div class="tab-content" id="nav-tabContent">
                                   <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-home-tab">
                                     <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
-                                    <div class="report-wrapper">
+                                    <div class="all-reports-wrapper">
                                       {new_report_list}
                                     </div>
                                     <button class="btn btn-primary" onClick = {() => openModal("add_report")}>積み上げを登録する</button>
