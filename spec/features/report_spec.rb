@@ -49,8 +49,8 @@ feature "Report" , :js => true do
       fill_in "今日の積み上げ", with:"プログラミングを5時間勉強した！"
       click_button "登録する"
       expect(page).to have_selector ".report-wrapper > .report-content", text: "プログラミングを5時間勉強した！"
-      expect(page).to have_selector ".report-wrapper > like-button-and-created-at-wrapper > .like-button"
-      expect(page).to have_selector ".report-wrapper > like-button-and-created-at-wrapper > .created-at-of-report"
+      expect(page).to have_selector ".report-wrapper > .report-infomation-wrapper > .like-button-and-created-at-wrapper > .like-button"
+      expect(page).to have_selector ".report-wrapper > .report-infomation-wrapper > .like-button-and-created-at-wrapper > .created-at-of-report"
     end
   end
 end
