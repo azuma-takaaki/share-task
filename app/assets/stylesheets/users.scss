@@ -704,7 +704,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                   font-size: calc(var(--vh, 1vh) * 3);
                   color:white;
                   background-color:#035397;
-                  margin: 0px 0px 15px 0px;
+                  margin: 0px 0px 0.3rem 0px;
                 }
 
                 .castle-price-button-wrapper{
@@ -724,7 +724,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                 .castle-price-button-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
                     display:none;
                 }
-                .report-wrapper{
+                .all-reports-wrapper{
                   height:calc(var(--vh, 1vh) * 60);
                   margin-bottom: 1rem;
                   overflow:hidden;
@@ -733,12 +733,30 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                   -ms-overflow-style: none;
                   /* Firefox 対応 */
                   scrollbar-width: none;
-                  .report-content{
+                  .report-wrapper{
+                    margin: 0.3rem;
                     background-color:#5089C6;
-                    margin: 5px 0px;
+                    .report-content{
+                      padding:1rem 2rem 0 2rem;
+                      margin:0;
+                    }
+                    .like-button-and-created-at-wrapper{
+                      color: white;
+                      padding-bottom: 0.5rem;
+                      display:flex;
+                      justify-content:flex-end;
+                      .like-button{
+                        margin: 0 0.1rem 0 1rem;
+                        background-color: transparent;
+                        border: none;
+                      }
+                      .all-like-number{
+                        margin: 0 1rem 0 0;
+                      }
+                    }
                   }
                 }
-                .report-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+                .all-reports-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
                     display:none;
                 }
                 .slider-to-edit-castle{
@@ -856,7 +874,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                 .castle-price-button-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
                     display:none;
                 }
-                .report-wrapper{
+                .all-reports-wrapper{
                   height:33vw;
                   margin-bottom: 1rem;
                   overflow:hidden;
@@ -865,12 +883,22 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                   -ms-overflow-style: none;
                   /* Firefox 対応 */
                   scrollbar-width: none;
-                  .report-content{
+                  .report-wrapper{
+                    margin: 0.3rem;
                     background-color:#5089C6;
-                    margin: 5px 0px;
+                    .report-content{
+                      margin: 5px 0px;
+                    }
+                    .like-button-and-created-at-wrapper{
+                      display:flex;
+                      .like-button{
+                        background-color: transparent;
+                        border: none;
+                      }
+                    }
                   }
                 }
-                .report-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+                .all-reports-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
                     display:none;
                 }
                 .slider-to-edit-castle{
@@ -987,7 +1015,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                     display:none;
                 }
 
-                .report-wrapper{
+                .all-reports-wrapper{
                   height:55vw;
                   margin-bottom: 1rem;
                   overflow:hidden;
@@ -996,12 +1024,30 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                   -ms-overflow-style: none;
                   /* Firefox 対応 */
                   scrollbar-width: none;
-                  .report-content{
+                  .report-wrapper{
+                    margin: 0.3rem;
                     background-color:#5089C6;
-                    margin: 5px 0px;
+                    .report-content{
+                      padding:1rem 2rem 0 2rem;
+                      margin:0;
+                    }
+                    .like-button-and-created-at-wrapper{
+                      color: white;
+                      padding-bottom: 0.5rem;
+                      display:flex;
+                      justify-content:flex-end;
+                      .like-button{
+                        margin: 0 0.1rem 0 1rem;
+                        background-color: transparent;
+                        border: none;
+                      }
+                      .all-like-number{
+                        margin: 0 1rem 0 0;
+                      }
+                    }
                   }
                 }
-                .report-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+                .all-reports-wrapper::-webkit-scrollbar {  /* Chrome, Safari 対応 */
                     display:none;
                 }
                 .slider-to-edit-castle{
@@ -1025,12 +1071,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                 }
               }
             }
-          }
-
-
-
-
-
+          }s
           .move-sliders{
             color: white;
             margin:0.5em;

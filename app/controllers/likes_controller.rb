@@ -6,7 +6,7 @@ class LikesController < ApplicationController
         likes_number = Like.where(report_id: params[:like][:report_id]).count
         render :json => ["Successful registration of like", likes_number]
       else
-        render :json => ["Failed to register like"]
+        render :json => ["Failed to register like", @like.errors.full_messages]
       end
     else
       render :json => ["this operation cannot be performed without logging in"]

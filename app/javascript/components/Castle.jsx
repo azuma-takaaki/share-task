@@ -54,6 +54,9 @@ function Castle(props){
 
   const [castleModels, setCastleModels] = useState(props.castle_models)
   const [castleName, setCastleName] = useState(props.castle_name)
+  const [reportList, setReportList] = useState(null)
+
+
   const [isLiked, setIsLiked] = useState(true)
   const [currentReportLikes, setCurrentReportLikes] = useState(-1000)
 
@@ -99,6 +102,8 @@ function Castle(props){
     if (props.tag_class=="castle_at_group" && currentReportLikes<0){
       setIsLiked(props.castle["report"]["current_report"]["is_liked"])
       setCurrentReportLikes(props.castle["report"]["current_report"]["all_like_number"])
+    }else{
+      setReportList(props.castle_reports)
     }
   });
 
@@ -179,7 +184,7 @@ function Castle(props){
       return '';
     }
 
-    const data = { report: {content: modalInput, user_id: props.user_id, castle_id: props.castle_id}}
+    const data = { report: {content: modalInput, user_id: props.current_user_id, castle_id: props.castle_id}}
     fetch('/reports',{
       method: 'POST',
       headers: {
@@ -194,7 +199,7 @@ function Castle(props){
         sleep(300).then(() =>{
           setProgressPercentage("100")
           sleep(1000).then(()=>{
-              props.fetchCastles("user", props.user_id, false)
+              props.fetchCastles("user", props.current_user_id, false)
               setProgressPercentage("0")
               setModalInput("")
               setModalIsOpen(false)
@@ -228,7 +233,7 @@ function Castle(props){
     }
 
     //let model_name_list = [ "wall_01.glb", "castle.glb"]
-    const data = { castle: { user_id: props.user_id, group_id: props.group_id }}
+    const data = { castle: { user_id: props.current_user_id, group_id: props.group_id }}
 
     fetch("/castles/" + props.castle["castle_id"],{
       method: 'DELETE',
@@ -246,7 +251,7 @@ function Castle(props){
           sleep(1000).then(()=>{
             setSelectedCastleToAdd("")
             closeModal()
-            props.fetchCastles("user", props.user_id, false)
+            props.fetchCastles("user", props.current_user_id, false)
             setProgressPercentage("0")
           })
         }else{
@@ -306,7 +311,7 @@ function Castle(props){
             setProgressPercentage("100")
             sleep(1000).then(()=>{
               setSelectedCastleToAdd("")
-              props.fetchCastles("user", props.user_id, false)
+              props.fetchCastles("user", props.current_user_id, false)
               closeModal()
             })
           }
@@ -349,7 +354,7 @@ function Castle(props){
           setProgressPercentage("100")
           sleep(1000).then(()=>{
             setCastleName(modalInput)
-            props.fetchCastles("user", props.user_id, false)
+            props.fetchCastles("user", props.current_user_id, false)
             setProgressPercentage("0")
             closeModal()
           })
@@ -470,7 +475,7 @@ function Castle(props){
       }
   }
 
-  const clickLikeButton = () =>{
+  const clickLikeButton = (report_id, report_list_index) =>{
     const getCsrfToken = () => {
       const metas = document.getElementsByTagName('meta');
       for (let meta of metas) {
@@ -481,17 +486,31 @@ function Castle(props){
        }
       return '';
     }
-    const data = { like: {user_id: props.current_user_id, report_id: props.castle["report"]["current_report"]["id"]}}
+    const data = { like: {user_id: props.current_user_id, report_id: report_id}}
     let method_type = ''
     let fetch_route = ''
-    if(isLiked){
-      fetch_route = '/likes/' + props.castle["report"]["current_report"]["id"]
-      method_type = 'DELETE'
+    let new_report_list;
+    if (props.tag_class=="castle_at_group"){
+      if(isLiked){
+        fetch_route = '/likes/' + report_id
+        method_type = 'DELETE'
+      }else{
+        fetch_route = '/likes'
+        method_type = 'POST'
+      }
+      setIsLiked(!isLiked)
     }else{
-      fetch_route = '/likes'
-      method_type = 'POST'
+      if(reportList[report_list_index].is_liked){
+        fetch_route = '/likes/' + report_id
+        method_type = 'DELETE'
+      }else{
+        fetch_route = '/likes'
+        method_type = 'POST'
+      }
+      new_report_list = reportList
+      new_report_list[report_list_index].isLiked = !reportList[report_list_index].isLiked
+      setReportList(new_report_list)
     }
-    setIsLiked(!isLiked)
 
     fetch(fetch_route,{
       method: method_type,
@@ -504,9 +523,18 @@ function Castle(props){
     .then(res => res.json())
     .then((result) => {
       if(result[0] == "Successful registration of like" || result[0] == "Success to destroy like"){
-        setCurrentReportLikes(result[1])
+        if (props.tag_class=="castle_at_group"){
+          setCurrentReportLikes(result[1])
+        }else{
+          props.fetchCastles("user", props.current_user_id, false)
+          new_report_list = reportList
+          new_report_list[report_list_index].all_like_number = result[1]
+          setReportList(new_report_list)
+        }
+
       }else if(result[0] == "Failed to register like" || result[0] == "Failed to destroy like"){
         alert("server error")
+        alert(result[1])
       }else{
         alert("error")
       }
@@ -555,10 +583,29 @@ function Castle(props){
     edit_castle_button = <button class="btn btn-secondary" id={"edit-"+props.castle.castle_name.replace(/\s+/g,"")} onClick={()=>openModal("edit_castle")}>⋯</button>
 
     let new_report_list = []
-    if (!(props.castle_reports[0].content == null)){
-        for(let i=0; i<props.castle_reports.length; i++){
-          new_report_list.push(<p class = "report-content p-3 text-white">今日の積み上げ: {props.castle_reports[i].content}</p>)
+    if (reportList!=null){
+        for(let i=0; i<reportList.length; i++){
+          new_report_list.push(<div class="report-wrapper">
+                                    <p class = "report-content text-white">
+                                      {reportList[i].content}
+                                    </p>
+                                    <div class="report-infomation-wrapper">
+                                      <div class="like-button-and-created-at-wrapper">
+                                        <div class="created-at-of-report">{reportList[i].created_at}</div>
+                                        {reportList[i].is_liked && <button className="like-button" onClick={()=>{clickLikeButton(reportList[i].id, i)}}>
+                                                                                    <FontAwesomeIcon icon={LikeImage} style={{"color": "red"}}/>
+                                                                               </button>}
+                                        {!reportList[i].is_liked && <button className="like-button" onClick={()=>{clickLikeButton(reportList[i].id, i)}}>
+                                                                                    <FontAwesomeIcon icon={UnikeImage} style={{"color": "red"}}/>
+                                                                                 </button>}
+
+                                        <div class="all-like-number">{reportList[i].all_like_number}</div>
+                                      </div>
+                                    </div>
+                              </div>
+                              )
         }
+
     }
     let castle_part_price_list = []
     let temppp = []
@@ -601,7 +648,7 @@ function Castle(props){
                                 <div class="tab-content" id="nav-tabContent">
                                   <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-home-tab">
                                     <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
-                                    <div class="report-wrapper">
+                                    <div class="all-reports-wrapper">
                                       {new_report_list}
                                     </div>
                                     <button class="btn btn-primary" onClick = {() => openModal("add_report")}>積み上げを登録する</button>
@@ -716,23 +763,25 @@ function Castle(props){
 
   }
 
-  let liked_button = <div></div>
+  let like_button = <div></div>
   if (isLiked){
-    liked_button = <div>
-                       <button onClick={()=>{clickLikeButton()}}>
+    like_button = <div>
+                       <button onClick={()=>{clickLikeButton(props.castle["report"]["current_report"]["id"])}}>
                           <FontAwesomeIcon icon={LikeImage} style={{"color": "red"}}/>
                        </button>
                    </div>
   }else{
-    liked_button = <div>
-                       <button onClick={()=>{clickLikeButton()}}>
+    like_button = <div>
+                       <button onClick={()=>{clickLikeButton(props.castle["report"]["current_report"]["id"])}}>
                           <FontAwesomeIcon  icon={UnikeImage} style={{"color": "red"}}/>
                        </button>
                    </div>
   }
 
+  let show_page_argument = props.current_user_id
   let report_infomation = <div></div>
   if(props.tag_class=="castle_at_group"){
+    show_page_argument = props.user_id
     if(props.castle["report"]["current_report"]["content"]==null){
       report_infomation = <div class="report-infomation">
                             <div class="current-report-date">最新の積み上げ : --/--/--</div>
@@ -745,7 +794,7 @@ function Castle(props){
                             <div class="current-report-content">
                               {props.castle["report"]["current_report"]["content"]}
                               <div class="like-button-and-likes-number">
-                                {liked_button}
+                                {like_button}
                                 {currentReportLikes}
                               </div>
                             </div>
@@ -832,7 +881,7 @@ function Castle(props){
       <div class="header-and-canvas-wrapper">
         <div class="castle-header-at-goup-page">
           <div class="header-wrapper">
-            <div onClick={()=>showUserPage(props.user_id)}>{castleName} 城  {edit_castle_button}</div>
+            <div onClick={()=>showUserPage(show_page_argument)}>{castleName} 城  {edit_castle_button}</div>
           </div>
           {report_infomation}
         </div>

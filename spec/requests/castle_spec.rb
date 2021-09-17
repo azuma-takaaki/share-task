@@ -47,6 +47,38 @@ RSpec.describe CastlesController, type: :request do
       expect(JSON.parse(response.body)[0][0]["report"]["current_report"]["all_like_number"]).to eq 2
     end
 
+    example "ユーザーページの城を取得した際, 積み上げのいいね数も合わせて取得できる" do
+      post login_path , params: { session: {
+                                        email: @user.email,
+                                        password: @user.password,
+                                      }}
+      expect(response).to have_http_status(200)
+      post reports_path, params: { report: {
+                                    content: "プログラミングを5時間した！",
+                                    user_id: @user.id,
+                                    castle_id: @castle.id
+                                  }}
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)[0]).to eq "Successful registration of report"
+
+
+
+      get "/get_user_castle_list/" + @user.id.to_s
+      expect(JSON.parse(response.body)[0][0]["reports"][0]["content"]).to eq "プログラミングを5時間した！"
+      expect(JSON.parse(response.body)[0][0]["reports"][0]["is_liked"]).to eq false
+      expect(JSON.parse(response.body)[0][0]["reports"][0]["all_like_number"]).to eq 0
+
+      @report = Report.find_by(content: "プログラミングを5時間した！")
+      post likes_path, params: {like: {
+                                  user_id: @user.id,
+                                  report_id: @report.id
+                               }}
+                               get "/get_user_castle_list/" + @user.id.to_s
+                               expect(JSON.parse(response.body)[0][0]["reports"][0]["content"]).to eq "プログラミングを5時間した！"
+                               expect(JSON.parse(response.body)[0][0]["reports"][0]["is_liked"]).to eq true
+                               expect(JSON.parse(response.body)[0][0]["reports"][0]["all_like_number"]).to eq 1
+    end
+
   end
 
   describe "#create_castle" do

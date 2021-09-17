@@ -130,7 +130,7 @@ class User extends React.Component {
       castles = this.props.users_castle_list.map((castle) => {
         //alert("User: " + castle["models"].length)
         return (
-            <Castle castle={castle["castle"]} castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} castle_reports={castle["reports"]} tag_class="castle_at_user_page" fetchCastles={this.props.fetchCastles} user_id={this.props.current_user.id}  castle_part_price_list = {this.state.castle_part_price_list} is_logged_in_user={this.props.is_logged_in_user}/>
+            <Castle castle={castle["castle"]} castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} castle_reports={castle["reports"]} tag_class="castle_at_user_page" fetchCastles={this.props.fetchCastles} current_user_id={this.props.current_user.id}  castle_part_price_list = {this.state.castle_part_price_list} is_logged_in_user={this.props.is_logged_in_user}/>
         )
       })
     }else{
