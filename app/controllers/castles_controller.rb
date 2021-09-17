@@ -183,7 +183,12 @@ class CastlesController < ApplicationController
     all_likes = Like.all.to_a
     @current_user = current_user()
     @report_list.each do |report|
-      logger.debug(report.reports_id)
+      logger.debug({id: report.reports_id,
+                                                                
+                                                                is_liked: !(all_likes.select{|like| like.report_id == report.reports_id && like.user_id == @current_user.id}.empty?),
+                                                                all_like_number: (all_likes.select { |like| like.report_id == report.reports_id }).count
+
+                                                              })
       @tmp_castle_part[(report.castle_id).to_s][:reports].push({id: report.reports_id,
                                                                 content: report.content,
                                                                 created_at: report.created_at.nil? ? nil : report.created_at.strftime('%Y/%m/%d'),
