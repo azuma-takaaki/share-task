@@ -1,16 +1,45 @@
-import React, { useState, useRef, useEffect, Suspense }  from 'react';
-import { Canvas, useLoader, useFrame, useThree } from 'react-three-fiber';
-import { Vector3, PerspectiveCamera } from 'three';
+import React, { useState, useRef, useEffect, Suspense, useContext, useCallback, useMemo }  from 'react';
+import { Canvas, useLoader, useFrame, useThree, extend } from 'react-three-fiber';
+import { Vector3, Vector2, PerspectiveCamera } from 'three';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import PropTypes from "prop-types";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer"
+import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass"
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass"
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass"
+import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader"
+
 import Modal from 'react-modal'
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart as LikeImage} from '@fortawesome/free-solid-svg-icons'
 import { faHeart as UnikeImage } from "@fortawesome/free-regular-svg-icons";
+
+extend({ OrbitControls, EffectComposer, RenderPass, OutlinePass, ShaderPass })
+
+function useHover() {
+  const ref = useRef()
+  const setHovered = useContext(context)
+  const onPointerOver = useCallback(() => setHovered(state => [...state, ref.current]), [])
+  const onPointerOut = useCallback(() => setHovered(state => state.filter(mesh => mesh !== ref.current)), [])
+  return { ref, onPointerOver, onPointerOut }
+}
+
+
+const Thing = ({ radius = 1, detail = 64, color = "indianred", ...props }) => {
+  return (
+    <mesh {...props} {...useHover()}>
+      <dodecahedronGeometry attach="geometry" args={[50]} />
+      <meshStandardMaterial attach="material" color={color} />
+    </mesh>
+  )
+}
+
+const context = React.createContext()
+
 
 const CameraController = () => {
   const { camera, gl } = useThree();
@@ -61,6 +90,7 @@ function Castle(props){
   const [currentReportLikes, setCurrentReportLikes] = useState(-1000)
 
   const [editModelNumber, setEditModelNumber] = useState(0)
+  const [editModelRef, setEditModelRef] = useState([])
 
   const [selectedCastleToAdd, setSelectedCastleToAdd] = useState("")
 
@@ -416,39 +446,91 @@ function Castle(props){
     })
   }
 
+  const Outline = ({ children }) => {
+    const { gl, scene, camera, size } = useThree()
+    const composer = useRef()
+    const [hovered, set] = useState([])
+    const [editModelRef, setEditModelRef] = useState([])
+    const aspect = useMemo(() => new Vector2(size.width, size.height), [size])
+    useEffect(() => composer.current.setSize(size.width, size.height), [size])
+    useFrame(() => composer.current.render(), 1)
+    if(!(hovered[0] === null || hovered[0] === undefined)){
+      //alert(Object.keys(hovered[0]))
+    }
+
+    return (
+      <context.Provider value={setEditModelRef}>
+        {children}
+        <effectComposer ref={composer} args={[gl]}>
+          <renderPass attachArray="passes" args={[scene, camera]} />
+          <outlinePass
+            attachArray="passes"
+            args={[aspect, scene, camera]}
+            selectedObjects={editModelRef}
+            visibleEdgeColor="red"
+            edgeStrength={50}
+            edgeThickness={1}
+          />
+          <shaderPass attachArray="passes" args={[FXAAShader]} uniforms-resolution-value={[1 / size.width, 1 / size.height]} />
+        </effectComposer>
+
+      </context.Provider>
+    )
+  }
+
+  function useClickModel(model_number){
+    const ref = useRef()
+    const setEditModelRef = useContext(context)
+    const onClick = () => { setEditModelNumber(model_number), setEditModelRef([ref.current])}
+    return { ref, onClick}
+  }
+
+
+
   let UseModel = (props) =>{
-    let {model_number, position, rotation, modelpath} = props
+    let {model_number, position, rotation, modelpath, add_hover} = props
     if(!(rotation==null)){
       rotation[1] = rotation[1] - Math.PI / 2
     }
 
-    //-Math.PI / 2
+
     if(modelpath==null){
       modelpath="wall_01.glb"
     }
 
+    let model_mesh;
+    if(add_hover){
+      model_mesh = <mesh {...useClickModel(model_number)} position = {position} rotation={rotation}>
+                      <Suspense fallback={null}>
+                          <LoadModel modelpath={"/" + modelpath}/>
+                      </Suspense>
+                    </mesh>
+    }else{
+      model_mesh = <mesh position = {position} rotation={rotation}>
+                      <Suspense fallback={null}>
+                          <LoadModel modelpath={"/" + modelpath}/>
+                      </Suspense>
+                    </mesh>
+    }
+
   	return (
-  		<mesh  onClick={()=>{cangeEditModel(model_number)}} position = {position} rotation={rotation}>
-  			<Suspense fallback={null}>
-  					<LoadModel modelpath={"/" + modelpath}/>
-  			</Suspense>
-  		</mesh>
+      <Suspense fallback={null}>{model_mesh}</Suspense>
   	)
   }
 
 
 
   let castle = [];
-  castle.push(<UseModel model_number={-1} position={[0, -0.01, 0]} rotation={[0, 0, 0]} modelpath={"ground.glb"} />)
+  castle.push(<UseModel model_number={-1} position={[0, -0.01, 0]} rotation={[0, 0, 0]} modelpath={"ground.glb"} add_hover={false}/>)
   for(let i=0; i<castleModels.length; i++){
     if(!(castleModels[i]["three_d_model_name"]==null)){
-      castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} />)
+      castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} add_hover={true}/>)
     }
   }
 
   let castle_selected_to_add;
   if (selectedCastleToAdd!=""){
-    castle_selected_to_add = <UseModel model_number={castleModels.length} position={[0, 1, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} />
+    castle_selected_to_add = <UseModel model_number={castleModels.length} position={[0, 1, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} add_hover={true}/>
   }
   let user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
@@ -895,9 +977,13 @@ function Castle(props){
             <pointLight position={[0, 500, 500]} intensity={1}/>
             <pointLight position={[0, 500, -500]} intensity={0.3}/>
 
-            {castle}
-            {castle_selected_to_add}
 
+
+
+            <Outline>
+              {castle}
+              {castle_selected_to_add}
+            </Outline>
 
 
       		</Canvas>
