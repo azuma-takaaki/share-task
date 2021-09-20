@@ -478,11 +478,20 @@ function Castle(props){
     )
   }
 
+  
+
   function useClickModel(model_number){
-    const ref = useRef()
+    const ref = useState(useRef())
+    useEffect(() => {
+      if(model_number==editModelNumber){
+        setEditModelRef([ref.current])
+      }
+    })
     const setEditModelRef = useContext(context)
-    const onClick = () => { setEditModelNumber(model_number), setEditModelRef([ref.current])}
-    return { ref, onClick}
+    const onClick = useCallback(() =>  {setEditModelRef([ref.current])
+       setEditModelNumber(model_number)
+     }, [])
+    return { ref, onClick }
   }
 
 
