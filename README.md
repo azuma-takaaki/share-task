@@ -1,24 +1,32 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# 積み上げ城
 
-Things you may want to cover:
+### **https://tumiagejou.herokuapp.com/**  
+<br />
 
-* Ruby version
+## サービス概要
+**ゲーム感覚だから学習習慣を継続できる**  
+<br />
+日々のプログラミング学習の成果をゲーム感覚で記録する, 学習記録サービスです. 積み上げ(学習の成果)を記録すると自分のお城も日々積み上がって大きくなっていきます.
+<br />
+<br />
 
-* System dependencies
+### 作成した経緯
+  プログラミングの勉強を始めた頃, モチベーションを保つのに苦労しました. そこでモチベーション維持のために2つの工夫をしました.
+  1つ目は, twitterで学習記録のツイートを始めたことです. 毎日「#今日の積み上げ」ハッシュタグと共に学習記録をツイートしていきました. 「#今日の積み上げ」はプログラミング初学者が日々の学習記録をツイートし, 学習仲間を探すためのハッシュタグです. このハッシュタグを通じて自分と同じ境遇の人と繋がることで孤独感が減り仲間と頑張っている感覚が得られました.
+  2つ目は, GitHubに毎日草を生やすことです. とにかく1日も休まず草を生やす. 壁にぶつかって思うように進まない時もありましたが, とにかく草を生やしました. 挫折しそうな時でもGitHubのコミット履歴を見れば「辛い時でも毎日プログラミング学習と向き合ってきた」という自負が生まれ頑張れました.
+   以上2つから, 「学習仲間と繋がること」と「日々の積み上げが可視化されていること」がプログラミング学習で必要なのではないかと考えました.
+   そこで, 上記2つを叶えるサービスを作りたいと考え生まれたのがこの「積み上げ城」です. 同じ挑戦をしている仲間を見つけることができ, さらに積み上げた日数によって「お城の大きさや豪華さ」と言う形で可視化されます.
 
-* Configuration
+# 使用技術
 
-* Database creation
+### フロントエンド
+- React (react-rails というgemを使用し完全SPA化)
+- Three.js (react-three-fiberというライブラリを使用し3DモデルのCRUDを実現)
 
-* Database initialization
+### バックエンド
+- Ruby　2.7.0
+- Rails　6.1.4.1
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### インフラ
+- Heroku にデプロイ
