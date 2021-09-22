@@ -212,11 +212,10 @@ RSpec.describe CastlePartsController, type: :request do
       expect(@castle.reload.castle_parts.length).to eq pre_castle_parts_number+1
 
       @castle_part = @castle.castle_parts.find_by(three_d_model_name: "castle.glb")
-      p @castle_part_price
       pre_castle_part_point = @castle.castle_part_point
       pre_castle_parts_number = @castle.castle_parts.length
-      p pre_castle_part_point
       delete "/castle_parts/" + @castle_part.id.to_s
+      puts("response: " + response.body)
       expect(response).to have_http_status(200)
       expect(@castle.reload.castle_part_point).to eq pre_castle_part_point+1
       expect(@castle.reload.castle_parts.length).to eq pre_castle_parts_number-1
