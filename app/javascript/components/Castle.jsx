@@ -293,6 +293,46 @@ function Castle(props){
     })
   }
 
+  const destroyModel = () => {
+    setProgressPercentage("20")
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+           }
+       }
+      return '';
+    }
+
+    //let model_name_list = [ "wall_01.glb", "castle.glb"]
+    fetch("/castle_parts/" + castleModels[editModelNumber]["id"],{
+      method: 'DELETE',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      }
+    })
+    .then(res => res.json())
+    .then((result) => {
+      sleep(300).then(() =>{
+        if(result[0] == "succeeded in destroying a castle_part"){
+          setProgressPercentage("100")
+          sleep(1000).then(()=>{
+            closeModal()
+            props.fetchCastles("user", props.current_user_id, false)
+            setProgressPercentage("0")
+          })
+        }else{
+          setProgressPercentage("0")
+          alert("城の部品の削除に失敗しました")
+          alert(result[1])
+        }
+      })
+    })
+  }
+
   const showUserPage = (user_id) =>{
      props.fetchCastles("user", user_id, true)
   }
@@ -478,7 +518,7 @@ function Castle(props){
     )
   }
 
-  
+
 
   function useClickModel(model_number){
     const ref = useState(useRef())
@@ -733,6 +773,7 @@ function Castle(props){
                                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a onClick={()=>changeEditNavTab("tumiage")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
                                     <a onClick={()=>changeEditNavTab("add-model")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
+                                    <a onClick={()=>changeEditNavTab("destroy-model")} class="nav-link " id="nav-destroy-tab" data-bs-toggle="tab" href={"#nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-destroy-model" aria-selected="false">削除</a>
                                     <a onClick={()=>changeEditNavTab("move-model")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
                                   </div>
                                 </nav>
@@ -751,6 +792,10 @@ function Castle(props){
                                     </div>
                                     <p></p>
                                     <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
+                                  </div>
+                                  <div class="tab-pane fade show " id={"nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-destroy-model-tab">
+                                    <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
+                                    <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_destroy_model")}>選択中の城の部品を削除する</button>
                                   </div>
                                   <div class="tab-pane fade show " id={"nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-move-model-tab">
                                     <div class="slider-to-edit-castle">
@@ -963,7 +1008,17 @@ function Castle(props){
                         <button class="btn btn-danger" onClick={()=>{destroyCastle()}}>城を削除する</button>
                         <button class="btn btn-primary" onClick={()=>{openModal("edit_castle")}}>キャンセル</button>
                     </div>
-  }
+  }else if(modalType=="confirmation_to_destroy_model"){
+    modal_content = <div>
+                        <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
+                        {error_flash_content}
+                        <h2>選択中の城の部品を削除しますか？</h2>
+                        <div>
+                          積み上げポイント: {props.castle.castle_part_point} → {props.castle.castle_part_point+1}
+                        </div>
+                        <button class="btn btn-primary" onClick={()=>destroyModel(editModelNumber)}>削除する</button>
+                    </div>}
+
 
 
   return (

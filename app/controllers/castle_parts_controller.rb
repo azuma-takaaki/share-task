@@ -51,6 +51,25 @@ class CastlePartsController < ApplicationController
     end
   end
 
+  def destroy
+    if logged_in?
+      begin
+        ActiveRecord::Base.transaction do
+          @castle_part = CastlePart.find_by(id: params[:id])
+          @castle = Castle.find_by(id: @castle_part.castle_id)
+          @castle.update!(castle_part_point: @castle.castle_part_point + 1)
+          @castle_part.destroy!
+        end
+        render :json => ['succeeded in destroying a castle_part', @castle.castle_part_point]
+      rescue => e
+        error_messages = @castle_part.errors.full_messages + @castle.errors.full_messages
+        render :json => ['failed to destroy a castle_part', error_messages]
+      end
+    else
+      render :json => ["this operation cannot be performed without logging in"]
+    end
+  end
+
 
   private
     def castle_part_parameters
