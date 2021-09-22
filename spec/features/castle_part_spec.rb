@@ -104,7 +104,7 @@ feature "CastleParts" , :js => true do
     page.find('.castle-point-at-user-page', text: '0')
     page.find('.nav-link', text: '削除').click
     click_button '選択中の城の部品を削除する'
-    click_button "城の部品を削除する"
+    click_button "削除する"
     sleep 1
     page.find('.castle-point-at-user-page', text: '1')
 
