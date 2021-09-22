@@ -177,4 +177,52 @@ RSpec.describe CastlePartsController, type: :request do
       expect(@castle_part2.reload.position_x).to eq 100
     end
   end
+
+  describe "delete" do
+    before do
+      @user = FactoryBot.create(:user)
+      @group = FactoryBot.create(:group)
+      @castle = FactoryBot.create(:castle0, user: @user, group: @group)
+    end
+
+    example "城の部品が正しく削除でき, castle_pointも返還される" do
+      @castle.castle_part_point = 1
+      @castle.save
+      @castle.reload
+      pre_castle_part_point = @castle.castle_part_point
+      pre_castle_parts_number = @castle.castle_parts.length
+      post login_path , params: { session: {
+                                        email: @user.email,
+                                        password: @user.password,
+                                }}
+      expect(response).to have_http_status(200)
+      post castle_parts_path, params: { castle_part: {
+                                    castle_id: @castle.id,
+                                    three_d_model_name: "castle.glb",
+                                    position_x: 0,
+                                    position_y: 0,
+                                    position_z: 0,
+                                    angle_x: 0,
+                                    angle_y: 0,
+                                    angle_z: 0,
+                                  }}
+      puts("response: " + response.body)
+      expect(response).to have_http_status(200)
+      expect(@castle.reload.castle_part_point).to eq pre_castle_part_point-1
+      expect(@castle.reload.castle_parts.length).to eq pre_castle_parts_number+1
+
+      @castle_part = @castle.castle_parts.find_by(three_d_model_name: "castle.glb")
+      p @castle_part_price
+      pre_castle_part_point = @castle.castle_part_point
+      pre_castle_parts_number = @castle.castle_parts.length
+      p pre_castle_part_point
+      delete "/castle_parts/" + @castle_part.id.to_s
+      expect(response).to have_http_status(200)
+      expect(@castle.reload.castle_part_point).to eq pre_castle_part_point+1
+      expect(@castle.reload.castle_parts.length).to eq pre_castle_parts_number-1
+
+    end
+
+  end
+
 end
