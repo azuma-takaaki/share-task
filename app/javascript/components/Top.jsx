@@ -364,7 +364,11 @@ class Top extends React.Component {
         if(i < (top_page_title+top_page_sentence).split('').length){
           top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
         }else{
-          top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number + " hide-character"}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          if(limit_number_of_character<=2){
+            top_page_elements.push(<span onTransitionEnd={()=>this.setState({animation_point: 2})} style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number + " hide-character"}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else{
+            top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number + " hide-character"}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }
         }
         if(limit_number_of_character<=1){
           i += (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length
@@ -377,8 +381,8 @@ class Top extends React.Component {
         }
       }
     }else{
-      let font_size_of_title = 3.3
-      let font_size_of_character = 1.3
+      let font_size_of_title = 4
+      let font_size_of_character = 1.5
       let margin_of_character_line = font_size_of_character * 0.8
       let title_number = 5
       let margin_of_title  = (window.innerWidth - font_size_of_title * rem_px_ratio * title_number)/2/rem_px_ratio
@@ -387,11 +391,11 @@ class Top extends React.Component {
       for(let i=0; i < (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length; i++){
         if(i < (top_page_title+top_page_sentence).split('').length){
           if(i<break_number_array[0]){
-            top_page_elements.push(<span style={{left:((window.innerWidth*0.93 - break_number_array[0] * rem_px_ratio * font_size_of_title)/2/rem_px_ratio + (i) * font_size_of_title) + "rem", top: "3rem", "transition-duration": delay_animation_point_2 + "s", "font-size": font_size_of_title+"rem"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+            top_page_elements.push(<span style={{left:((window.innerWidth - break_number_array[0] * rem_px_ratio * font_size_of_title)/2/rem_px_ratio + (i-0.4) * font_size_of_title) + "rem", top: "3rem", "transition-duration": delay_animation_point_2 + "s", "font-size": font_size_of_title+"rem"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
           }else{
             for(let array_index=1; array_index<10; array_index++){
               if(i<break_number_array[array_index]){
-                top_page_elements.push(<span style={{left: ((window.innerWidth*0.94 - (break_number_array[array_index]-break_number_array[array_index-1]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-break_number_array[array_index-1]) * font_size_of_character) + "rem", top: margin_of_character_line * array_index +8 + array_index +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+                top_page_elements.push(<span style={{left: ((window.innerWidth - (break_number_array[array_index]-break_number_array[array_index-1]) * rem_px_ratio * font_size_of_character)/2/rem_px_ratio + (i-1-break_number_array[array_index-1]) * font_size_of_character) + "rem", top: margin_of_character_line * array_index +8 + array_index +"rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
                 break;
               }
             }
