@@ -364,7 +364,11 @@ class Top extends React.Component {
         if(i < (top_page_title+top_page_sentence).split('').length){
           top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
         }else{
-          top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number + " hide-character"}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          if(limit_number_of_character<=2){
+            top_page_elements.push(<span onTransitionEnd={()=>this.setState({animation_point: 2})} style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number + " hide-character"}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }else{
+            top_page_elements.push(<span style={{left: (margin_of_character_line + line_number + character_counter -2 ) + "rem", "transition-delay": (character_counter * 0.01 + i * 0.02) * 0.5+ "s"}} class={"top-page-character character-number-" + i + " animation-point-" + this.state.animation_point +  " line-number-" + line_number + " hide-character"}>{(top_page_title+top_page_sentence+top_page_sentence_reserve)[i]}</span>)
+          }
         }
         if(limit_number_of_character<=1){
           i += (top_page_title+top_page_sentence+top_page_sentence_reserve).split('').length
