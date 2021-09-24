@@ -434,14 +434,6 @@ function Castle(props){
   }
 
 
-  const cangeEditModel = (model_number) =>{
-    setPreviousCountPosX(castleModels[model_number]["position_x"])
-    setPreviousCountPosY(castleModels[model_number]["position_y"])
-    setPreviousCountPosZ(castleModels[model_number]["position_z"])
-    setPreviousCountRotY(castleModels[model_number]["angle_y"])
-    setEditModelNumber(model_number)
-  }
-
 
 
   const updateCastleParts = () =>{
@@ -498,9 +490,7 @@ function Castle(props){
     if(props.tag_class=="castle_at_user_page"&&displayGrid){
       outline_model_reference = editModelRef
     }
-    if(!(hovered[0] === null || hovered[0] === undefined)){
-      //alert(Object.keys(hovered[0]))
-    }
+
 
     return (
       <context.Provider value={setEditModelRef}>
@@ -526,22 +516,28 @@ function Castle(props){
 
   function useClickModel(model_number){
     const ref = useState(useRef())
+    let onClick = useCallback(() =>  {setEditModelRef([ref.current])
+       setEditModelNumber(model_number)
+     }, [])
+     if(selectedCastleToAdd!=""){
+       onClick = useCallback(() =>  {}, [])
+     }
     useEffect(() => {
-      if(model_number==editModelNumber){
+      if(selectedCastleToAdd!=""){
+        setEditModelRef([ref.current])
+      }else if(model_number==editModelNumber){
         setEditModelRef([ref.current])
       }
     })
     const setEditModelRef = useContext(context)
-    const onClick = useCallback(() =>  {setEditModelRef([ref.current])
-       setEditModelNumber(model_number)
-     }, [])
+
     return { ref, onClick }
   }
 
 
 
   let UseModel = (props) =>{
-    let {model_number, position, rotation, modelpath, add_hover} = props
+    let {model_number, position, rotation, modelpath, add_outline_event} = props
     if(!(rotation==null)){
       rotation[1] = rotation[1] - Math.PI / 2
     }
@@ -552,7 +548,7 @@ function Castle(props){
     }
 
     let model_mesh;
-    if(add_hover){
+    if(add_outline_event){
       model_mesh = <mesh {...useClickModel(model_number)} position = {position} rotation={rotation}>
                       <Suspense fallback={null}>
                           <LoadModel modelpath={"/" + modelpath}/>
@@ -574,16 +570,17 @@ function Castle(props){
 
 
   let castle = [];
-  castle.push(<UseModel model_number={-1} position={[0, -0.01, 0]} rotation={[0, 0, 0]} modelpath={"ground.glb"} add_hover={false}/>)
+  castle.push(<UseModel model_number={-1} position={[0, -0.01, 0]} rotation={[0, 0, 0]} modelpath={"ground.glb"} add_outline_event={false}/>)
   for(let i=0; i<castleModels.length; i++){
     if(!(castleModels[i]["three_d_model_name"]==null)){
-      castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} add_hover={true}/>)
+      castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} add_outline_event={true}/>)
     }
   }
 
   let castle_selected_to_add;
+  const ref_castle_selected_to_add = useRef()
   if (selectedCastleToAdd!=""){
-    castle_selected_to_add = <UseModel model_number={castleModels.length} position={[0, 1, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} add_hover={true}/>
+    castle_selected_to_add = <UseModel ref={ref_castle_selected_to_add} model_number={castleModels.length} position={[0, 1, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} add_outline_event={true}/>
   }
   let user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
