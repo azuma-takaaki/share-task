@@ -494,6 +494,10 @@ function Castle(props){
     const aspect = useMemo(() => new Vector2(size.width, size.height), [size])
     useEffect(() => composer.current.setSize(size.width, size.height), [size])
     useFrame(() => composer.current.render(), 1)
+    let outline_model_reference = []
+    if(props.tag_class=="castle_at_user_page"){
+      outline_model_reference = editModelRef
+    }
     if(!(hovered[0] === null || hovered[0] === undefined)){
       //alert(Object.keys(hovered[0]))
     }
@@ -506,7 +510,7 @@ function Castle(props){
           <outlinePass
             attachArray="passes"
             args={[aspect, scene, camera]}
-            selectedObjects={editModelRef}
+            selectedObjects={outline_model_reference}
             visibleEdgeColor="red"
             edgeStrength={50}
             edgeThickness={1}
