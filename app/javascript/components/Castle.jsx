@@ -495,7 +495,7 @@ function Castle(props){
     useEffect(() => composer.current.setSize(size.width, size.height), [size])
     useFrame(() => composer.current.render(), 1)
     let outline_model_reference = []
-    if(props.tag_class=="castle_at_user_page"){
+    if(props.tag_class=="castle_at_user_page"&&displayGrid){
       outline_model_reference = editModelRef
     }
     if(!(hovered[0] === null || hovered[0] === undefined)){
@@ -764,7 +764,7 @@ function Castle(props){
 
     const changeEditNavTab = (nav_tab_type) => {
       setSelectedCastleToAdd("")
-      if(nav_tab_type=="move-model"||nav_tab_type=="add-model"){
+      if(nav_tab_type=="move-model"||nav_tab_type=="add-model"||nav_tab_type=="destroy-model"){
         setDisplayGrid(true)
       }else{
         setDisplayGrid(false)
@@ -777,8 +777,8 @@ function Castle(props){
                                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a onClick={()=>changeEditNavTab("tumiage")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
                                     <a onClick={()=>changeEditNavTab("add-model")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
-                                    <a onClick={()=>changeEditNavTab("destroy-model")} class="nav-link " id="nav-destroy-tab" data-bs-toggle="tab" href={"#nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-destroy-model" aria-selected="false">削除</a>
                                     <a onClick={()=>changeEditNavTab("move-model")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
+                                    <a onClick={()=>changeEditNavTab("destroy-model")} class="nav-link " id="nav-destroy-tab" data-bs-toggle="tab" href={"#nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-destroy-model" aria-selected="false">削除</a>
                                   </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -796,10 +796,6 @@ function Castle(props){
                                     </div>
                                     <p></p>
                                     <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
-                                  </div>
-                                  <div class="tab-pane fade show " id={"nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-destroy-model-tab">
-                                    <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
-                                    <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_destroy_model")}>選択中の城の部品を削除する</button>
                                   </div>
                                   <div class="tab-pane fade show " id={"nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-move-model-tab">
                                     <div class="slider-to-edit-castle">
@@ -895,6 +891,10 @@ function Castle(props){
                                           />
                                     </div>
                                     <button class="btn btn-primary" onClick = {()=> updateCastleParts()}>変更を保存</button>
+                                  </div>
+                                  <div class="tab-pane fade show " id={"nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-destroy-model-tab">
+                                    <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
+                                    <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_destroy_model")}>選択中の城の部品を削除する</button>
                                   </div>
                                 </div>
                             </div>
