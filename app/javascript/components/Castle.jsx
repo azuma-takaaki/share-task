@@ -434,14 +434,6 @@ function Castle(props){
   }
 
 
-  const cangeEditModel = (model_number) =>{
-    setPreviousCountPosX(castleModels[model_number]["position_x"])
-    setPreviousCountPosY(castleModels[model_number]["position_y"])
-    setPreviousCountPosZ(castleModels[model_number]["position_z"])
-    setPreviousCountRotY(castleModels[model_number]["angle_y"])
-    setEditModelNumber(model_number)
-  }
-
 
 
   const updateCastleParts = () =>{
@@ -494,9 +486,11 @@ function Castle(props){
     const aspect = useMemo(() => new Vector2(size.width, size.height), [size])
     useEffect(() => composer.current.setSize(size.width, size.height), [size])
     useFrame(() => composer.current.render(), 1)
-    if(!(hovered[0] === null || hovered[0] === undefined)){
-      //alert(Object.keys(hovered[0]))
+    let outline_model_reference = []
+    if(props.tag_class=="castle_at_user_page"&&displayGrid){
+      outline_model_reference = editModelRef
     }
+
 
     return (
       <context.Provider value={setEditModelRef}>
@@ -506,7 +500,7 @@ function Castle(props){
           <outlinePass
             attachArray="passes"
             args={[aspect, scene, camera]}
-            selectedObjects={editModelRef}
+            selectedObjects={outline_model_reference}
             visibleEdgeColor="red"
             edgeStrength={50}
             edgeThickness={1}
@@ -522,22 +516,28 @@ function Castle(props){
 
   function useClickModel(model_number){
     const ref = useState(useRef())
+    let onClick = useCallback(() =>  {setEditModelRef([ref.current])
+       setEditModelNumber(model_number)
+     }, [])
+     if(selectedCastleToAdd!=""){
+       onClick = useCallback(() =>  {}, [])
+     }
     useEffect(() => {
-      if(model_number==editModelNumber){
+      if(selectedCastleToAdd!=""){
+        setEditModelRef([ref.current])
+      }else if(model_number==editModelNumber){
         setEditModelRef([ref.current])
       }
     })
     const setEditModelRef = useContext(context)
-    const onClick = useCallback(() =>  {setEditModelRef([ref.current])
-       setEditModelNumber(model_number)
-     }, [])
+
     return { ref, onClick }
   }
 
 
 
   let UseModel = (props) =>{
-    let {model_number, position, rotation, modelpath, add_hover} = props
+    let {model_number, position, rotation, modelpath, add_outline_event} = props
     if(!(rotation==null)){
       rotation[1] = rotation[1] - Math.PI / 2
     }
@@ -548,7 +548,7 @@ function Castle(props){
     }
 
     let model_mesh;
-    if(add_hover){
+    if(add_outline_event){
       model_mesh = <mesh {...useClickModel(model_number)} position = {position} rotation={rotation}>
                       <Suspense fallback={null}>
                           <LoadModel modelpath={"/" + modelpath}/>
@@ -570,16 +570,17 @@ function Castle(props){
 
 
   let castle = [];
-  castle.push(<UseModel model_number={-1} position={[0, -0.01, 0]} rotation={[0, 0, 0]} modelpath={"ground.glb"} add_hover={false}/>)
+  castle.push(<UseModel model_number={-1} position={[0, -0.01, 0]} rotation={[0, 0, 0]} modelpath={"ground.glb"} add_outline_event={false}/>)
   for(let i=0; i<castleModels.length; i++){
     if(!(castleModels[i]["three_d_model_name"]==null)){
-      castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} add_hover={true}/>)
+      castle.push(<UseModel model_number={i} position={[castleModels[i]["position_x"], castleModels[i]["position_y"], castleModels[i]["position_z"]]} rotation={[castleModels[i]["angle_x"], castleModels[i]["angle_y"], castleModels[i]["angle_z"]]} modelpath={castleModels[i]["three_d_model_name"]} add_outline_event={true}/>)
     }
   }
 
   let castle_selected_to_add;
+  const ref_castle_selected_to_add = useRef()
   if (selectedCastleToAdd!=""){
-    castle_selected_to_add = <UseModel model_number={castleModels.length} position={[0, 1, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} add_hover={true}/>
+    castle_selected_to_add = <UseModel ref={ref_castle_selected_to_add} model_number={castleModels.length} position={[0, 1, 0]} rotation={[0, 0, 0]} modelpath={selectedCastleToAdd["three_d_model_name"]} add_outline_event={true}/>
   }
   let user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
@@ -760,7 +761,7 @@ function Castle(props){
 
     const changeEditNavTab = (nav_tab_type) => {
       setSelectedCastleToAdd("")
-      if(nav_tab_type=="move-model"||nav_tab_type=="add-model"){
+      if(nav_tab_type=="move-model"||nav_tab_type=="add-model"||nav_tab_type=="destroy-model"){
         setDisplayGrid(true)
       }else{
         setDisplayGrid(false)
@@ -773,8 +774,8 @@ function Castle(props){
                                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a onClick={()=>changeEditNavTab("tumiage")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
                                     <a onClick={()=>changeEditNavTab("add-model")} class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href={"#nav-add-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-add-model" aria-selected="false">増築</a>
-                                    <a onClick={()=>changeEditNavTab("destroy-model")} class="nav-link " id="nav-destroy-tab" data-bs-toggle="tab" href={"#nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-destroy-model" aria-selected="false">削除</a>
                                     <a onClick={()=>changeEditNavTab("move-model")} class="nav-link " id="nav-home-tab" data-bs-toggle="tab" href={"#nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-move-model" aria-selected="false">移動</a>
+                                    <a onClick={()=>changeEditNavTab("destroy-model")} class="nav-link " id="nav-destroy-tab" data-bs-toggle="tab" href={"#nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-destroy-model" aria-selected="false">削除</a>
                                   </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
@@ -792,10 +793,6 @@ function Castle(props){
                                     </div>
                                     <p></p>
                                     <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_add_model")}>3Dモデルを追加</button>
-                                  </div>
-                                  <div class="tab-pane fade show " id={"nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-destroy-model-tab">
-                                    <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
-                                    <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_destroy_model")}>選択中の城の部品を削除する</button>
                                   </div>
                                   <div class="tab-pane fade show " id={"nav-move-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-move-model-tab">
                                     <div class="slider-to-edit-castle">
@@ -891,6 +888,10 @@ function Castle(props){
                                           />
                                     </div>
                                     <button class="btn btn-primary" onClick = {()=> updateCastleParts()}>変更を保存</button>
+                                  </div>
+                                  <div class="tab-pane fade show " id={"nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-destroy-model-tab">
+                                    <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
+                                    <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_destroy_model")}>選択中の城の部品を削除する</button>
                                   </div>
                                 </div>
                             </div>
