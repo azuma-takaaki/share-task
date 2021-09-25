@@ -8,6 +8,7 @@
         <%= full_title(@page_title) %>
       <%end%>
     </title>
+    <%= favicon_link_tag('tumiagejou_favicon.ico') %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -21,7 +22,7 @@
 
 
     <div id="content-wrapper">
-      
+
 
 
       <%= yield %>
