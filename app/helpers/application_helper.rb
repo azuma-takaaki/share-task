@@ -1,10 +1,10 @@
 module ApplicationHelper
   def full_title(page_title = '')
-    base_title = 'ShareTask'
+    base_title = '積み上げ城'
     if page_title.empty?
       base_title
     else
-      "#{page_title} | #{base_title}"
+      "#{base_title} | #{page_title}"
     end
   end
 end
