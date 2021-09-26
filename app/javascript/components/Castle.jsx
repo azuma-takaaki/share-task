@@ -665,8 +665,6 @@ function Castle(props){
         }
 
       }else if(result[0] == "Failed to register like" || result[0] == "Failed to destroy like"){
-        alert("server error")
-        alert(result[1])
       }else{
         alert("error")
       }
