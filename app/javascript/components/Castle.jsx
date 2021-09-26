@@ -49,6 +49,9 @@ const CameraController = () => {
 
       controls.minDistance = -100;
       controls.maxDistance = 100;
+      controls.maxPolarAngle= Math.PI / 4 * 2;
+      controls.minPolarAngle= -Math.PI / 4 * 2;
+
       return () => {
         controls.dispose();
       };
