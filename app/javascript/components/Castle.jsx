@@ -49,6 +49,9 @@ const CameraController = () => {
 
       controls.minDistance = -100;
       controls.maxDistance = 100;
+      controls.maxPolarAngle= Math.PI / 4 * 2;
+      controls.minPolarAngle= -Math.PI / 4 * 2;
+
       return () => {
         controls.dispose();
       };
@@ -665,6 +668,8 @@ function Castle(props){
         }
 
       }else if(result[0] == "Failed to register like" || result[0] == "Failed to destroy like"){
+        alert("server error")
+        alert(result[1])
       }else{
         alert("error")
       }
