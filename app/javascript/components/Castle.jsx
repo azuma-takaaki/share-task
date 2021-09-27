@@ -336,6 +336,10 @@ function Castle(props){
     })
   }
 
+  const tweet = () => {
+    alert("tweet")
+  }
+
   const showUserPage = (user_id) =>{
      props.fetchCastles("user", user_id, true)
   }
@@ -895,6 +899,8 @@ function Castle(props){
                                   <div class="tab-pane fade show " id={"nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-destroy-model-tab">
                                     <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
                                     <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_destroy_model")}>選択中の城の部品を削除する</button>
+
+                                    <button class="btn btn-primary" onClick={()=>openModal("tweet")}>ツイートする</button>
                                   </div>
                                 </div>
                             </div>
@@ -1021,7 +1027,18 @@ function Castle(props){
                           積み上げポイント: {props.castle.castle_part_point} → {props.castle.castle_part_point+1}
                         </div>
                         <button class="btn btn-primary" onClick={()=>destroyModel(editModelNumber)}>削除する</button>
-                    </div>}
+                    </div>
+  }else if(modalType=="tweet"){
+    modal_content = <div>
+                        <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
+                        {error_flash_content}
+                        <h2>以下の内容でツイートしますか？</h2>
+                        <div>
+                          ツイート内容:
+                        </div>
+                        <button class="btn btn-primary" onClick={()=>tweet()}>ツイートする</button>
+                    </div>
+  }
 
 
 
