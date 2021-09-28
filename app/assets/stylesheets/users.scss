@@ -56,6 +56,28 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
   }
 }
 
+.signup-login-modal{
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0.5rem auto;
+  h2, button{
+    margin: 1rem;
+  }
+  input{
+    margin: 0.2rem;
+  }
+}
+
+.tweet-modal{
+  img{
+    display: flex;
+    margin-bottom: 1rem;
+    border: solid 3px #5089C6;
+  }
+}
+
 .close-modal{
   margin: 0 0 0 100px;
 }
@@ -750,8 +772,13 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                         background-color: transparent;
                         border: none;
                       }
+                      .tweet-button{
+                        margin: 0 1rem 0 0rem;
+                        background-color: transparent;
+                        border: none;
+                      }
                       .all-like-number{
-                        margin: 0 1rem 0 0;
+                        margin: 0 0.7rem 0 0;
                       }
                     }
                   }
@@ -895,6 +922,11 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                     .like-button-and-created-at-wrapper{
                       display:flex;
                       .like-button{
+                        background-color: transparent;
+                        border: none;
+                      }
+                      .tweet-button{
+                        margin: 0 1rem 0 0rem;
                         background-color: transparent;
                         border: none;
                       }
@@ -1044,8 +1076,13 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                         background-color: transparent;
                         border: none;
                       }
+                      .tweet-button{
+                        margin: 0 1rem 0 0rem;
+                        background-color: transparent;
+                        border: none;
+                      }
                       .all-like-number{
-                        margin: 0 1rem 0 0;
+                        margin: 0 0.7rem 0 0;
                       }
                     }
                   }

@@ -17,6 +17,7 @@ import 'rc-slider/assets/index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart as LikeImage} from '@fortawesome/free-solid-svg-icons'
 import { faHeart as UnikeImage } from "@fortawesome/free-regular-svg-icons";
+import { faTwitter as TwitterImage } from "@fortawesome/free-brands-svg-icons"
 
 extend({ OrbitControls, EffectComposer, RenderPass, OutlinePass, ShaderPass })
 
@@ -123,7 +124,8 @@ function Castle(props){
   const [errorMessages, setErrorMessages] = useState({arr: []})
 
   const [progressPercentage, setProgressPercentage] = useState("0")
-
+  const [tweetImage, setTweetImage] = useState(<img/>)
+  const canvasRef = useRef()
 
 
   const limit_castle_position = 50
@@ -151,10 +153,14 @@ function Castle(props){
    }
   }
 
-  const openModal = (type) =>  {
+  const openModal = (type, tweet_report_content, tweet_report_created_at) =>  {
     if(type == "edit_castle"){
       setModalInput(castleName)
+    }else if(type == "tweet"){
+      setModalInput("#今日の積み上げ" + "\r" + tweet_report_created_at + "\r\r" + tweet_report_content + "\r\r " +"#積み上げ城")
+      setTweetImage(<img class="tweet-image" src={canvasRef.current.toDataURL()} width="300" height="300"/>)
     }
+
     setErrorMessages({arr: []})
     setModalType(type)
     setModalIsOpen(true)
@@ -337,7 +343,7 @@ function Castle(props){
   }
 
   const tweet = () => {
-    alert("tweet")
+
   }
 
   const showUserPage = (user_id) =>{
@@ -739,6 +745,9 @@ function Castle(props){
                                                                                  </button>}
 
                                         <div class="all-like-number">{reportList[i].all_like_number}</div>
+                                        <button className="tweet-button" onClick={()=>openModal("tweet",reportList[i].content, reportList[i].created_at)}>
+                                            <FontAwesomeIcon icon={TwitterImage} style={{"color": "blue"}}/>
+                                        </button>
                                       </div>
                                     </div>
                               </div>
@@ -899,8 +908,6 @@ function Castle(props){
                                   <div class="tab-pane fade show " id={"nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-destroy-model-tab">
                                     <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
                                     <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_destroy_model")}>選択中の城の部品を削除する</button>
-
-                                    <button class="btn btn-primary" onClick={()=>openModal("tweet")}>ツイートする</button>
                                   </div>
                                 </div>
                             </div>
@@ -1029,13 +1036,12 @@ function Castle(props){
                         <button class="btn btn-primary" onClick={()=>destroyModel(editModelNumber)}>削除する</button>
                     </div>
   }else if(modalType=="tweet"){
-    modal_content = <div>
+    modal_content = <div class="tweet-modal">
                         <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
                         {error_flash_content}
                         <h2>以下の内容でツイートしますか？</h2>
-                        <div>
-                          ツイート内容:
-                        </div>
+                        <textarea type="text" rows="6" class="form-control" value={modalInput}  onChange={handleChange} placeholder="ツイートの内容"/>
+                        {tweetImage}
                         <button class="btn btn-primary" onClick={()=>tweet()}>ツイートする</button>
                     </div>
   }
@@ -1053,7 +1059,7 @@ function Castle(props){
           {report_infomation}
         </div>
         <div class="canvas">
-      		<Canvas >
+      		<Canvas ref={canvasRef} gl={{ preserveDrawingBuffer: true }}>
             {props.tag_class=="castle_at_user_page" && <CameraController />}
       			<Camera position={[0, 4, 10]}  rotation={[Math.PI/24*-2, Math.PI/24*0, Math.PI/24*0]}/>
             {displayGrid && <gridHelper args={[model_scale * 1000, model_scale * 1000, 0X000000, 0X000000]} position={[0, 0, 0]}/>}
