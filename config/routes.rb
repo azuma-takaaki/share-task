@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'tweets/create'
   get 'likes/create'
   get 'likes/destroy'
   get 'castle_part_price/index'
@@ -35,5 +36,6 @@ Rails.application.routes.draw do
   resources :castle_parts
   resources :reports
   resources :likes
+  resources :tweets
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
