@@ -343,7 +343,42 @@ function Castle(props){
   }
 
   const tweet = () => {
-
+    setProgressPercentage("20")
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+           }
+       }
+      return '';
+    }
+    const data = { tweet: {text: modalInput, image: canvasRef.current.toDataURL("image/jpeg", 0.1)}}
+    fetch("/tweets",{
+      method: 'POST',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then((result) => {
+      sleep(300).then(() =>{
+        if(result[0] == "Successful tweet"){
+          setProgressPercentage("100")
+          sleep(1000).then(()=>{
+            closeModal()
+            alert("ツイートしました！")
+            setProgressPercentage("0")
+          })
+        }else{
+          setProgressPercentage("0")
+          alert("ツイートに失敗しました")
+        }
+      })
+    })
   }
 
   const showUserPage = (user_id) =>{
