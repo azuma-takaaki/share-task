@@ -1074,7 +1074,14 @@ function Castle(props){
     modal_content = <div class="tweet-modal">
                         <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
                         {error_flash_content}
-                        <h2>以下の内容でツイートしますか？</h2>
+                        <h2>Twitterに投稿</h2>
+                        <div class="select-twitter-account-wrapper">
+                            <select name="example"class="form-select" aria-label="Default select example">
+                                <option value="アカウント1">アカウント1</option>
+                                <option value="アカウント2">アカウント2</option>
+                                <option value="アカウント3">アカウント3</option>
+                            </select>
+                        </div>
                         <textarea type="text" rows="6" class="form-control" value={modalInput}  onChange={handleChange} placeholder="ツイートの内容"/>
                         {tweetImage}
                         <button class="btn btn-primary" onClick={()=>tweet()}>ツイートする</button>
