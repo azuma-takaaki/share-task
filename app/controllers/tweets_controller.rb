@@ -1,11 +1,12 @@
 require 'open-uri'
 class TweetsController < ApplicationController
   def create
+    @twitter_account_token = TwitterToken.find_by(user_id: current_user().id, account_name: params[:tweet][:account_name])
     @twitter = Twitter::REST::Client.new do |config|
       config.consumer_key        = ENV['CONSUMER_KEY']
       config.consumer_secret     = ENV['CONSUMER_SECRET_KEY']
-      config.access_token        = ENV['ACCESS_TOKEN']
-      config.access_token_secret = ENV['ACCESS_TOKEN_SECRET']
+      config.access_token        = @twitter_account_token.token
+      config.access_token_secret = @twitter_account_token.secret_token
     end
     data_url = params[:tweet][:image]
     png      = Base64.decode64(data_url['data:image/png;base64,'.length .. -1])
@@ -30,9 +31,17 @@ class TweetsController < ApplicationController
   def callback
     omniauth = request.env['omniauth.auth']
     if omniauth
-      omniauth.credentials.token
-      omniauth.credentials.secret
-      redirect_to "/"
+      @new_twitter_token = TwitterToken.new(user_id: current_user().id,
+                                            token: omniauth.credentials.token,
+                                            secret_token: omniauth.credentials.secret,
+                                            account_name: omniauth.info.name
+                                           )
+
+      if @new_twitter_token.save
+        redirect_to "/"
+      else
+        redirect_to "/"
+      end
     else
       redirect_to "/"
     end
