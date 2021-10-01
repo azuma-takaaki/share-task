@@ -376,6 +376,7 @@ function Castle(props){
         }else{
           setProgressPercentage("0")
           alert("ツイートに失敗しました")
+          alert(result[1])
         }
       })
     })
@@ -720,6 +721,8 @@ function Castle(props){
       }
     })
   }
+
+
 
   const useClick = () => {
     const [clickCoordinate, setClickCoordinate] = useState({x: 0, y: 0})
@@ -1082,6 +1085,7 @@ function Castle(props){
                                 <option value="アカウント3">アカウント3</option>
                             </select>
                         </div>
+                        <a rel="nofollow" data-method="post" href="/auth/twitter">アカウントを追加する</a>
                         <textarea type="text" rows="6" class="form-control" value={modalInput}  onChange={handleChange} placeholder="ツイートの内容"/>
                         {tweetImage}
                         <button class="btn btn-primary" onClick={()=>tweet()}>ツイートする</button>

@@ -1,4 +1,6 @@
 
 <%= stylesheet_link_tag 'static_pages' %>
 
+<%= link_to "Sign in with Twitter", "/auth/twitter" , method: :post%>
+
 <%= react_component("Top", {logged_in_user: @user}) %>

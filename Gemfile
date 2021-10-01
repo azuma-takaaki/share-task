@@ -38,9 +38,16 @@ gem 'rails-i18n'
 
 gem 'rename'
 
+gem 'omniauth-twitter'
+
+gem 'omniauth-rails_csrf_protection'
+
 gem 'twitter'
 
 gem 'dotenv-rails'
+
+
+
 
 group :production do
   gem 'mysql2'

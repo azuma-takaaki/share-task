@@ -26,4 +26,15 @@ class TweetsController < ApplicationController
     #  render :json => ["Tweet failed"]
     #end
   end
+
+  def callback
+    omniauth = request.env['omniauth.auth']
+    if omniauth
+      omniauth.credentials.token
+      omniauth.credentials.secret
+      redirect_to "/"
+    else
+      redirect_to "/"
+    end
+  end
 end

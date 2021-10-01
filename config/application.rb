@@ -15,7 +15,6 @@ module Tumiagejou
     config.i18n.default_locale = :ja
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml').to_s]
 
-
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -24,5 +23,9 @@ module Tumiagejou
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
     config.time_zone = 'Tokyo'
+
+    config.session_store :cookie_store, key: '_interslice_session'
+config.middleware.use ActionDispatch::Cookies # Required for all session management
+config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
   end
 end
