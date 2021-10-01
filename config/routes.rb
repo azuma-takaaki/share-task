@@ -27,6 +27,8 @@ Rails.application.routes.draw do
   get 'get_user_castle_list/:user_id', to: 'castles#get_user_castle_list'
   get 'get_castle_part_price_list', to: 'castle_part_price#index'
   get 'get_popular_groups', to: 'groups#get_popular_groups'
+  get '/auth/twitter/callback', to: 'tweets#callback'
+
 
   resources :users
   resources :tasks
