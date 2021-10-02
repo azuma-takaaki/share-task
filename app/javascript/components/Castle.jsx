@@ -125,6 +125,7 @@ function Castle(props){
 
   const [progressPercentage, setProgressPercentage] = useState("0")
   const [tweetImage, setTweetImage] = useState(<img/>)
+  const [selectTwitterAccount, setSelectTwitterAccount] = useState("")
   const canvasRef = useRef()
 
 
@@ -157,6 +158,9 @@ function Castle(props){
     if(type == "edit_castle"){
       setModalInput(castleName)
     }else if(type == "tweet"){
+      if(props.twitter_accounts!=null){
+        setSelectTwitterAccount(props.twitter_accounts[0].account_name)
+      }
       setModalInput("#今日の積み上げ" + "\r" + tweet_report_created_at + "\r\r" + tweet_report_content + "\r\r " +"#積み上げ城")
       setTweetImage(<img class="tweet-image" src={canvasRef.current.toDataURL()} width="300" height="300"/>)
     }
@@ -175,6 +179,10 @@ function Castle(props){
   }
   const handleChange = (e) => {
     setModalInput(e.target.value)
+  }
+
+  const handleChangeTwitterAccount = (e) => {
+    setSelectTwitterAccount(e.target.value)
   }
 
   const handleChangeBySlider = (e, edit_property, edited_by_slider) => {
@@ -354,7 +362,7 @@ function Castle(props){
        }
       return '';
     }
-    const data = { tweet: {text: modalInput, image: canvasRef.current.toDataURL("image/jpeg", 0.1)}}
+    const data = { tweet: {text: modalInput, image: canvasRef.current.toDataURL("image/jpeg", 0.1), account_name: selectTwitterAccount}}
     fetch("/tweets",{
       method: 'POST',
       headers: {
@@ -714,8 +722,7 @@ function Castle(props){
         }
 
       }else if(result[0] == "Failed to register like" || result[0] == "Failed to destroy like"){
-        alert("server error")
-        alert(result[1])
+
       }else{
         alert("error")
       }
@@ -1074,18 +1081,36 @@ function Castle(props){
                         <button class="btn btn-primary" onClick={()=>destroyModel(editModelNumber)}>削除する</button>
                     </div>
   }else if(modalType=="tweet"){
+    let account_select_pull_down;
+    if(props.twitter_accounts==null){
+      account_select_pull_down = <div>ツイッターアカウントを追加してください</div>
+    }else{
+      let account_name_array = [];
+      for(let i=0; i<props.twitter_accounts.length; i++){
+        if(i==0){
+          account_name_array.push(<option value={props.twitter_accounts[i].account_name} selected>{props.twitter_accounts[i].account_name}</option>)
+        }else{
+          account_name_array.push(<option value={props.twitter_accounts[i].account_name}>{props.twitter_accounts[i].account_name}</option>)
+        }
+      }
+      account_select_pull_down = <div class="select-twitter-account-wrapper">
+                                      <select name="example"
+                                              class="form-select"
+                                              aria-label="Default select example"
+                                              value={selectTwitterAccount}
+                                              onChange={handleChangeTwitterAccount}
+                                      >
+                                          {account_name_array}
+                                      </select>
+                                  </div>
+    }
+
     modal_content = <div class="tweet-modal">
                         <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
                         {error_flash_content}
                         <h2>Twitterに投稿</h2>
-                        <div class="select-twitter-account-wrapper">
-                            <select name="example"class="form-select" aria-label="Default select example">
-                                <option value="アカウント1">アカウント1</option>
-                                <option value="アカウント2">アカウント2</option>
-                                <option value="アカウント3">アカウント3</option>
-                            </select>
-                        </div>
-                        <a rel="nofollow" data-method="post" href="/auth/twitter">アカウントを追加する</a>
+                        {account_select_pull_down}
+                        <a class="bg-info" rel="nofollow" data-method="post" href="/auth/twitter">アカウントを追加する</a>
                         <textarea type="text" rows="6" class="form-control" value={modalInput}  onChange={handleChange} placeholder="ツイートの内容"/>
                         {tweetImage}
                         <button class="btn btn-primary" onClick={()=>tweet()}>ツイートする</button>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_10_101407) do
+ActiveRecord::Schema.define(version: 2021_10_01_152016) do
 
   create_table "castle_part_prices", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "three_d_model_name"
@@ -82,6 +82,15 @@ ActiveRecord::Schema.define(version: 2021_09_10_101407) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
     t.integer "group_id"
+  end
+
+  create_table "twitter_tokens", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "token"
+    t.string "secret_token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "account_name"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
