@@ -1110,7 +1110,7 @@ function Castle(props){
                         {error_flash_content}
                         <h2>Twitterに投稿</h2>
                         {account_select_pull_down}
-                        <a rel="nofollow" data-method="post" href="/auth/twitter">アカウントを追加する</a>
+                        <a class="bg-info" rel="nofollow" data-method="post" href="/auth/twitter">アカウントを追加する</a>
                         <textarea type="text" rows="6" class="form-control" value={modalInput}  onChange={handleChange} placeholder="ツイートの内容"/>
                         {tweetImage}
                         <button class="btn btn-primary" onClick={()=>tweet()}>ツイートする</button>
