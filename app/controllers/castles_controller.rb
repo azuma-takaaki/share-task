@@ -157,8 +157,10 @@ class CastlesController < ApplicationController
                      .where(user_id: params[:user_id])
 
     @report_list = Castle.left_joins(:reports)
+                    .order(created_at: :desc)
                     .select("castles.id AS castle_id, reports.id AS reports_id, reports.content, reports.created_at ")
                     .where(user_id: params[:user_id])
+
 
     @tmp_castle_part = {}
     @castle_part_list.each do |castle_part|
@@ -184,7 +186,7 @@ class CastlesController < ApplicationController
     @current_user = current_user()
     @report_list.each do |report|
       logger.debug({id: report.reports_id,
-                                                                
+
                                                                 is_liked: !(all_likes.select{|like| like.report_id == report.reports_id && like.user_id == @current_user.id}.empty?),
                                                                 all_like_number: (all_likes.select { |like| like.report_id == report.reports_id }).count
 
