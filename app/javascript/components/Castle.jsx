@@ -1082,7 +1082,7 @@ function Castle(props){
                     </div>
   }else if(modalType=="tweet"){
     let account_select_pull_down;
-    if(props.twitter_accounts==null){
+    if(props.twitter_accounts[0]==undefined){
       account_select_pull_down = <div>ツイッターアカウントを追加してください</div>
     }else{
       let account_name_array = [];
