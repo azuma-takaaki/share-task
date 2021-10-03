@@ -158,7 +158,7 @@ function Castle(props){
     if(type == "edit_castle"){
       setModalInput(castleName)
     }else if(type == "tweet"){
-      if(props.twitter_accounts[0].account_name!=null){
+      if(props.twitter_accounts[0]!=undefined && props.twitter_accounts != null){
         setSelectTwitterAccount(props.twitter_accounts[0].account_name)
       }
       setModalInput("#今日の積み上げ" + "\r" + tweet_report_created_at + "\r\r" + tweet_report_content + "\r\r " +"#積み上げ城")
@@ -1082,7 +1082,7 @@ function Castle(props){
                     </div>
   }else if(modalType=="tweet"){
     let account_select_pull_down;
-    if(props.twitter_accounts==null){
+    if(props.twitter_accounts[0]==undefined && props.twitter_accounts != null){
       account_select_pull_down = <div>ツイッターアカウントを追加してください</div>
     }else{
       let account_name_array = [];
