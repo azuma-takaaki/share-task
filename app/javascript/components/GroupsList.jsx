@@ -93,18 +93,19 @@ class GroupsList extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
+          let new_visible_group = this.state.group_is_visible
           for(let i in result[0]){
             group_list.push(result[0][i])
+            if(!(Object.keys(this.state.group_is_visible).includes(String(result[0][i]["id"])))){
+              new_visible_group[result[0][i]["id"]] = false
+            }
           }
+          this.setState({group_is_visible: new_visible_group})
         }
       ).then(() =>{
         this.setState({
           group_list: group_list
         });
-
-
-
-        this.setState({group_is_visible: new_visible_group})
       })
   }
   openModal() {
@@ -268,7 +269,6 @@ class GroupsList extends React.Component {
         }).then(res => res.json())
         .then(
           (result) => {
-
             users_castle_list[id] = result[0]
             let visible_user = result[1]
             this.setState({visible_user: visible_user})
