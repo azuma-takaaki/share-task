@@ -157,8 +157,8 @@ class CastlesController < ApplicationController
                      .where(user_id: params[:user_id])
 
     @report_list = Castle.left_joins(:reports)
-                    .order(created_at: :desc)
                     .select("castles.id AS castle_id, reports.id AS reports_id, reports.content, reports.created_at ")
+                    .order(created_at: :desc)
                     .where(user_id: params[:user_id])
 
 
