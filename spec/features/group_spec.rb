@@ -46,6 +46,16 @@ feature "Groups" , :js => true do
     expect(page).to have_content "programming"
   end
 
+  example "作成したグループの画面が正しく表示される" do
+    page.find('.side-menu-toggle').click
+    click_on "マイグループ"
+    click_button "＋group"
+    fill_in "新しいグループの名前", with:"programming"
+    click_button "グループを作成"
+    click_button "programming"
+    expect(find('.group-name').text).to eq 'programming'
+  end
+
   example "検索したGroupをクリックするとそのグループのページが表示される" do
     visit "/"
     page.find('.side-menu-toggle').click
