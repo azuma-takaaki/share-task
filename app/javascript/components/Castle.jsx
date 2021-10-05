@@ -362,7 +362,7 @@ function Castle(props){
        }
       return '';
     }
-    const data = { tweet: {text: modalInput, image: canvasRef.current.toDataURL("image/jpeg", 0.1), account_name: selectTwitterAccount}}
+    const data = { tweet: {text: modalInput, image: canvasRef.current.toDataURL("image/jpeg", 1), account_name: selectTwitterAccount}}
     fetch("/tweets",{
       method: 'POST',
       headers: {
