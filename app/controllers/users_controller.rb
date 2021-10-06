@@ -1,3 +1,4 @@
+require 'open-uri'
 class UsersController < ApplicationController
   def new
     @user = User.new()
@@ -32,15 +33,24 @@ class UsersController < ApplicationController
 
   def update
     if logged_in?
-
       @user = User.find_by(id: params[:id])
-      #if @user.update(secure_user_infomation)
-      if @user.update(update_params)
-        logger.debug "アップデートしたユーザーの情報: #{@user.to_json}"
-        render :json => [@user]
+      if params[:user][:update] == "icon"
+        data_url = params[:user][:image]
+        png      = Base64.decode64(data_url['data:image/png;base64,'.length .. -1])
+        File.open('app/assets/images/default/icon_' + @user.id.to_s + '.png', 'wb') { |f| f.write(png) }
+        if @user.update(icon: "icon_" + @user.id.to_s + ".png")
+          logger.debug "アップデートしたユーザーの情報: #{@user.to_json}"
+          render :json => [@user]
+        else
+          render :json => ["failed to update"]
+        end
       else
-        flash[:danger] = @user.errors.full_messages
-        redirect_to edit_user_path(@user)
+        if @user.update(update_params)
+          logger.debug "アップデートしたユーザーの情報: #{@user.to_json}"
+          render :json => [@user]
+        else
+          render :json => ["failed to update"]
+        end
       end
     else
       redirect_to top_path
