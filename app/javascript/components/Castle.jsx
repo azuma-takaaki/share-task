@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, Suspense, useContext, useCallback, useMemo }  from 'react';
-import { Canvas, useLoader, useFrame, useThree, extend } from 'react-three-fiber';
+import { Canvas, useLoader, useFrame, useThree, extend, useTexture } from 'react-three-fiber';
 import { Vector3, Vector2, PerspectiveCamera } from 'three';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart as LikeImage} from '@fortawesome/free-solid-svg-icons'
 import { faHeart as UnikeImage } from "@fortawesome/free-regular-svg-icons";
 import { faTwitter as TwitterImage } from "@fortawesome/free-brands-svg-icons"
+
 
 extend({ OrbitControls, EffectComposer, RenderPass, OutlinePass, ShaderPass })
 
@@ -1118,9 +1119,75 @@ function Castle(props){
   }
 
 
+  const [imageFile, setImageFile] = useState("")
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("")
+  const [uploadImageCanvasContext,setUploadImageCanvasContext] = useState(null)
+  const [upLoadImage, setUpLoadImage] = useState(new Image())
+  const [relX,setRelX] = useState(0)
+  const [relY,setRelY] = useState(0)
+  const [objX,setObjX] = useState(0)
+  const [objY,setObjY] = useState(0)
+  const [objWidth,setObjWidth] = useState(50)
+  const [objHeight,setObjHeight] = useState(50)
+  const [dragging, setDragging] = useState(false)
+  const [imagePosX, setImagePosX] = useState(0)
+
+
+
+   const onMove = (e) => {
+        const canvas = document.getElementById("upload-image-canvas")
+        var offsetX = canvas.getBoundingClientRect().left;
+        var offsetY = canvas.getBoundingClientRect().top;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+        if (dragging) {
+          setObjX( x + relX);
+          setObjY( y + relY);
+        }
+    }
+
+
+  useEffect(()=>{
+    const canvas_ref = document.getElementById("upload-image-canvas")
+    const canvasContext = canvas_ref.getContext("2d")
+    setUploadImageCanvasContext(canvasContext)
+  },[])
+
+
+  const handleFileChange = (e) => {
+    e.preventDefault()
+    uploadImageCanvasContext.clearRect(0, 0, 100, 100);
+    let reader = new FileReader()
+    let file = e.target.files[0]
+    reader.onloadend = () => {
+      setImageFile(file)
+      setImagePreviewUrl(reader.result)
+      const new_image = upLoadImage
+      new_image.src = reader.result
+      new_image.onload = () => {
+        uploadImageCanvasContext.drawImage(new_image, imagePosX, 0, 100, 100);
+      }
+      setUpLoadImage(new_image)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const rerenderCanvasImage = () =>{
+    uploadImageCanvasContext.clearRect(0, 0, 10000, 10000);
+    uploadImageCanvasContext.drawImage(upLoadImage, objX, objY, 100, 100);
+  }
+
+
+
 
   return (
     <div class={props.tag_class}>
+      <canvas id="upload-image-canvas" onMouseDown={()=>{setDragging(true)}} onMouseMove={(e)=>{onMove(e), rerenderCanvasImage()}} onMouseOut={()=>setDragging(false)} onMouseUp={()=>setDragging(false)}></canvas>
+      <div>
+      {dragging.toString()}
+        <input type="file" onChange={handleFileChange}/>
+      </div>
+      <button onClick={()=>{setObjX(objX+5), rerenderCanvasImage()}}>→</button>
       {user_infomation_on_castle}
       <div class="header-and-canvas-wrapper">
         <div class="castle-header-at-goup-page">
@@ -1141,7 +1208,6 @@ function Castle(props){
 
 
 
-
             <Outline>
               {castle}
               {castle_selected_to_add}
@@ -1149,6 +1215,7 @@ function Castle(props){
 
 
       		</Canvas>
+
         </div>
       </div>
       {edit_castle_contents}
