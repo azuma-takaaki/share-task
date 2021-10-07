@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, Suspense, useContext, useCallback, useMemo }  from 'react';
-import { Canvas, useLoader, useFrame, useThree, extend } from 'react-three-fiber';
+import { Canvas, useLoader, useFrame, useThree, extend, useTexture } from 'react-three-fiber';
 import { Vector3, Vector2, PerspectiveCamera } from 'three';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -19,25 +19,9 @@ import { faHeart as LikeImage} from '@fortawesome/free-solid-svg-icons'
 import { faHeart as UnikeImage } from "@fortawesome/free-regular-svg-icons";
 import { faTwitter as TwitterImage } from "@fortawesome/free-brands-svg-icons"
 
+
 extend({ OrbitControls, EffectComposer, RenderPass, OutlinePass, ShaderPass })
 
-function useHover() {
-  const ref = useRef()
-  const setHovered = useContext(context)
-  const onPointerOver = useCallback(() => setHovered(state => [...state, ref.current]), [])
-  const onPointerOut = useCallback(() => setHovered(state => state.filter(mesh => mesh !== ref.current)), [])
-  return { ref, onPointerOver, onPointerOut }
-}
-
-
-const Thing = ({ radius = 1, detail = 64, color = "indianred", ...props }) => {
-  return (
-    <mesh {...props} {...useHover()}>
-      <dodecahedronGeometry attach="geometry" args={[50]} />
-      <meshStandardMaterial attach="material" color={color} />
-    </mesh>
-  )
-}
 
 const context = React.createContext()
 
@@ -1119,6 +1103,8 @@ function Castle(props){
 
 
 
+
+
   return (
     <div class={props.tag_class}>
       {user_infomation_on_castle}
@@ -1141,7 +1127,6 @@ function Castle(props){
 
 
 
-
             <Outline>
               {castle}
               {castle_selected_to_add}
@@ -1149,6 +1134,7 @@ function Castle(props){
 
 
       		</Canvas>
+
         </div>
       </div>
       {edit_castle_contents}
