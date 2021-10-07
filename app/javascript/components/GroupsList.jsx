@@ -366,7 +366,7 @@ class GroupsList extends React.Component {
               </div>
 
               <button  class = "btn btn-primary side-menu-user-icon" onClick={() => this.fetchCastles("user", this.props.current_user.id, true)}>
-                <img class = "user-icon" src={require("../../assets/images/default/" +  this.props.current_user.icon)} />
+                <img class = "user-icon" src={require("../../../public/assets/user_icon/" +  this.props.current_user.icon)} />
                 {this.props.current_user.name}
               </button>
 

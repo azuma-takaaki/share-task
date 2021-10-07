@@ -22,23 +22,6 @@ import { faTwitter as TwitterImage } from "@fortawesome/free-brands-svg-icons"
 
 extend({ OrbitControls, EffectComposer, RenderPass, OutlinePass, ShaderPass })
 
-function useHover() {
-  const ref = useRef()
-  const setHovered = useContext(context)
-  const onPointerOver = useCallback(() => setHovered(state => [...state, ref.current]), [])
-  const onPointerOut = useCallback(() => setHovered(state => state.filter(mesh => mesh !== ref.current)), [])
-  return { ref, onPointerOver, onPointerOut }
-}
-
-
-const Thing = ({ radius = 1, detail = 64, color = "indianred", ...props }) => {
-  return (
-    <mesh {...props} {...useHover()}>
-      <dodecahedronGeometry attach="geometry" args={[50]} />
-      <meshStandardMaterial attach="material" color={color} />
-    </mesh>
-  )
-}
 
 const context = React.createContext()
 
@@ -1119,75 +1102,11 @@ function Castle(props){
   }
 
 
-  const [imageFile, setImageFile] = useState("")
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("")
-  const [uploadImageCanvasContext,setUploadImageCanvasContext] = useState(null)
-  const [upLoadImage, setUpLoadImage] = useState(new Image())
-  const [relX,setRelX] = useState(0)
-  const [relY,setRelY] = useState(0)
-  const [objX,setObjX] = useState(0)
-  const [objY,setObjY] = useState(0)
-  const [objWidth,setObjWidth] = useState(50)
-  const [objHeight,setObjHeight] = useState(50)
-  const [dragging, setDragging] = useState(false)
-  const [imagePosX, setImagePosX] = useState(0)
-
-
-
-   const onMove = (e) => {
-        const canvas = document.getElementById("upload-image-canvas")
-        var offsetX = canvas.getBoundingClientRect().left;
-        var offsetY = canvas.getBoundingClientRect().top;
-        let x = e.clientX - offsetX;
-        let y = e.clientY - offsetY;
-        if (dragging) {
-          setObjX( x + relX);
-          setObjY( y + relY);
-        }
-    }
-
-
-  useEffect(()=>{
-    const canvas_ref = document.getElementById("upload-image-canvas")
-    const canvasContext = canvas_ref.getContext("2d")
-    setUploadImageCanvasContext(canvasContext)
-  },[])
-
-
-  const handleFileChange = (e) => {
-    e.preventDefault()
-    uploadImageCanvasContext.clearRect(0, 0, 100, 100);
-    let reader = new FileReader()
-    let file = e.target.files[0]
-    reader.onloadend = () => {
-      setImageFile(file)
-      setImagePreviewUrl(reader.result)
-      const new_image = upLoadImage
-      new_image.src = reader.result
-      new_image.onload = () => {
-        uploadImageCanvasContext.drawImage(new_image, imagePosX, 0, 100, 100);
-      }
-      setUpLoadImage(new_image)
-    }
-    reader.readAsDataURL(file)
-  }
-
-  const rerenderCanvasImage = () =>{
-    uploadImageCanvasContext.clearRect(0, 0, 10000, 10000);
-    uploadImageCanvasContext.drawImage(upLoadImage, objX, objY, 100, 100);
-  }
-
 
 
 
   return (
     <div class={props.tag_class}>
-      <canvas id="upload-image-canvas" onMouseDown={()=>{setDragging(true)}} onMouseMove={(e)=>{onMove(e), rerenderCanvasImage()}} onMouseOut={()=>setDragging(false)} onMouseUp={()=>setDragging(false)}></canvas>
-      <div>
-      {dragging.toString()}
-        <input type="file" onChange={handleFileChange}/>
-      </div>
-      <button onClick={()=>{setObjX(objX+5), rerenderCanvasImage()}}>→</button>
       {user_infomation_on_castle}
       <div class="header-and-canvas-wrapper">
         <div class="castle-header-at-goup-page">

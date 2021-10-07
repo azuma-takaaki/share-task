@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(secure_user_infomation)
-    @user.icon = "icon_"+rand(0...10).to_s+".png"
+    @user.icon = "icon_0.png"
     if @user.save
       log_in(@user)
       #flash[:danger] = 'アカウントを登録しました'
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
       if params[:user][:update] == "icon"
         data_url = params[:user][:image]
         png      = Base64.decode64(data_url['data:image/png;base64,'.length .. -1])
-        File.open('app/assets/images/default/icon_' + @user.id.to_s + '.png', 'wb') { |f| f.write(png) }
+        File.open('public/assets/user_icon/icon_' + @user.id.to_s + '.png', 'wb') { |f| f.write(png) }
         if @user.update(icon: "icon_" + @user.id.to_s + ".png")
           logger.debug "アップデートしたユーザーの情報: #{@user.to_json}"
           render :json => [@user]

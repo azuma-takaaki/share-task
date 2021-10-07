@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Castle from "./Castle.jsx"
-
+import UploadImageCanvas from "./UploadImageCanvas.jsx"
 
 
 const customStyles = {
@@ -71,9 +71,14 @@ class User extends React.Component {
     this.setState({input_name: e.target.value});
   }
 
-  updateData(content){
+  updateData(type, image_data){
     this.setState({progress_percentage: "20"})
-    const data = { user: {name:this.state.input_name}};
+    let data;
+    if(type=="update_user_name"){
+      data = { user: {name:this.state.input_name}};
+    }else if(type=="update_image"){
+      data = { user: {update: "icon", image: image_data}};
+    }
 
     const getCsrfToken = () => {
       const metas = document.getElementsByTagName('meta');
@@ -142,10 +147,12 @@ class User extends React.Component {
       edit_user_button = <button class="btn btn-secondary edit-user-button" onClick={this.openModal}>⋯</button>
     }
 
+
     return (
       <div class="users-wrapper">
+
         <div class="users-header">
-          <img class = "user-icon" src={require("../../assets/images/default/" + this.props.current_user.icon)} />
+          <img class = "user-icon" src={require("../../../public/assets/user_icon/" + this.props.current_user.icon)} />
           <div class="users-page-header-name">{this.props.current_user.name}</div>
           {edit_user_button}
         </div>
@@ -165,8 +172,9 @@ class User extends React.Component {
           <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
           <h2>ユーザー情報編集</h2>
           <input type="text" class="form-control" value={this.state.input_name}  onChange={this.handleChange}/>
-          <button class="btn btn-primary" onClick={this.updateData}>更新</button>
+          <button class="btn btn-primary" onClick={()=>this.updateData("update_user_name")}>更新</button>
           <p></p>
+          <UploadImageCanvas updateData={this.updateData}/>
           <button class="btn btn-secondary" onClick={this.logout}>ログアウト</button>
         </Modal>
       </div>
