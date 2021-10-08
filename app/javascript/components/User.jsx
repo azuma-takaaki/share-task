@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Castle from "./Castle.jsx"
 import UploadImageCanvas from "./UploadImageCanvas.jsx"
-
+import TestImage from "images/tweet.png"
 
 const customStyles = {
   content : {
@@ -147,12 +147,19 @@ class User extends React.Component {
       edit_user_button = <button class="btn btn-secondary edit-user-button" onClick={this.openModal}>⋯</button>
     }
 
+    let icon_image;
+    try{
+      const image_src = location.href + "assets/user_icon/" +  this.props.current_user.icon
+      icon_image = <img class = "user-icon" src={image_src} />
+    }catch (e) {
+      icon_image = <img class = "user-icon" src={require("../../../public/assets/user_icon/icon_0.png")} />
+    }
+
 
     return (
       <div class="users-wrapper">
-
-        <div class="users-header">
-          <img class = "user-icon" src={require("../../../public/assets/user_icon/" + this.props.current_user.icon)} />
+        <div class="users-header">¥
+        {icon_image}
           <div class="users-page-header-name">{this.props.current_user.name}</div>
           {edit_user_button}
         </div>

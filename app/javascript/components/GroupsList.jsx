@@ -318,8 +318,13 @@ class GroupsList extends React.Component {
       searched_group_number = <div class = "searched_group_number">検索結果: {this.state.suggestions.length}件</div>;
     }
 
-
-
+    let icon_image;
+    try{
+      const image_src = location.href + "assets/user_icon/" +  this.props.current_user.icon
+      icon_image = <img class = "user-icon" src={image_src} />
+    }catch (e) {
+      icon_image = <img class = "user-icon" src={require("../../../public/assets/user_icon/icon_0.png")} />
+    }
 
     return (
       <div>
@@ -366,7 +371,7 @@ class GroupsList extends React.Component {
               </div>
 
               <button  class = "btn btn-primary side-menu-user-icon" onClick={() => this.fetchCastles("user", this.props.current_user.id, true)}>
-                <img class = "user-icon" src={require("../../../public/assets/user_icon/" +  this.props.current_user.icon)} />
+                {icon_image}
                 {this.props.current_user.name}
               </button>
 

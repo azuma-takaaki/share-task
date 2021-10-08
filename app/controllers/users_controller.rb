@@ -37,8 +37,14 @@ class UsersController < ApplicationController
       if params[:user][:update] == "icon"
         data_url = params[:user][:image]
         png      = Base64.decode64(data_url['data:image/png;base64,'.length .. -1])
-        File.open('public/assets/user_icon/icon_' + @user.id.to_s + '.png', 'wb') { |f| f.write(png) }
-        if @user.update(icon: "icon_" + @user.id.to_s + ".png")
+        time_now = Time.now.strftime("%Y_%m_%d_%H_%M_%S")
+        old_icon = @user.icon
+        new_icon = "icon_" + @user.id.to_s + "_" + time_now + ".png"
+        if @user.update(icon: new_icon)
+          File.open('public/assets/user_icon/' + new_icon, 'wb') { |f| f.write(png) }
+          if old_icon != "icon_0.png"
+            File.delete('public/assets/user_icon/' + old_icon)
+          end
           logger.debug "アップデートしたユーザーの情報: #{@user.to_json}"
           render :json => [@user]
         else
