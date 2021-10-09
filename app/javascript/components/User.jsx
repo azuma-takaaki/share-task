@@ -152,7 +152,7 @@ class User extends React.Component {
       const image_src = location.href + "assets/user_icon/" +  this.props.current_user.icon
       icon_image = <img class = "user-icon" src={image_src} />
     }catch (e) {
-      icon_image = <img class = "user-icon" src="assets/user_icon/icon_0.png"} />
+      icon_image = <img class = "user-icon" src="assets/user_icon/icon_0.png"/>
     }
 
 
