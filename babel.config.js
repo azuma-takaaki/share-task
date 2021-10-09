@@ -82,12 +82,24 @@ module.exports = function(api) {
           async: false
         }
       ],
+      [
+        '@babel/plugin-proposal-private-property-in-object',
+        {
+          loose: true
+        }
+      ],
       isProductionEnv && [
         'babel-plugin-transform-react-remove-prop-types',
         {
           removeImport: true
         }
-      ]
+      ],
+      [
+        '@babel/plugin-proposal-private-property-in-object',
+        {
+          loose: true
+        }
+      ],
     ].filter(Boolean)
   }
 }
