@@ -46,7 +46,9 @@ gem 'twitter'
 
 gem 'dotenv-rails'
 
-
+# for image uploader with AWS S3
+gem 'carrierwave'
+gem 'fog-aws'
 
 
 group :production do

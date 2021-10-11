@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_01_152016) do
+ActiveRecord::Schema.define(version: 2021_10_11_124058) do
 
   create_table "castle_part_prices", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "three_d_model_name"
@@ -61,11 +61,19 @@ ActiveRecord::Schema.define(version: 2021_10_01_152016) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "icon_images", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "image"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "likes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "report_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "report_id"], name: "index_likes_on_user_id_and_report_id", unique: true
   end
 
   create_table "reports", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -91,6 +99,7 @@ ActiveRecord::Schema.define(version: 2021_10_01_152016) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "account_name"
+    t.index ["user_id", "token", "secret_token"], name: "index_twitter_tokens_on_user_id_and_token_and_secret_token", unique: true
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
