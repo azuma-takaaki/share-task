@@ -71,49 +71,60 @@ function UploadImageCanvas(props){
     rerenderCanvasImage()
     }
 
-    function upload(){
-            const up_files = document.getElementById('up_file');
-            const up_file = up_files.files[0];
-            if (up_files.value === "") {
-              return false;
-            }
-            const url= '/get_upload_url/get_post_fields?filename=' + up_file.name + "&filetype=" + up_file.type;
-            // Rails に GET
-            console.log("GET 開始");
-            fetch(
-              url,
-              {method: 'GET'}
-            ).then(response => {
-              if(response.ok){
-                console.log("GET 成功");
-                return response.json();
-              }
-            }).then((data)=>{
-              formdata = new FormData()
-              for (key in data.fields) {
-                formdata.append(key,data.fields[key]);
-              }
-              formdata.append("file",up_file);
-              const headers = {
-              "accept": "multipart/form-data"
-              }
-              // S3 に POST
-              console.log("POST 開始");
-              fetch(
-                data.url,
-                {
-                  method: 'POST',
-                  headers,
-                  body: formdata
-                }
-              ).then((response) => {
-                if(response.ok){
-                  console.log("POST 成功");
-                  return response.text();
-                }
-              })
-            });
+
+  const uploadIconImage = () => {
+    let base64 = canvasRef.current.toDataURL("image/jpeg", 1)
+    let file_name = "test_icon_image"
+    // base64のデコード
+    let bin = atob(base64.replace(/^.*,/, ''));
+    // バイナリデータ化
+    let buffer = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) {
+        buffer[i] = bin.charCodeAt(i);
+    }
+    // ファイルオブジェクト生成(この例ではjpegファイル)
+    const up_file = new File([buffer.buffer], file_name, {type: "image/jpeg"});
+    const url= '/icon_image/get_post_fields?filename=' + up_file.name + "&filetype=" + up_file.type;
+    // Rails に GET
+    alert("GET 開始");
+    fetch(
+      url,
+      {method: 'GET'}
+    ).then(response => {
+          if(response.ok){
+            alert("GET 成功");
+            return response.json();
           }
+    }).then((data)=>{
+          let formdata = new FormData()
+          for (let key in data.fields) {
+            formdata.append(key,data.fields[key]);
+          }
+          formdata.append("file",up_file);
+          const headers = {
+            "accept": "multipart/form-data"
+          }
+
+          // S3 に POST
+          alert("POST 開始");
+          fetch(
+            data.url,
+            {
+              method: 'POST',
+              headers,
+              body: formdata
+            }
+          ).then((response) => {
+            response.text().then(function (text) {
+              alert(text)
+            });
+            if(response.ok){
+              alert("POST 成功");
+              return response.text();
+            }
+          })
+        });
+  }
 
 
   return (
@@ -132,7 +143,7 @@ function UploadImageCanvas(props){
         <input type="file" accept='image/*' onChange={handleFileChange}/>
       </div>
       <button class="btn btn-primary" onClick={()=>props.updateData("update_image", canvasRef.current.toDataURL("image/jpeg", 1))}>アイコンを更新</button>
-      <button class="btn btn-primary" onClick={()=>alert(canvasRef.current.toDataURL("image/jpeg", 1).type)}>確認</button>
+      <button class="btn btn-primary" onClick={()=>uploadIconImage()}>確認</button>
       <p></p>
     </div>
   )

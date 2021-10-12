@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   get 'get_castle_part_price_list', to: 'castle_part_price#index'
   get 'get_popular_groups', to: 'groups#get_popular_groups'
   get '/auth/twitter/callback', to: 'tweets#callback'
-  get '/get_upload_url', to: 'icon_image#upload'
+  get '/icon_image/get_post_fields', to: 'icon_image#upload'
 
 
 
