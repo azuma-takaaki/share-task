@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'icon_image/upload'
   get 'tweets/create'
   get 'likes/create'
   get 'likes/destroy'
@@ -28,6 +29,8 @@ Rails.application.routes.draw do
   get 'get_castle_part_price_list', to: 'castle_part_price#index'
   get 'get_popular_groups', to: 'groups#get_popular_groups'
   get '/auth/twitter/callback', to: 'tweets#callback'
+  get '/get_upload_url', to: 'icon_image#upload'
+
 
 
   resources :users

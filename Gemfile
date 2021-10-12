@@ -46,7 +46,7 @@ gem 'twitter'
 
 gem 'dotenv-rails'
 
-
+gem 'aws-sdk'
 
 
 group :production do
