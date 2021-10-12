@@ -10,7 +10,7 @@ class IconImageController < ApplicationController
       metadata: {
         'original-filename' => filename
       }
-    })
+    )
     render json: {url: post.url,fields: post.fields}
   end
 end
