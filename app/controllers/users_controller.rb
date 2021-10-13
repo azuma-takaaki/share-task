@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(secure_user_infomation)
-    @user.icon = "icon_0.png"
+    @user.icon = "icon_0"
     if @user.save
       log_in(@user)
       #flash[:danger] = 'アカウントを登録しました'
@@ -99,6 +99,40 @@ class UsersController < ApplicationController
   def random_number
     @random_number = rand(1000)
 
+  end
+
+  def download_image_url
+    path = ""
+    if Rails.env == 'production'
+      path = "production"
+    elsif Rails.env == 'development'
+      path = "development"
+    elsif Rails.env == 'test'
+      path = "test"
+    end
+    s3 = Aws::S3::Resource.new(
+          region: "us-east-2",
+          credentials: Aws::Credentials.new(
+            ENV['AWS_ACCESS_KEY_ID'],
+            ENV['AWS_SECRET_ACCESS_KEY']
+          )
+        )
+    signer = Aws::S3::Presigner.new(client: s3.client)
+    logger.debug('========================================')
+    logger.debug('========================================')
+    logger.debug('========================================')
+    logger.debug('========================================')
+    logger.debug('========================================')
+    logger.debug(path + "_icon/" + params[:user_icon])
+    logger.debug('========================================')
+    logger.debug('========================================')
+    logger.debug('========================================')
+    logger.debug('========================================')
+    logger.debug('========================================')
+
+    presigned_url = signer.presigned_url(:get_object,
+            bucket: ENV['S3_BUCKET'], key: path + "_icon/" + params[:user_icon], expires_in: 60)
+    render json: [presigned_url]
   end
 
 

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get 'get_popular_groups', to: 'groups#get_popular_groups'
   get '/auth/twitter/callback', to: 'tweets#callback'
   get '/icon_image/get_post_fields', to: 'icon_image#upload'
+  get '/icon_image/get_image_url', to: 'users#download_image_url'
 
 
 
