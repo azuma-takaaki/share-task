@@ -48,6 +48,8 @@ gem 'dotenv-rails'
 
 gem 'aws-sdk'
 
+gem 'aws-sdk-s3'
+
 
 group :production do
   gem 'mysql2'

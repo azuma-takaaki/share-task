@@ -73,6 +73,7 @@ function UploadImageCanvas(props){
 
 
   const uploadIconImage = () => {
+    props.setProgressPercentage("20")
     let base64 = canvasRef.current.toDataURL("image/jpeg", 1)
     let file_name = "test_icon_image"
     // base64のデコード
@@ -86,13 +87,14 @@ function UploadImageCanvas(props){
     const up_file = new File([buffer.buffer], file_name, {type: "image/jpeg"});
     const url= '/icon_image/get_post_fields?filename=' + up_file.name + "&filetype=" + up_file.type;
     // Rails に GET
-    alert("GET 開始");
+    //alert("GET 開始");
     fetch(
       url,
       {method: 'GET'}
     ).then(response => {
           if(response.ok){
-            alert("GET 成功");
+            //alert("GET 成功");
+            props.setProgressPercentage("40")
             return response.json();
           }
     }).then((data)=>{
@@ -106,7 +108,8 @@ function UploadImageCanvas(props){
           }
 
           // S3 に POST
-          alert("POST 開始");
+          //alert("POST 開始");
+          props.setProgressPercentage("40")
           fetch(
             data.url,
             {
@@ -115,13 +118,15 @@ function UploadImageCanvas(props){
               body: formdata
             }
           ).then((response) => {
-            response.text().then(function (text) {
-              alert(text)
-            });
             if(response.ok){
-              alert("POST 成功");
+              //alert("POST 成功");
+              props.setProgressPercentage("100")
+              props.reloadIconImage()
               return response.text();
             }
+          }).then(()=>{
+            props.closeModal()
+            props.setProgressPercentage("0")
           })
         });
   }
