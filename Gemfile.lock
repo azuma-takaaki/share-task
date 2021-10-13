@@ -1231,14 +1231,6 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    carrierwave (2.2.2)
-      activemodel (>= 5.0.0)
-      activesupport (>= 5.0.0)
-      addressable (~> 2.6)
-      image_processing (~> 1.1)
-      marcel (~> 1.0.0)
-      mini_mime (>= 0.1.3)
-      ssrf_filter (~> 1.0)
     childprocess (3.0.0)
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
@@ -1252,7 +1244,6 @@ GEM
       railties (>= 3.2)
     equalizer (0.0.11)
     erubi (1.10.0)
-    excon (0.87.0)
     execjs (2.8.1)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
@@ -1265,23 +1256,6 @@ GEM
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
-    fog-aws (3.12.0)
-      fog-core (~> 2.1)
-      fog-json (~> 1.1)
-      fog-xml (~> 0.1)
-      ipaddress (~> 0.8)
-    fog-core (2.2.4)
-      builder
-      excon (~> 0.71)
-      formatador (~> 0.2)
-      mime-types
-    fog-json (1.2.0)
-      fog-core
-      multi_json (~> 1.10)
-    fog-xml (0.1.4)
-      fog-core
-      nokogiri (>= 1.5.11, < 2.0.0)
-    formatador (0.3.0)
     globalid (0.5.2)
       activesupport (>= 5.0)
     hashie (4.1.0)
@@ -1298,10 +1272,6 @@ GEM
     http_parser.rb (0.6.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
-    image_processing (1.12.1)
-      mini_magick (>= 4.9.5, < 5)
-      ruby-vips (>= 2.0.17, < 3)
-    ipaddress (0.8.3)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
     jmespath (1.4.0)
@@ -1317,26 +1287,13 @@ GEM
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (1.0.0)
-<<<<<<< HEAD
-    mime-types (3.3.1)
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0901)
-    mini_magick (4.11.0)
-    mini_mime (1.1.1)
-=======
     mini_mime (1.1.2)
->>>>>>> feature/upload_icon_image_to_S3_#88
-    mini_portile2 (2.6.1)
     minitest (5.14.4)
     msgpack (1.4.2)
-    multi_json (1.15.0)
     multipart-post (2.1.1)
     mysql2 (0.5.3)
     naught (1.1.0)
     nio4r (2.5.8)
-    nokogiri (1.12.5)
-      mini_portile2 (~> 2.6.1)
-      racc (~> 1.4)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
     oauth (0.5.6)
@@ -1444,8 +1401,6 @@ GEM
     rubocop-ast (1.12.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
-    ruby-vips (2.1.3)
-      ffi (~> 1.12)
     rubyzip (2.3.2)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -1470,7 +1425,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    ssrf_filter (1.0.7)
     thor (1.1.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -1512,7 +1466,6 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
-  ruby
   x86_64-darwin-19
 
 DEPENDENCIES
@@ -1521,11 +1474,9 @@ DEPENDENCIES
   bcrypt
   bootsnap (>= 1.4.4)
   capybara (>= 2.15)
-  carrierwave
   dotenv-rails
   factory_bot_rails
   faker
-  fog-aws
   jbuilder (~> 2.7)
   listen (~> 3.3)
   mysql2
