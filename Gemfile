@@ -50,6 +50,10 @@ gem 'aws-sdk'
 
 gem 'aws-sdk-s3'
 
+gem 'carrierwave'
+
+gem 'fog-aws'
+
 
 group :production do
   gem 'mysql2'
