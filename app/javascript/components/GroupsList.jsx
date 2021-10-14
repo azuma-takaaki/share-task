@@ -54,7 +54,8 @@ class GroupsList extends React.Component {
       popular_group_list: [],
       error_messages: '',
       groups_castle_list: [],
-      users_castle_list: users_castle_list
+      users_castle_list: users_castle_list,
+      icon_image_url: ""
     }
     this.getGroupList = this.getGroupList.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -70,11 +71,12 @@ class GroupsList extends React.Component {
     this.fetchCastles = this.fetchCastles.bind(this);
     this.sleep = this.sleep.bind(this);
     this.updateVisibleUser = this.updateVisibleUser.bind(this);
-
+    this.reloadIconImage = this.reloadIconImage.bind(this);
 
   }
 
   componentDidMount(){
+    this.reloadIconImage()
     fetch("/get_popular_groups")
       .then(res => res.json())
       .then(
@@ -84,6 +86,19 @@ class GroupsList extends React.Component {
             popular_group_list: result[0]
           });
         })
+  }
+
+  reloadIconImage(){
+    fetch("/icon_image/get_image_url?user_icon=" + this.props.current_user.icon  ,{
+      method: 'GET'
+    }).then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            icon_image_url: result[0]
+          });
+        }
+      )
   }
 
   getGroupList() {
@@ -321,7 +336,7 @@ class GroupsList extends React.Component {
     let icon_image;
     try{
       const image_src = location.href + "assets/user_icon/" +  this.props.current_user.icon
-      icon_image = <img class = "user-icon" src={image_src} />
+      icon_image = <img class = "user-icon" src={this.state.icon_image_url} />
     }catch (e) {
       icon_image = <img class = "user-icon" src="assets/user_icon/icon_0.png" />
     }
@@ -395,7 +410,7 @@ class GroupsList extends React.Component {
                       }else{
                         is_logged_in_user = false
                       }
-                      return(<User user_id={this.state.visible_user_id} logout={this.props.logout} current_user={this.state.visible_user} users_castle_list={this.state.users_castle_list[this.state.visible_user_id]} fetchCastles={this.fetchCastles} updateVisibleUser={this.updateVisibleUser} is_logged_in_user={is_logged_in_user} twitter_accounts={this.props.twitter_accounts}/>);
+                      return(<User user_id={this.state.visible_user_id} logout={this.props.logout} current_user={this.state.visible_user} users_castle_list={this.state.users_castle_list[this.state.visible_user_id]} fetchCastles={this.fetchCastles} updateVisibleUser={this.updateVisibleUser} is_logged_in_user={is_logged_in_user} twitter_accounts={this.props.twitter_accounts} icon_image_url={this.state.icon_image_url} reloadIconImage={this.reloadIconImage}/>);
                   }
               })()}
               {

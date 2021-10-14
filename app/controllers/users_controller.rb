@@ -118,12 +118,13 @@ class UsersController < ApplicationController
           )
         )
     signer = Aws::S3::Presigner.new(client: s3.client)
+    icon = path + "_icon/" + User.find_by(id: params[:user_id]).to_s
     logger.debug('========================================')
     logger.debug('========================================')
     logger.debug('========================================')
     logger.debug('========================================')
     logger.debug('========================================')
-    logger.debug(path + "_icon/" + params[:user_icon])
+    logger.debug(icon)
     logger.debug('========================================')
     logger.debug('========================================')
     logger.debug('========================================')
@@ -131,7 +132,7 @@ class UsersController < ApplicationController
     logger.debug('========================================')
 
     presigned_url = signer.presigned_url(:get_object,
-            bucket: ENV['S3_BUCKET'], key: path + "_icon/" + params[:user_icon], expires_in: 60)
+            bucket: ENV['S3_BUCKET'], key: icon, expires_in: 60)
     render json: [presigned_url]
   end
 

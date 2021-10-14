@@ -68,6 +68,7 @@ const Camera = (props) => {
 
 
 function Castle(props){
+  const [iconImageUrl, setIconImageUrl] = useState("")
 
   const [castleModels, setCastleModels] = useState(props.castle_models)
   const [castleName, setCastleName] = useState(props.castle_name)
@@ -118,6 +119,7 @@ function Castle(props){
 
 
   useEffect(() => {
+    reloadIconImage()
     setCastleModels(props.castle_models)
     if (props.tag_class=="castle_at_group" && currentReportLikes<0){
       setIsLiked(props.castle["report"]["current_report"]["is_liked"])
@@ -125,7 +127,19 @@ function Castle(props){
     }else{
       setReportList(props.castle_reports)
     }
+
   });
+
+  const reloadIconImage = () => {
+    fetch("/icon_image/get_image_url?user_icon=" + props.user_icon  ,{
+      method: 'GET'
+    }).then(res => res.json())
+      .then(
+        (result) => {
+            setIconImageUrl(result[0])
+        }
+      )
+  }
 
   const customStyles = {
     content : {
@@ -626,7 +640,7 @@ function Castle(props){
   let user_infomation_on_castle = <div></div>
   if(props.tag_class=="castle_at_group"){
     user_infomation_on_castle = <div class="name-and-icon-of-user-built-castle-at-group-page">
-                                   <img class = "user-icon" src={require("../../assets/images/default/" + props.user_icon)} />
+                                   <img class = "user-icon" src={iconImageUrl} />
                                    <div class = "user-name" onClick={()=>showUserPage(props.user_id)}>{props.user_name}</div>
                                 </div>
   }

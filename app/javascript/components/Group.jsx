@@ -293,7 +293,6 @@ class Group extends React.Component {
                         {this.state.group_members.map((group_member)=>{
                           return(
                             <p>
-                              <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
                               {group_member.name}
                               <button class="btn btn-danger" onClick = {() => this.removeUser(group_member.id)}>退会させる</button>
                             </p>
@@ -305,7 +304,6 @@ class Group extends React.Component {
                         {this.state.other_users.map((user) => {
                           return (
                             <p>
-                              <img class = "user-icon" src={require("../../assets/images/default/" + user.icon)} />
                               {user.name}<button class="btn btn-primary" onClick={() => this.inviteUser(user.id)}>招待する</button>
                             </p>
                           )
@@ -345,7 +343,6 @@ class Group extends React.Component {
               {this.state.group_members.map((group_member) => {
                 return (
                   <div class = "group-member">
-                    <img class = "user-icon" src={require("../../assets/images/default/" + group_member.icon)} />
                     <div>{group_member.name}</div>
                   </div>
                 )

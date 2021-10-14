@@ -1322,7 +1322,6 @@ GEM
     mime-types-data (3.2021.0901)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.6.1)
     minitest (5.14.4)
     msgpack (1.4.2)
     multi_json (1.15.0)
@@ -1330,8 +1329,9 @@ GEM
     mysql2 (0.5.3)
     naught (1.1.0)
     nio4r (2.5.8)
-    nokogiri (1.12.5)
-      mini_portile2 (~> 2.6.1)
+    nokogiri (1.12.5-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
     oauth (0.5.6)
     omniauth (2.0.4)
@@ -1507,6 +1507,8 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-darwin-19
+  x86_64-linux
 
 DEPENDENCIES
   aws-sdk
@@ -1545,4 +1547,4 @@ RUBY VERSION
    ruby 2.7.0p0
 
 BUNDLED WITH
-   2.1.4
+   2.2.25

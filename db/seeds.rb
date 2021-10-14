@@ -10,7 +10,7 @@
       email: "test_user#{n + 1}@test.com",
       name: "テストユーザー#{n + 1}",
       password: "test_user#{n + 1}",
-      icon:"icon_"+rand(0...10).to_s+".png"
+      icon:"icon_0"
     )
 end
 
@@ -19,21 +19,21 @@ User.create(
   email: "engineer@engineer.com",
   name: "100日後にエンジニアになる人",
   password: "engineer",
-  icon:"icon_"+rand(0...10).to_s+".png"
+  icon:"icon_0"
 )
 
 User.create(
   email: "ReactReact@React.com",
   name: "React使い",
   password: "ReactReact",
-  icon:"icon_"+rand(0...10).to_s+".png"
+  icon:"icon_0"
 )
 
 User.create(
   email: "magicmagic@magicmagic.com",
   name: "魔法使い",
   password: "magicmagic",
-  icon:"icon_"+rand(0...10).to_s+".png"
+  icon:"icon_0"
 )
 
 Group.create(
