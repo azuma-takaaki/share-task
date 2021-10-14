@@ -14,7 +14,9 @@ class IconImageController < ApplicationController
 
     @user = current_user()
     @user.update(icon: "icon_" + @user.id.to_s)
-    filename = "icon_" + @user.id.to_s
+    if filename != "icon_0"
+      filename = "icon_" + @user.id.to_s
+    end
 
     post = S3_BUCKET.presigned_post(
       key: path + "_icon/#{filename}",

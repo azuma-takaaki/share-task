@@ -72,10 +72,15 @@ function UploadImageCanvas(props){
     }
 
 
-  const uploadIconImage = () => {
+  const uploadIconImage = (is_default) => {
     props.setProgressPercentage("20")
     let base64 = canvasRef.current.toDataURL("image/jpeg", 1)
-    let file_name = "test_icon_image"
+    let file_name;
+    if(is_default){
+      file_name = "icon_0"
+    }else{
+      file_name = "users_icon"
+    }
     // base64のデコード
     let bin = atob(base64.replace(/^.*,/, ''));
     // バイナリデータ化
@@ -147,8 +152,7 @@ function UploadImageCanvas(props){
       <div>
         <input type="file" accept='image/*' onChange={handleFileChange}/>
       </div>
-      <button class="btn btn-primary" onClick={()=>props.updateData("update_image", canvasRef.current.toDataURL("image/jpeg", 1))}>アイコンを更新</button>
-      <button class="btn btn-primary" onClick={()=>uploadIconImage()}>確認</button>
+      <button class="btn btn-primary" onClick={()=>uploadIconImage(false)}>アイコンを更新</button>
       <p></p>
     </div>
   )

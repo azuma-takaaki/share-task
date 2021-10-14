@@ -4,7 +4,7 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { 'password' }
     password_confirmation { 'password' }
-    icon {'./icon_1.png'}
+    icon {'icon_0'}
   end
 
   factory :rails , class: User do
@@ -12,7 +12,7 @@ FactoryBot.define do
     email { 'rails_tutorial@rails.com' }
     password { 'rails_tutroial' }
     password_confirmation { 'rails_tutroial' }
-    icon {'./icon_1.png'}
+    icon {'icon_0'}
   end
 
 end
