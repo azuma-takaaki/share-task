@@ -55,7 +55,7 @@ class GroupsList extends React.Component {
       error_messages: '',
       groups_castle_list: [],
       users_castle_list: users_castle_list,
-      icon_image_url: ""
+      side_menu_icon_image_url: ""
     }
     this.getGroupList = this.getGroupList.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -71,12 +71,12 @@ class GroupsList extends React.Component {
     this.fetchCastles = this.fetchCastles.bind(this);
     this.sleep = this.sleep.bind(this);
     this.updateVisibleUser = this.updateVisibleUser.bind(this);
-    this.reloadIconImage = this.reloadIconImage.bind(this);
+    this.reloadSideMenuIconImage = this.reloadSideMenuIconImage.bind(this);
 
   }
 
   componentDidMount(){
-    this.reloadIconImage()
+    this.reloadSideMenuIconImage()
     fetch("/get_popular_groups")
       .then(res => res.json())
       .then(
@@ -88,17 +88,19 @@ class GroupsList extends React.Component {
         })
   }
 
-  reloadIconImage(){
-    fetch("/icon_image/get_image_url?user_icon=" + this.props.current_user.icon  ,{
-      method: 'GET'
-    }).then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            icon_image_url: result[0]
-          });
-        }
-      )
+  reloadSideMenuIconImage(){
+    if(this.props.current_user.id!=undefined||this.props.current_user.id!=null){
+      fetch("/icon_image/get_image_url?user_id=" + this.props.current_user.id  ,{
+        method: 'GET'
+      }).then(res => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              side_menu_icon_image_url: result[0]
+            });
+          }
+        )
+    }
   }
 
   getGroupList() {
@@ -336,7 +338,7 @@ class GroupsList extends React.Component {
     let icon_image;
     try{
       const image_src = location.href + "assets/user_icon/" +  this.props.current_user.icon
-      icon_image = <img class = "user-icon" src={this.state.icon_image_url} />
+      icon_image = <img class = "user-icon" src={this.state.side_menu_icon_image_url} />
     }catch (e) {
       icon_image = <img class = "user-icon" src="assets/user_icon/icon_0.png" />
     }
@@ -410,7 +412,7 @@ class GroupsList extends React.Component {
                       }else{
                         is_logged_in_user = false
                       }
-                      return(<User user_id={this.state.visible_user_id} logout={this.props.logout} current_user={this.state.visible_user} users_castle_list={this.state.users_castle_list[this.state.visible_user_id]} fetchCastles={this.fetchCastles} updateVisibleUser={this.updateVisibleUser} is_logged_in_user={is_logged_in_user} twitter_accounts={this.props.twitter_accounts} icon_image_url={this.state.icon_image_url} reloadIconImage={this.reloadIconImage}/>);
+                      return(<User user_id={this.state.visible_user_id} logout={this.props.logout} current_user={this.state.visible_user} users_castle_list={this.state.users_castle_list[this.state.visible_user_id]} fetchCastles={this.fetchCastles} updateVisibleUser={this.updateVisibleUser} is_logged_in_user={is_logged_in_user} twitter_accounts={this.props.twitter_accounts} side_menu_icon_image_url={this.state.side_menu_icon_image_url} reloadSideMenuIconImage={this.reloadSideMenuIconImage}/>);
                   }
               })()}
               {
