@@ -126,7 +126,8 @@ function UploadImageCanvas(props){
             if(response.ok){
               //alert("POST 成功");
               props.setProgressPercentage("100")
-              props.reloadIconImage()
+              props.reloadSideMenuIconImage()
+              props.reloadHeaderIconImage()
               return response.text();
             }
           }).then(()=>{

@@ -24,7 +24,8 @@ class User extends React.Component {
     this.state = {
       input_name: '',
       castle_part_price_list: [],
-      progress_percentage: "0"
+      progress_percentage: "0",
+      header_icon_image_url: ""
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -35,11 +36,29 @@ class User extends React.Component {
     this.logout = this.logout.bind(this);
     this.sleep = this.sleep.bind(this);
     this.setProgressPercentage = this.setProgressPercentage.bind(this);
-
+    this.reloadHeaderIconImage = this.reloadHeaderIconImage.bind(this);
 
     this.setCastlePartPriceList()
   }
 
+  componentDidMount(){
+    this.reloadHeaderIconImage()
+  }
+
+  reloadHeaderIconImage(){
+    if(this.props.user_id!=undefined||this.props.user_id!=null){
+      fetch("/icon_image/get_image_url?user_id=" + this.props.user_id  ,{
+        method: 'GET'
+      }).then(res => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              header_icon_image_url: result[0]
+            });
+          }
+        )
+    }
+  }
 
   setCastlePartPriceList(){
     let castle_part_price_list = []
@@ -155,7 +174,7 @@ class User extends React.Component {
 
     let icon_image;
     try{
-      icon_image = <img class = "user-icon" src={this.props.icon_image_url} alt=""/>
+      icon_image = <img class = "user-icon" src={this.state.header_icon_image_url} alt=""/>
     }catch (e) {
       icon_image = <img class = "user-icon" src="" alt=""/>
     }
@@ -186,7 +205,7 @@ class User extends React.Component {
           <input type="text" class="form-control" value={this.state.input_name}  onChange={this.handleChange}/>
           <button class="btn btn-primary" onClick={()=>this.updateData("update_user_name")}>更新</button>
           <p></p>
-          <UploadImageCanvas updateData={this.updateData} reloadIconImage={this.props.reloadIconImage} setProgressPercentage={this.setProgressPercentage} closeModal={this.closeModal}/>
+          <UploadImageCanvas updateData={this.updateData} reloadSideMenuIconImage={this.props.reloadSideMenuIconImage} reloadHeaderIconImage={this.reloadHeaderIconImage} setProgressPercentage={this.setProgressPercentage} closeModal={this.closeModal}/>
           <button class="btn btn-secondary" onClick={this.logout}>ログアウト</button>
         </Modal>
       </div>

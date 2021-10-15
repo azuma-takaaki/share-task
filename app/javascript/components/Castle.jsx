@@ -131,14 +131,16 @@ function Castle(props){
   });
 
   const reloadIconImage = () => {
-    fetch("/icon_image/get_image_url?user_icon=" + props.user_icon  ,{
-      method: 'GET'
-    }).then(res => res.json())
-      .then(
-        (result) => {
-            setIconImageUrl(result[0])
-        }
-      )
+    if(props.user_id!=undefined||props.user_id!=null){
+      fetch("/icon_image/get_image_url?user_id=" + props.user_id  ,{
+        method: 'GET'
+      }).then(res => res.json())
+        .then(
+          (result) => {
+              setIconImageUrl(result[0])
+          }
+        )
+    }
   }
 
   const customStyles = {
