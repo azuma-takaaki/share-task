@@ -342,12 +342,12 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
             .castle_at_group{
               float: left;
               margin: 0.5rem 0.5rem 0.5rem 0.5rem;
-              height: 150vw;
+              height: auto;
               min-height: calc(var(--vh, 1vh) * 85);
               width: 93vw;
               .name-and-icon-of-user-built-castle-at-group-page{
                 padding-top:0.2rem;
-                height:5%;
+                height:auto;
                 background-color:#001E6C;
                 .user-icon {
                   margin-left: 0.5rem;
@@ -369,15 +369,15 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                 }
               }
               .header-and-canvas-wrapper{
-                height:95%;
+                height:auto;
                 border: solid;
                 border-color: #001E6C;
                 z-index: 4;
                 .castle-header-at-goup-page{
-                  height:calc(100% - 91.5vw);
+                  height:auto;
                   .header-wrapper{
                     background-color:#001E6C;
-                    height:15%;
+                    height:auto;
                     div{
                       padding-left:0.5rem;
                       color: white;
@@ -390,24 +390,24 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                   }
                   .report-infomation{
                     padding: 0.5rem;
-                    height: 85%;
+                    height: auto;
                     .current-report-date{
                       padding: 0.5rem;
-                      height:20%;
+                      height:2em;
                       color: white;
                       background-color: #5089C6;
                       width:100%;
                     }
                     .current-report-content{
                       padding: 0.5rem;
-                      height:50%;
+                      height:auto;
                       color: white;
                       background-color: #5089C6;
                       width:100%;
                       white-space: pre-line;
                     }
                     .like-button-and-likes-number{
-                      height:10%;
+                      height:1.5em;
                       display: flex;
                       justify-content:flex-end;
                       margin-right: 1rem;
@@ -417,7 +417,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                       }
                     }
                     .all-report-number{
-                      height:10%;
+                      height:1.5em;
                     }
                   }
                 }
@@ -467,6 +467,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                 border: solid;
                 border-color: #001E6C;
                 .castle-header-at-goup-page{
+                  z-index: 2;
                   height:15vw;
                   .header-wrapper{
                     div{
@@ -492,7 +493,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                     }
                     .current-report-content{
                       padding: 0.5rem;
-                      height:5vw;
+                      height:auto;
                       color: white;
                       background-color: #5089C6;
                       width:100%;
@@ -575,6 +576,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                   .report-infomation{
                     padding: 0.5rem;
                     height: 15vw;
+                    z-index: 2;
                     .current-report-date{
                       padding: 0.5rem;
                       height:3vw;
@@ -584,7 +586,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                     }
                     .current-report-content{
                       padding: 0.5rem;
-                      height:5vw;
+                      height:auto;
                       color: white;
                       background-color: #5089C6;
                       width:100%;
