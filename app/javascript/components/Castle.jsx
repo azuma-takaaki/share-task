@@ -774,6 +774,10 @@ function Castle(props){
 
     let new_report_list = []
     if (reportList!=null){
+      if(reportList[0].content==null){
+        const no_report_explanation = "積み上げがありません。\n今日の積み上げ(学習記録)を登録しましょう！"
+        new_report_list.push(<div class="no-report-explanation">{no_report_explanation}</div>)
+      }else{
         for(let i=0; i<reportList.length; i++){
           new_report_list.push(<div class="report-wrapper">
                                     <p class = "report-content text-white">
@@ -798,7 +802,7 @@ function Castle(props){
                               </div>
                               )
         }
-
+      }
     }
     let castle_part_price_list = []
     let temppp = []
