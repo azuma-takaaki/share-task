@@ -156,7 +156,7 @@ function Castle(props){
 
   const openModal = (type, tweet_report_content, tweet_report_created_at) =>  {
     if(type == "edit_castle"){
-      setModalInput(castleName)
+      setModalInput(props.castle_name)
     }else if(type == "tweet"){
       if(props.twitter_accounts[0]!=undefined && props.twitter_accounts != null){
         setSelectTwitterAccount(props.twitter_accounts[0].account_name)
@@ -1131,7 +1131,7 @@ function Castle(props){
       <div class="header-and-canvas-wrapper">
         <div class="castle-header-at-goup-page">
           <div class="header-wrapper">
-            <div onClick={()=>showUserPage(show_page_argument)}>{castleName} 城  {edit_castle_button}</div>
+            <div onClick={()=>showUserPage(show_page_argument)}>{props.castle_name} 城  {edit_castle_button}</div>
           </div>
           {report_infomation}
         </div>
