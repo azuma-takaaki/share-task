@@ -45,6 +45,12 @@ class User extends React.Component {
     this.reloadHeaderIconImage()
   }
 
+  componentDidUpdate(prevProps){
+    if (this.props.user_id !== prevProps.user_id) {
+      this.reloadHeaderIconImage()
+    }
+  }
+
   reloadHeaderIconImage(){
     if(this.props.user_id!=undefined||this.props.user_id!=null){
       fetch("/icon_image/get_image_url?user_id=" + this.props.user_id  ,{
