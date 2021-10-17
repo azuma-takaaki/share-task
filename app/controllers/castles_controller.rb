@@ -158,7 +158,6 @@ class CastlesController < ApplicationController
 
     @report_list = Castle.left_joins(:reports)
                     .select("castles.id AS castle_id, reports.id AS reports_id, reports.content, reports.created_at ")
-                    .order(created_at: :desc)
                     .where(user_id: params[:user_id])
 
 
