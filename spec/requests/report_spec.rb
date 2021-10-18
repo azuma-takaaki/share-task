@@ -179,4 +179,35 @@ RSpec.describe ReportsController, type: :request do
       end
     end
   end
+
+  describe "#update" do
+    before do
+      @user = FactoryBot.create(:user)
+      @group = FactoryBot.create(:group)
+      @castle = FactoryBot.create(:castle0, user: @user, group: @group)
+    end
+
+    example "Reportのcontentを編集できる" do
+      post login_path , params: { session: {
+                                        email: @user.email,
+                                        password: @user.password,
+                                      }}
+      expect(response).to have_http_status(200)
+      pre_number_of_record = Report.all.length
+      post reports_path, params: { report: {
+                                    content: "プログラミングを1時間した！",
+                                    user_id: @user.id,
+                                    castle_id: @castle.id
+                                  }}
+      expect(response).to have_http_status(200)
+      expect(JSON.parse(response.body)[0]).to eq "Successful registration of report"
+      expect(Report.all.length).to eq pre_number_of_record+1
+
+      @report = Report.find_by(content: "プログラミングを1時間した！")
+      new_report_content =  "プログラミングを10時勉強した"
+      patch "/reports/" + @report.id.to_s, params: { content: new_report_content}
+      expect(response).to have_http_status(200)
+      expect(@report.reload.content).to eq new_report_content
+    end
+  end
 end

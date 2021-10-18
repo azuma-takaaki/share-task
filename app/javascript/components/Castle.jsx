@@ -73,6 +73,7 @@ function Castle(props){
   const [castleModels, setCastleModels] = useState(props.castle_models)
   const [castleName, setCastleName] = useState(props.castle_name)
   const [reportList, setReportList] = useState(null)
+  const [editReportID, setEditReportID] = useState(0)
 
 
   const [isLiked, setIsLiked] = useState(true)
@@ -154,7 +155,7 @@ function Castle(props){
    }
   }
 
-  const openModal = (type, tweet_report_content, tweet_report_created_at) =>  {
+  const openModal = (type, tweet_report_content, tweet_report_created_at, report_num) =>  {
     if(type == "edit_castle"){
       setModalInput(props.castle_name)
     }else if(type == "tweet"){
@@ -163,6 +164,8 @@ function Castle(props){
       }
       setModalInput("#今日の積み上げ" + "\r" + tweet_report_created_at + "\r\r" + tweet_report_content + "\r\r " +"#積み上げ城")
       setTweetImage(<img class="tweet-image" src={canvasRef.current.toDataURL()} width="300" height="300"/>)
+    }else if(type=="edit-report"){
+      setModalInput(reportList[report_num].content)
     }
 
     setErrorMessages({arr: []})
@@ -256,6 +259,49 @@ function Castle(props){
         sleep(300).then(() =>{
           setProgressPercentage("0")
           setErrorMessages({arr: ["積み上げは1日1回のみ登録できます"]})
+        })
+      }
+    })
+  }
+
+  const updateReport = (update_report_id) =>{
+    setProgressPercentage("20")
+    const getCsrfToken = () => {
+      const metas = document.getElementsByTagName('meta');
+      for (let meta of metas) {
+          if (meta.getAttribute('name') === 'csrf-token') {
+              console.log('csrf-token:', meta.getAttribute('content'));
+              return meta.getAttribute('content');
+           }
+       }
+      return '';
+    }
+
+    const data = { content: modalInput}
+    fetch('/reports/' + update_report_id,{
+      method: 'PATCH',
+      headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': getCsrfToken()
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then((result) => {
+      if(result[0]== "Success to update content"){
+        sleep(300).then(() =>{
+          setProgressPercentage("100")
+          sleep(1000).then(()=>{
+              props.fetchCastles("user", props.current_user_id, false)
+              setProgressPercentage("0")
+              setModalInput("")
+              setModalIsOpen(false)
+          })
+        })
+      }else if(result[0] == "Failed to update content"){
+        sleep(300).then(() =>{
+          setProgressPercentage("0")
+          setErrorMessages({arr: result[1]})
         })
       }
     })
@@ -780,6 +826,9 @@ function Castle(props){
       }else{
         for(let i=0; i<reportList.length; i++){
           new_report_list.push(<div class="report-wrapper">
+                                    <div class="edit-report-button-wrapper">
+                                      <button class="edit-report-button" onClick={()=>{openModal("edit-report",null,null,i), setEditReportID(reportList[i].id)}}>⋯</button>
+                                    </div>
                                     <p class = "report-content text-white">
                                       {reportList[i].content}
                                     </p>
@@ -1118,6 +1167,15 @@ function Castle(props){
                         <textarea type="text" rows="6" class="form-control" value={modalInput}  onChange={handleChange} placeholder="ツイートの内容"/>
                         {tweetImage}
                         <button class="btn btn-primary" onClick={()=>tweet()}>ツイートする</button>
+                    </div>
+  }else if(modalType=="edit-report"){
+    modal_content = <div class="edit-report-modal">
+                        <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
+                        {error_flash_content}
+                        <h2>積み上げを編集</h2>
+                        <textarea type="text" rows="7" class="" value={modalInput}  onChange={handleChange} placeholder="積み上げを修正"/>
+                        <div></div>
+                        <button class="btn btn-primary post-new-report-content-button" onClick={()=>updateReport(editReportID)}>積み上げを変更</button>
                     </div>
   }
 
