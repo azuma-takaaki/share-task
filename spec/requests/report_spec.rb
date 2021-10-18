@@ -204,10 +204,10 @@ RSpec.describe ReportsController, type: :request do
       expect(Report.all.length).to eq pre_number_of_record+1
 
       @report = Report.find_by(content: "プログラミングを1時間した！")
-      new_report_content =  "プログラミングを10時間勉強した"
+      new_report_content =  "プログラミングを10時勉強した"
       patch "/reports/" + @report.id.to_s, params: { content: new_report_content}
       expect(response).to have_http_status(200)
-      expect(@report.reload.position_x).to eq new_report_content
+      expect(@report.reload.content).to eq new_report_content
     end
   end
 end

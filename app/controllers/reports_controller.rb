@@ -25,6 +25,17 @@ class ReportsController < ApplicationController
     end
   end
 
+  def update
+    if logged_in?
+      @report = Report.find(params[:id])
+      if @report.update(content: params[:content])
+        render :json => ["Success to update content", @report]
+      else
+        render :json => ["Failed to update content"]
+      end
+    end
+  end
+
   private
     def secure_report_params
       params.require(:report).permit(:content,:user_id,:castle_id)
