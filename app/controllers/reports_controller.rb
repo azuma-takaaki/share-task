@@ -31,7 +31,7 @@ class ReportsController < ApplicationController
       if @report.update(content: params[:content])
         render :json => ["Success to update content", @report]
       else
-        render :json => ["Failed to update content"]
+        render :json => ["Failed to update content", @report.errors.full_messages]
       end
     end
   end

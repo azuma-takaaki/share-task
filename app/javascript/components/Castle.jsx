@@ -301,7 +301,7 @@ function Castle(props){
       }else if(result[0] == "Failed to update content"){
         sleep(300).then(() =>{
           setProgressPercentage("0")
-          //setErrorMessages({arr: ["積み上げは1日1回のみ登録できます"]})
+          setErrorMessages({arr: result[1]})
         })
       }
     })
@@ -826,10 +826,12 @@ function Castle(props){
       }else{
         for(let i=0; i<reportList.length; i++){
           new_report_list.push(<div class="report-wrapper">
+                                    <div class="edit-report-button-wrapper">
+                                      <button class="edit-report-button" onClick={()=>{openModal("edit-report",null,null,i), setEditReportID(reportList[i].id)}}>⋯</button>
+                                    </div>
                                     <p class = "report-content text-white">
                                       {reportList[i].content}
                                     </p>
-                                    <button class="edit-report-button" onClick={()=>{openModal("edit-report",null,null,i), setEditReportID(reportList[i].id)}}>⋯</button>
                                     <div class="report-infomation-wrapper">
                                       <div class="like-button-and-created-at-wrapper">
                                         <div class="created-at-of-report">{reportList[i].created_at}</div>
@@ -1172,7 +1174,7 @@ function Castle(props){
                         {error_flash_content}
                         <h2>積み上げを編集</h2>
                         <textarea type="text" rows="7" class="" value={modalInput}  onChange={handleChange} placeholder="積み上げを修正"/>
-                        {tweetImage}
+                        <div></div>
                         <button class="btn btn-primary post-new-report-content-button" onClick={()=>updateReport(editReportID)}>積み上げを変更</button>
                     </div>
   }

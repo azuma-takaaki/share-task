@@ -78,6 +78,10 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
   }
 }
 
+.edit-report-modal{
+
+}
+
 .close-modal{
   margin: 0 0 0 100px;
 }
@@ -763,8 +767,24 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                   .report-wrapper{
                     margin: 0.3rem;
                     background-color:#5089C6;
+                    .edit-report-button-wrapper{
+                      display: flex;
+                      justify-content: flex-end;
+                      .edit-report-button{
+                        font-size:1.3rem;
+                        color:white;
+                        margin: 0.6rem 0.6rem 0rem 0rem;
+                        background: transparent;
+                        border: none;
+                        border-radius: 50%;
+                        transition:  0.15s;
+                        &:hover{
+                          background-color:rgba(255,255,255,0.2);
+                        }
+                      }
+                    }
                     .report-content{
-                      padding:1rem 2rem 0 2rem;
+                      padding:0rem 2rem 0 2rem;
                       margin:0;
                       white-space: pre-line;
                     }
@@ -922,8 +942,24 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                   .report-wrapper{
                     margin: 0.3rem;
                     background-color:#5089C6;
+                    .edit-report-button-wrapper{
+                      display: flex;
+                      justify-content: flex-end;
+                      .edit-report-button{
+                        font-size:1.3rem;
+                        color:white;
+                        margin: 0.6rem 0.6rem 0rem 0rem;
+                        background: transparent;
+                        border: none;
+                        border-radius: 50%;
+                        transition:  0.15s;
+                        &:hover{
+                          background-color:rgba(255,255,255,0.2);
+                        }
+                      }
+                    }
                     .report-content{
-                      margin: 5px 0px;
+                      margin:0px 0px 5px 0px;
                       white-space: pre-line;
                     }
                     .like-button-and-created-at-wrapper{
@@ -1069,8 +1105,24 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                   .report-wrapper{
                     margin: 0.3rem;
                     background-color:#5089C6;
+                    .edit-report-button-wrapper{
+                      display: flex;
+                      justify-content: flex-end;
+                      .edit-report-button{
+                        font-size:1.3rem;
+                        color:white;
+                        margin: 0.6rem 0.6rem 0rem 0rem;
+                        background: transparent;
+                        border: none;
+                        border-radius: 50%;
+                        transition:  0.15s;
+                        &:hover{
+                          background-color:rgba(255,255,255,0.2);
+                        }
+                      }
+                    }
                     .report-content{
-                      padding:1rem 2rem 0 2rem;
+                      padding:0rem 2rem 0 2rem;
                       margin:0;
                       white-space: pre-line;
                     }
