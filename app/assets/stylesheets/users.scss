@@ -377,6 +377,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                 border: solid;
                 border-color: #001E6C;
                 z-index: 4;
+                background-color:#d6f3ff;
                 .castle-header-at-goup-page{
                   height:auto;
                   .header-wrapper{
@@ -470,6 +471,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
               .header-and-canvas-wrapper{
                 border: solid;
                 border-color: #001E6C;
+                background-color:#d6f3ff;
                 .castle-header-at-goup-page{
                   z-index: 2;
                   height:15vw;
@@ -563,6 +565,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                 border: solid;
                 border-color: #001E6C;
                 z-index: 4;
+                background-color:#d6f3ff;
                 .castle-header-at-goup-page{
                   height:20vw;
                   .header-wrapper{
@@ -669,11 +672,12 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
               display: -o-flex;
               display: flex;
               margin: 0.5rem 0.5rem 5rem 0.5rem;
-              height: calc(var(--vh, 1vh) * 90);
+              height: calc(var(--vh, 1vh) * 87.7);
               width: 98vw;
               .header-and-canvas-wrapper{
                 border-right: solid;
                 border-color: #5089C6;
+                background-color:#d6f3ff;
                 .header-wrapper{
                   height: calc(var(--vh, 1vh) * 7);
                   width: calc(var(--vh, 1vh) * 80);
@@ -852,7 +856,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
                 border-color: #5089C6;
                 .header-wrapper{
                   font-size:2vw;
-                  height:6vw;
+                  height:6.3vw;
                   width: 50vw;
                   background-color:#5089C6;
                   display: flex;
@@ -1008,6 +1012,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
               height: calc(200vw);
               width: 90vw;
               .header-and-canvas-wrapper{
+                background-color:#d6f3ff;
                 .header-wrapper{
                   height: calc(7vw);
                   width: 90vw;
