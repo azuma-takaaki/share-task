@@ -43,6 +43,9 @@ class CastlesController < ApplicationController
             @group_user.destroy!
           end
           @castle = Castle.find_by(id: params[:id])
+          if @castle.user_id != current_user().id
+            raise "this is invalid user"
+          end
           @castle.destroy!
         end
         if @castles_number == 1
@@ -195,7 +198,7 @@ class CastlesController < ApplicationController
                                                                 all_like_number: (all_likes.select { |like| like.report_id == report.reports_id }).count
 
                                                               })
-                                                            
+
     end
 
 
