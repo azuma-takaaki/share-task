@@ -34,17 +34,13 @@ RSpec.describe CastlesController, type: :request do
                                   report_id: @report.id
                                }}
       expect(response).to have_http_status(200)
-      post likes_path, params: {like: {
-                                 user_id: @other_user.id,
-                                 report_id: @report.id
-                               }}
-      expect(response).to have_http_status(200)
+
 
       get "/get_group_castle_list/" + @group.id.to_s
       expect(response).to have_http_status(200)
       expect(JSON.parse(response.body)[0][0]["report"]["all_report_number"]).to eq "5"
       expect(JSON.parse(response.body)[0][0]["report"]["current_report"]["content"]).to eq "プログラミングを5時間した！"
-      expect(JSON.parse(response.body)[0][0]["report"]["current_report"]["all_like_number"]).to eq 2
+      expect(JSON.parse(response.body)[0][0]["report"]["current_report"]["all_like_number"]).to eq 1
     end
 
     example "ユーザーページの城を取得した際, 積み上げのいいね数も合わせて取得できる" do

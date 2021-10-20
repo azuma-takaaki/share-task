@@ -205,7 +205,8 @@ feature "Show-other-user-castles" , :js => true do
     click_button "programming"
     find('div.bm-overlay').click
     page.find('.user-name', text: 'test_user1').click
-    expect(page).not_to have_css '.edit-user-button'
-    expect(page).not_to have_css '.edit-castle-contents-wrapper'
+    expect(page).not_to have_css '#nav-profile-tab'
+    expect(page).not_to have_css '#nav-home-tab'
+    expect(page).not_to have_css '#nav-destroy-model'
   end
 end

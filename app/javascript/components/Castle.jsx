@@ -822,21 +822,21 @@ function Castle(props){
         const no_report_explanation = "積み上げがありません。\n今日の積み上げ(学習記録)を登録しましょう！"
         new_report_list.push(<div class="no-report-explanation">{no_report_explanation}</div>)
       }else{
-        let edit_report_button = <div class="edit-report-button-wrapper">
-                                   <button class="edit-report-button" ></button>
-                                 </div>
         let tweet_report_button = <div></div>
         if(props.is_logged_in_user){
-            edit_report_button = <div class="edit-report-button-wrapper">
-                                   <button class="edit-report-button" onClick={()=>{openModal("edit-report",null,null,i), setEditReportID(reportList[i].id)}}>⋯</button>
-                                 </div>
             tweet_report_button =  <button className="tweet-button" onClick={()=>openModal("tweet",reportList[i].content, reportList[i].created_at)}>
                                        <FontAwesomeIcon icon={TwitterImage} style={{"color": "blue"}}/>
                                    </button>
         }
         for(let i=0; i<reportList.length; i++){
           new_report_list.push(<div class="report-wrapper">
-                                    {edit_report_button}
+                                    <div class="edit-report-button-wrapper">
+                                      {props.is_logged_in_user ?
+                                        <button class="edit-report-button" onClick={()=>{openModal("edit-report",null,null,i), setEditReportID(reportList[i].id)}}>⋯</button>
+                                        :
+                                        <button class="edit-report-button" ></button>
+                                      }
+                                    </div>
                                     <p class = "report-content text-white">
                                       {reportList[i].content}
                                     </p>
