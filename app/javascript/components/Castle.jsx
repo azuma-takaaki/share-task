@@ -743,7 +743,7 @@ function Castle(props){
         method_type = 'POST'
       }
       new_report_list = reportList
-      new_report_list[report_list_index].isLiked = !reportList[report_list_index].isLiked
+      new_report_list[report_list_index].is_liked = !props.castle_reports[report_list_index].is_liked
       setReportList(new_report_list)
     }
 
@@ -816,19 +816,27 @@ function Castle(props){
   let add_castle_button = <div></div>
   let edit_castle_parts_sliders = <div></div>
   if(props.tag_class=="castle_at_user_page"){
-    edit_castle_button = <button class="btn btn-secondary" id={"edit-"+props.castle.castle_name.replace(/\s+/g,"")} onClick={()=>openModal("edit_castle")}>⋯</button>
-
     let new_report_list = []
     if (reportList!=null){
       if(reportList[0].content==null){
         const no_report_explanation = "積み上げがありません。\n今日の積み上げ(学習記録)を登録しましょう！"
         new_report_list.push(<div class="no-report-explanation">{no_report_explanation}</div>)
       }else{
+        let edit_report_button = <div class="edit-report-button-wrapper">
+                                   <button class="edit-report-button" ></button>
+                                 </div>
+        let tweet_report_button = <div></div>
+        if(props.is_logged_in_user){
+            edit_report_button = <div class="edit-report-button-wrapper">
+                                   <button class="edit-report-button" onClick={()=>{openModal("edit-report",null,null,i), setEditReportID(reportList[i].id)}}>⋯</button>
+                                 </div>
+            tweet_report_button =  <button className="tweet-button" onClick={()=>openModal("tweet",reportList[i].content, reportList[i].created_at)}>
+                                       <FontAwesomeIcon icon={TwitterImage} style={{"color": "blue"}}/>
+                                   </button>
+        }
         for(let i=0; i<reportList.length; i++){
           new_report_list.push(<div class="report-wrapper">
-                                    <div class="edit-report-button-wrapper">
-                                      <button class="edit-report-button" onClick={()=>{openModal("edit-report",null,null,i), setEditReportID(reportList[i].id)}}>⋯</button>
-                                    </div>
+                                    {edit_report_button}
                                     <p class = "report-content text-white">
                                       {reportList[i].content}
                                     </p>
@@ -843,9 +851,7 @@ function Castle(props){
                                                                                  </button>}
 
                                         <div class="all-like-number">{reportList[i].all_like_number}</div>
-                                        <button className="tweet-button" onClick={()=>openModal("tweet",reportList[i].content, reportList[i].created_at)}>
-                                            <FontAwesomeIcon icon={TwitterImage} style={{"color": "blue"}}/>
-                                        </button>
+                                        {tweet_report_button}
                                       </div>
                                     </div>
                               </div>
@@ -883,6 +889,8 @@ function Castle(props){
     }
 
     if(props.is_logged_in_user){
+      edit_castle_button = <button class="btn btn-secondary" id={"edit-"+props.castle.castle_name.replace(/\s+/g,"")} onClick={()=>openModal("edit_castle")}>⋯</button>
+
       edit_castle_contents= <div class="edit-castle-contents-wrapper">
                               <nav>
                                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -1006,6 +1014,21 @@ function Castle(props){
                                   <div class="tab-pane fade show " id={"nav-destroy-model-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-destroy-model-tab">
                                     <div class="castle-point-wrapper ">積み上げポイント: <span class="castle-point-at-user-page">{props.castle.castle_part_point}</span></div>
                                     <button class="btn btn-primary" onClick={()=>openModal("confirmation_to_destroy_model")}>選択中の城の部品を削除する</button>
+                                  </div>
+                                </div>
+                            </div>
+    }else{
+      edit_castle_contents= <div class="edit-castle-contents-wrapper">
+                              <nav>
+                                  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a onClick={()=>changeEditNavTab("tumiage")} class="nav-link active" id="nav-tumiage-tab" data-bs-toggle="tab" href={"#nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tab" aria-controls="nav-tumiage" aria-selected="true">積み上げ</a>
+                                  </div>
+                                </nav>
+                                <div class="tab-content" id="nav-tabContent">
+                                  <div class="tab-pane fade show active" id={"nav-tumiage-"+props.castle.castle_name.replace(/\s+/g,"")} role="tabpanel" aria-labelledby="nav-home-tab">
+                                    <div class="all-reports-wrapper">
+                                      {new_report_list}
+                                    </div>
                                   </div>
                                 </div>
                             </div>
