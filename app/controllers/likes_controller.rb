@@ -2,6 +2,7 @@ class LikesController < ApplicationController
   def create
     if logged_in?
       @like = Like.new(secure_like_infomation)
+      @like.user_id = current_user().id
       if @like.save
         likes_number = Like.where(report_id: params[:like][:report_id]).count
         render :json => ["Successful registration of like", likes_number]
@@ -29,7 +30,7 @@ class LikesController < ApplicationController
 
   private
     def secure_like_infomation
-      params.require(:like).permit(:user_id,:report_id)
+      params.require(:like).permit(:report_id)
     end
 
 end
