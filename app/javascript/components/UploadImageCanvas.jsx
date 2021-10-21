@@ -19,7 +19,7 @@ function UploadImageCanvas(props){
   const [dragging, setDragging] = useState(false)
   const [imagePosX, setImagePosX] = useState(0)
   const [imageScale, setImageScale] = useState(300)
-  const [canvasScale, setCanvasScale] = useState(300)
+  const [canvasScale, setCanvasScale] = useState(200)
 
 
 

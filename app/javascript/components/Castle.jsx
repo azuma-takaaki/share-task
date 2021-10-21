@@ -1089,7 +1089,7 @@ function Castle(props){
     modal_content = <div>
                       <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
                       {error_flash_content}
-                      <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
+                      <div class="close-modal"><button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button></div>
                       <h2>今日の積み上げ</h2>
                       <textarea  class="form-control" 　value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
                       <button class="btn btn-primary" onClick={() => postReport()}>登録する</button>

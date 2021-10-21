@@ -5,16 +5,37 @@ import Castle from "./Castle.jsx"
 import UploadImageCanvas from "./UploadImageCanvas.jsx"
 import TestImage from "images/tweet.png"
 
-const customStyles = {
+
+let modal_height = window.innerHeight * 0.8
+let customStyles = {
   content : {
     top                   : '50%',
     left                  : '50%',
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    transform             : 'translate(-50%, -50%)',
+    overflow              : 'scroll',
+    height                : modal_height
  }
 };
+window.addEventListener('resize', () => {
+    modal_height = window.innerHeight * 0.8
+    customStyles = {
+      content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)',
+        'overflow-y'          : 'scroll',
+        height                : modal_height
+     }
+    };
+});
+
+
 
 
 class User extends React.Component {
@@ -206,11 +227,13 @@ class User extends React.Component {
           contentLabel="Example Modal"
         >
           <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
+          <div class="close-modal"><button class="btn-close btn btn-outline-secondary" onClick={this.closeModal}></button></div>
           <h2>ユーザー情報編集</h2>
           <input type="text" class="form-control" value={this.state.input_name}  onChange={this.handleChange}/>
-          <button class="btn btn-primary" onClick={()=>this.updateData("update_user_name")}>更新</button>
+          <button class="btn btn-primary" onClick={()=>this.updateData("update_user_name")}>ユーザー名を更新</button>
           <p></p>
           <UploadImageCanvas updateData={this.updateData} reloadSideMenuIconImage={this.props.reloadSideMenuIconImage} reloadHeaderIconImage={this.reloadHeaderIconImage} setProgressPercentage={this.setProgressPercentage} closeModal={this.closeModal}/>
+          <p></p>
           <button class="btn btn-secondary" onClick={this.logout}>ログアウト</button>
         </Modal>
       </div>
