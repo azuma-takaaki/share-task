@@ -78,12 +78,17 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
   }
 }
 
+.edit-user-modal{
+
+}
+
 .edit-report-modal{
 
 }
 
 .close-modal{
-  margin: 0 0 0 100px;
+  display: flex;
+  justify-content:flex-end;
 }
 
 
