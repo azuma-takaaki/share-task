@@ -144,16 +144,35 @@ function Castle(props){
     }
   }
 
-  const customStyles = {
+  let modal_height = window.innerHeight * 0.9
+  let customStyles = {
     content : {
       top                   : '50%',
       left                  : '50%',
       right                 : 'auto',
       bottom                : 'auto',
       marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
+      transform             : 'translate(-50%, -50%)',
+      'overflow-y'             : 'scroll',
+      'max-height'                : modal_height
    }
-  }
+  };
+  window.addEventListener('resize', () => {
+      modal_height = window.innerHeight * 0.9
+      customStyles = {
+        content : {
+          top                   : '50%',
+          left                  : '50%',
+          right                 : 'auto',
+          bottom                : 'auto',
+          marginRight           : '-50%',
+          transform             : 'translate(-50%, -50%)',
+          'overflow-y'          : 'scroll',
+          'max-height'          : modal_height
+       }
+      };
+  });
+
 
   const openModal = (type, tweet_report_content, tweet_report_created_at, report_num) =>  {
     if(type == "edit_castle"){
@@ -163,7 +182,7 @@ function Castle(props){
         setSelectTwitterAccount(props.twitter_accounts[0].account_name)
       }
       setModalInput("#今日の積み上げ" + "\r" + tweet_report_created_at + "\r\r" + tweet_report_content + "\r\r " +"#積み上げ城")
-      setTweetImage(<img class="tweet-image" src={canvasRef.current.toDataURL()} width="300" height="300"/>)
+      setTweetImage(<img class="tweet-image" src={canvasRef.current.toDataURL()} width="250" height="250"/>)
     }else if(type=="edit-report"){
       setModalInput(reportList[report_num].content)
     }
@@ -822,12 +841,6 @@ function Castle(props){
         const no_report_explanation = "積み上げがありません。\n今日の積み上げ(学習記録)を登録しましょう！"
         new_report_list.push(<div class="no-report-explanation">{no_report_explanation}</div>)
       }else{
-        let tweet_report_button = <div></div>
-        if(props.is_logged_in_user){
-            tweet_report_button =  <button className="tweet-button" onClick={()=>openModal("tweet",reportList[i].content, reportList[i].created_at)}>
-                                       <FontAwesomeIcon icon={TwitterImage} style={{"color": "blue"}}/>
-                                   </button>
-        }
         for(let i=0; i<reportList.length; i++){
           new_report_list.push(<div class="report-wrapper">
                                     <div class="edit-report-button-wrapper">
@@ -851,7 +864,11 @@ function Castle(props){
                                                                                  </button>}
 
                                         <div class="all-like-number">{reportList[i].all_like_number}</div>
-                                        {tweet_report_button}
+                                        {props.is_logged_in_user ?
+                                          <button className="tweet-button" onClick={()=>openModal("tweet",reportList[i].content, reportList[i].created_at)}><FontAwesomeIcon icon={TwitterImage} style={{"color": "blue"}}/></button>
+                                          :
+                                          <div></div>
+                                        }
                                       </div>
                                     </div>
                               </div>
@@ -1158,10 +1175,16 @@ function Castle(props){
                     </div>
   }else if(modalType=="tweet"){
     let account_select_pull_down;
+    let tweet_image_and_button = <div></div>;
     if(props.twitter_accounts[0]==undefined && props.twitter_accounts != null){
       account_select_pull_down = <div>ツイッターアカウントを追加してください</div>
     }else{
       let account_name_array = [];
+      tweet_image_and_button = <div>
+                                 <textarea type="text" rows="6" class="form-control" value={modalInput}  onChange={handleChange} placeholder="ツイートの内容"/>
+                                 {tweetImage}
+                                 <button class="btn btn-primary" onClick={()=>tweet()}>ツイートする</button>
+                               </div>
       for(let i=0; i<props.twitter_accounts.length; i++){
         if(i==0){
           account_name_array.push(<option value={props.twitter_accounts[i].account_name} selected>{props.twitter_accounts[i].account_name}</option>)
@@ -1186,10 +1209,8 @@ function Castle(props){
                         {error_flash_content}
                         <h2>Twitterに投稿</h2>
                         {account_select_pull_down}
-                        <a class="bg-info" rel="nofollow" data-method="post" href="/auth/twitter">アカウントを追加する</a>
-                        <textarea type="text" rows="6" class="form-control" value={modalInput}  onChange={handleChange} placeholder="ツイートの内容"/>
-                        {tweetImage}
-                        <button class="btn btn-primary" onClick={()=>tweet()}>ツイートする</button>
+                        <a rel="nofollow" class="btn btn-primary" data-method="post" href="/auth/twitter">アカウントを追加する</a>
+                        {tweet_image_and_button}
                     </div>
   }else if(modalType=="edit-report"){
     modal_content = <div class="edit-report-modal">
