@@ -596,7 +596,11 @@ function Castle(props){
     })
     .then(res => res.json())
     .then((result) => {
-      alert(result[0])
+      if(result[0] == "Successful update of castle_part"){
+        alert("お城の変更を保存しました！")
+      }else if(result[0] == "Failed to update castle_part"){
+        alert("お城の保存に失敗しました")
+      }
     })
   }
 
