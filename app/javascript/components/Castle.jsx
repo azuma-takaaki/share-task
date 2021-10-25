@@ -70,7 +70,8 @@ const Camera = (props) => {
 function Castle(props){
   const [iconImageUrl, setIconImageUrl] = useState("")
 
-  const [castleModels, setCastleModels] = useState(props.castle_models)
+  const [defaultCastleModels, setDefaultCastleModels] = useState(props.default_castle_models)
+  const [castleModels, setCastleModels] = useState(JSON.parse(JSON.stringify(props.castle_models)))
   const [castleName, setCastleName] = useState(props.castle_name)
   const [reportList, setReportList] = useState(null)
   const [editReportID, setEditReportID] = useState(0)
@@ -128,7 +129,6 @@ function Castle(props){
     }else{
       setReportList(props.castle_reports)
     }
-
   });
 
   const reloadIconImage = () => {
@@ -185,6 +185,7 @@ function Castle(props){
       setTweetImage(<img class="tweet-image" src={canvasRef.current.toDataURL()} width="250" height="250"/>)
     }else if(type=="edit-report"){
       setModalInput(reportList[report_num].content)
+    }else if(type=="castle-dont-be-saved"){
     }
 
     setErrorMessages({arr: []})
@@ -216,19 +217,19 @@ function Castle(props){
       if(e.target.value==''){
         new_castle_models[editModelNumber][edit_property] = ''
       }else if(e.target.value > limit_castle_angle){
-        new_castle_models[editModelNumber][edit_property] = limit_castle_angle / 180 * Math.PI
+        new_castle_models[editModelNumber][edit_property] = Number(limit_castle_angle / 180 * Math.PI)
       }else if(e.target.value <= 0){
-        new_castle_models[editModelNumber][edit_property] = 0
+        new_castle_models[editModelNumber][edit_property] = Number(0)
       }else{
-        new_castle_models[editModelNumber][edit_property] = e.target.value / 180 * Math.PI
+        new_castle_models[editModelNumber][edit_property] = Number(e.target.value / 180 * Math.PI)
       }
     }else{
       if(e.target.value > limit_castle_position){
-        new_castle_models[editModelNumber][edit_property] = limit_castle_position
+        new_castle_models[editModelNumber][edit_property] = Number(limit_castle_position)
       }else if(e.target.value <  -limit_castle_position){
-        new_castle_models[editModelNumber][edit_property] = -limit_castle_position
+        new_castle_models[editModelNumber][edit_property] = Number(-limit_castle_position)
       }else{
-        new_castle_models[editModelNumber][edit_property] = e.target.value
+        new_castle_models[editModelNumber][edit_property] = Number(e.target.value)
       }
     }
     setCastleModels(new_castle_models)
@@ -598,6 +599,7 @@ function Castle(props){
     .then((result) => {
       alert(result[0])
     })
+    closeModal()
   }
 
   const Outline = ({ children }) => {
@@ -897,11 +899,17 @@ function Castle(props){
 
 
     const changeEditNavTab = (nav_tab_type) => {
-      setSelectedCastleToAdd("")
-      if(nav_tab_type=="move-model"||nav_tab_type=="add-model"||nav_tab_type=="destroy-model"){
-        setDisplayGrid(true)
+      if (JSON.stringify(castleModels) == JSON.stringify(defaultCastleModels)){
+        setSelectedCastleToAdd("")
+        if(nav_tab_type=="move-model"||nav_tab_type=="add-model"||nav_tab_type=="destroy-model"){
+          setDisplayGrid(true)
+        }else{
+          setDisplayGrid(false)
+        }
       }else{
-        setDisplayGrid(false)
+        if(nav_tab_type!="move-model"){
+          openModal("castle-dont-be-saved")
+        }
       }
     }
 
@@ -1220,6 +1228,16 @@ function Castle(props){
                         <textarea type="text" rows="7" class="" value={modalInput}  onChange={handleChange} placeholder="積み上げを修正"/>
                         <div></div>
                         <button class="btn btn-primary post-new-report-content-button" onClick={()=>updateReport(editReportID)}>積み上げを変更</button>
+                    </div>
+  }else if(modalType=="castle-dont-be-saved"){
+    modal_content = <div class="edit-report-modal">
+                        <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
+                        {error_flash_content}
+                        <h2>城の変更が保存されていません</h2>
+                        <p></p>
+                        <div>変更を保存しますか？</div>
+                        <button class="btn btn-secondary" onClick={()=>closeModal()}>保存しない</button>
+                        <button class="btn btn-primary post-new-report-content-button" onClick={()=>updateCastleParts()}>変更を保存</button>
                     </div>
   }
 

@@ -185,8 +185,9 @@ class User extends React.Component {
     let castles;
     if(!(this.props.users_castle_list.length==0)){
       castles = this.props.users_castle_list.map((castle) => {
+        const default_castle = JSON.parse(JSON.stringify(castle["models"]));
         return (
-            <Castle castle={castle["castle"]} castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} castle_reports={castle["reports"]} tag_class="castle_at_user_page" fetchCastles={this.props.fetchCastles} current_user_id={this.props.current_user.id}  castle_part_price_list = {this.state.castle_part_price_list} is_logged_in_user={this.props.is_logged_in_user} twitter_accounts={this.props.twitter_accounts}/>
+            <Castle castle={castle["castle"]} castle_id={castle["castle"]["castle_id"]} castle_name={castle["castle"]["castle_name"]} castle_models={castle["models"]} default_castle_models={default_castle} castle_reports={castle["reports"]} tag_class="castle_at_user_page" fetchCastles={this.props.fetchCastles} current_user_id={this.props.current_user.id}  castle_part_price_list = {this.state.castle_part_price_list} is_logged_in_user={this.props.is_logged_in_user} twitter_accounts={this.props.twitter_accounts}/>
         )
       })
     }else{
