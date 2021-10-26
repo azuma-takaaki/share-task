@@ -75,6 +75,9 @@ function Castle(props){
   const [castleName, setCastleName] = useState(props.castle_name)
   const [reportList, setReportList] = useState(null)
   const [editReportID, setEditReportID] = useState(0)
+  const [navTabType, setNavTabType] = useState("")
+  const [updateDefaultCastle, setUpdateDefaultCastle] = useState(false)
+  const [showModalToSaveCastle, setShowModalToSaveCastle] = useState(true)
 
 
   const [isLiked, setIsLiked] = useState(true)
@@ -120,9 +123,16 @@ function Castle(props){
   const limit_castle_angle = 360
 
 
+
   useEffect(() => {
     reloadIconImage()
     setCastleModels(props.castle_models)
+    if(updateDefaultCastle){
+      if (JSON.stringify(castleModels) != JSON.stringify(defaultCastleModels)){
+        setDefaultCastleModels(JSON.parse(JSON.stringify(props.castle_models)))
+        setUpdateDefaultCastle(false)
+      }
+    }
     if (props.tag_class=="castle_at_group" && currentReportLikes<0){
       setIsLiked(props.castle["report"]["current_report"]["is_liked"])
       setCurrentReportLikes(props.castle["report"]["current_report"]["all_like_number"])
@@ -185,7 +195,7 @@ function Castle(props){
       setTweetImage(<img class="tweet-image" src={canvasRef.current.toDataURL()} width="250" height="250"/>)
     }else if(type=="edit-report"){
       setModalInput(reportList[report_num].content)
-    }else if(type=="castle-dont-be-saved"){
+    }else if(type==setShowModalToSaveCastle){
     }
 
     setErrorMessages({arr: []})
@@ -209,6 +219,7 @@ function Castle(props){
   }
 
   const handleChangeBySlider = (e, edit_property, edited_by_slider) => {
+    setShowModalToSaveCastle(true)
     setSliderValue(e)
     let new_castle_models = castleModels
     if(edited_by_slider){
@@ -361,6 +372,7 @@ function Castle(props){
       sleep(300).then(() =>{
         if(result[0] == "succeeded in destroying a castle and group_user" || result[0] == "succeeded in destroying a castle"){
           setProgressPercentage("100")
+          setUpdateDefaultCastle(true)
           sleep(1000).then(()=>{
             setSelectedCastleToAdd("")
             closeModal()
@@ -402,6 +414,7 @@ function Castle(props){
       sleep(300).then(() =>{
         if(result[0] == "succeeded in destroying a castle_part"){
           setProgressPercentage("100")
+          setUpdateDefaultCastle(true)
           sleep(1000).then(()=>{
             closeModal()
             props.fetchCastles("user", props.current_user_id, false)
@@ -502,6 +515,7 @@ function Castle(props){
             setErrorMessages({arr: ["積み上げポイントがたりません"]})
           }else{
             setProgressPercentage("100")
+            setUpdateDefaultCastle(true)
             sleep(1000).then(()=>{
               setSelectedCastleToAdd("")
               props.fetchCastles("user", props.current_user_id, false)
@@ -903,6 +917,7 @@ function Castle(props){
 
 
     const changeEditNavTab = (nav_tab_type) => {
+      setNavTabType(nav_tab_type)
       if (JSON.stringify(castleModels) == JSON.stringify(defaultCastleModels)){
         setSelectedCastleToAdd("")
         if(nav_tab_type=="move-model"||nav_tab_type=="add-model"||nav_tab_type=="destroy-model"){
@@ -912,7 +927,10 @@ function Castle(props){
         }
       }else{
         if(nav_tab_type!="move-model"){
-          openModal("castle-dont-be-saved")
+          if(showModalToSaveCastle){
+            openModal("castle-dont-be-saved")
+            setShowModalToSaveCastle(false)
+          }
         }
       }
     }

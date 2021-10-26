@@ -69,6 +69,12 @@ module.exports = function(api) {
         }
       ],
       [
+        '@babel/plugin-proposal-private-property-in-object',
+        {
+          loose: true
+        }
+      ],
+      [
         '@babel/plugin-transform-runtime',
         {
           helpers: false,
@@ -80,12 +86,6 @@ module.exports = function(api) {
         '@babel/plugin-transform-regenerator',
         {
           async: false
-        }
-      ],
-      [
-        '@babel/plugin-proposal-private-property-in-object',
-        {
-          loose: true
         }
       ],
       isProductionEnv && [
