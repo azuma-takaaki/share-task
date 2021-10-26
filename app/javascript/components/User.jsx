@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import Modal from 'react-modal'
 import Castle from "./Castle.jsx"
 import UploadImageCanvas from "./UploadImageCanvas.jsx"
-import TestImage from "images/tweet.png"
 
 
 let modal_height = window.innerHeight * 0.8
