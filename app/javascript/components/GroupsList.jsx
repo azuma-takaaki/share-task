@@ -243,6 +243,9 @@ class GroupsList extends React.Component {
     }
   }
   toggleMenu () {
+    if(this.state.visible_user_id == this.props.current_user.id){
+
+    }
     this.getGroupList()
     this.fetchRelativeGroup()
     this.setState(state => ({menuOpen: !state.menuOpen}))

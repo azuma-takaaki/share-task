@@ -915,6 +915,13 @@ function Castle(props){
       }
     }
 
+    const alertEditedCastleModal = () => {
+      if(showModalToSaveCastle){
+        openModal("castle-dont-be-saved")
+        setShowModalToSaveCastle(false)
+      }
+    }
+
 
     const changeEditNavTab = (nav_tab_type) => {
       setNavTabType(nav_tab_type)
@@ -927,10 +934,7 @@ function Castle(props){
         }
       }else{
         if(nav_tab_type!="move-model"){
-          if(showModalToSaveCastle){
-            openModal("castle-dont-be-saved")
-            setShowModalToSaveCastle(false)
-          }
+          alertEditedCastleModal()
         }
       }
     }
