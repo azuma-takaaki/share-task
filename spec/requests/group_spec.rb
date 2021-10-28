@@ -29,4 +29,24 @@ RSpec.describe GroupsController, type: :request do
       end
     end
   end
+
+  describe "#create" do
+    before do
+      @user = FactoryBot.create(:user)
+      @group = FactoryBot.create(:group)
+      @castle = FactoryBot.create(:castle0, user: @user, group: @group)
+    end
+
+    example "グループ名が21文字以上だとグループを作成できない" do
+      post login_path , params: { session: {
+                                        email: @user.email,
+                                        password: @user.password,
+                                      }}
+      invalid_number = 21
+      invalid_group_name = "a" * invalid_number
+      post "/groups", params: { group: {name: invalid_group_name}}
+      expect(JSON.parse(response.body)[0]).to eq "failed to create a group"
+      expect(JSON.parse(response.body)[1]).to eq ["グループ名は20文字以内で入力してください"]
+    end
+  end
 end
