@@ -327,6 +327,10 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
             .group-name{
               font-size: 2rem;
               height: 100%;
+              min-width: 10px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
               margin: 0.5% 1rem 0.5% 5rem;
               white-space: nowrap;
             }
