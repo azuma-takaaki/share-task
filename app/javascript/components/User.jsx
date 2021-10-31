@@ -227,7 +227,9 @@ class User extends React.Component {
           contentLabel="Example Modal"
         >
           <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
-          <div class="close-modal"><button class="btn-close btn btn-outline-secondary" onClick={this.closeModal}></button></div>
+          <div class="close-modal-button-wrapper">
+            <button class="close-modal　btn-close btn btn-outline-secondary" onClick={this.closeModal}>×</button>
+          </div>
           <h2>ユーザー情報編集</h2>
           <input type="text" class="form-control" value={this.state.input_name}  onChange={this.handleChange}/>
           <button class="btn btn-primary" onClick={()=>this.updateData("update_user_name")}>ユーザー名を更新</button>

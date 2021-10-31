@@ -93,6 +93,27 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
   }
 }
 
+.edit-castle-modal{
+  .new-castle-name-input-form-wrapper{
+    margin-top:2rem;
+  }
+  .form-control{
+    margin: 0.4rem;
+  }
+  .delete-castle-button-wrapper{
+    margin-top:3rem;
+  }
+}
+
+.delete-castle-modal{
+  .delete-castle-button-wrapper{
+    margin: 1rem 0rem;
+  }
+  .cancel-delete-castle-button-wrapper{
+    margin: 1rem 0rem;
+  }
+}
+
 .edit-user-modal{
 
 }
