@@ -439,7 +439,9 @@ class Top extends React.Component {
                           contentLabel="Example Modal"
                         >
                           <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
-                          <button class="close-modal　btn-close btn btn-outline-secondary" onClick={this.closeModal}>×</button>
+                          <div class="close-modal-button-wrapper">
+                            <button class="close-modal　btn-close btn btn-outline-secondary" onClick={this.closeModal}>×</button>
+                          </div>
                           {error_flash_content}
                           {modal_content}
                         </Modal>

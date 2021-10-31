@@ -48,22 +48,11 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
   align-items: center;
   flex-direction: column;
   margin: 0.5rem auto;
-  h2, button{
-    margin: 1rem;
+  h2{
+    margin: 0 1rem 1rem 1rem;
   }
-  input{
-    margin: 0.2rem;
-  }
-}
-
-.signup-login-modal{
-  text-align: center;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin: 0.5rem auto;
-  h2, button{
-    margin: 1rem;
+  button{
+    margin: 1rem 1rem 0rem 1rem;
   }
   input{
     margin: 0.2rem;
@@ -78,6 +67,32 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
   }
 }
 
+.create-castle-modal{
+  .castle-name-from-title{
+    margin: 1.5rem 0rem 0.5rem 0rem;
+  }
+  .castle-name-from-wrapper{
+    display: flex;
+    input{
+      margin: 0;
+      padding: 0.5rem;
+      height: 2.5rem;
+      font-size: 1rem;
+    }
+    .character-siro{
+      margin: 0.5rem;
+      height: 2rem;
+      font-size: 1rem;
+    }
+  }
+  .input-example{
+    margin-top: 1.5rem;
+    .arrow{
+      margin-left: 1.5rem;
+    }
+  }
+}
+
 .edit-user-modal{
 
 }
@@ -86,7 +101,7 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
 
 }
 
-.close-modal{
+.close-modal-button-wrapper{
   display: flex;
   justify-content:flex-end;
 }
