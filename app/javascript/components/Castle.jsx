@@ -1140,7 +1140,6 @@ function Castle(props){
     modal_content = <div>
                       <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
                       {error_flash_content}
-                      <div class="close-modal"><button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button></div>
                       <h2>今日の積み上げ</h2>
                       <textarea  class="form-control" 　value={modalInput} onChange={handleChange} placeholder="今日の積み上げ" cols="30" rows="5"></textarea>
                       <button class="btn btn-primary" onClick={() => postReport()}>登録する</button>
@@ -1177,25 +1176,33 @@ function Castle(props){
                       </div>
     }
   }else if(modalType=="edit_castle"){
-    modal_content = <div>
+    modal_content = <div class="edit-castle-modal">
                         <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
                         {error_flash_content}
                         <h2>城を編集</h2>
-                        <div>
+                        <div class="new-castle-name-input-form-wrapper">
                           城の名前: <input type="text" class="form-control" value={modalInput}  onChange={handleChange} placeholder="城の名前"/>
                         </div>
-                        <button class="btn btn-primary" onClick={()=>{changeCastleName()}}>城の名前を変更</button>
-                        <button class="btn btn-danger" onClick={()=>{openModal("delete_castle")}}>城を削除</button>
+                        <div class="update-castle-name-button-wrapper">
+                          <button class="btn btn-primary" onClick={()=>{changeCastleName()}}>城の名前を変更</button>
+                        </div>
+                        <div class="delete-castle-button-wrapper">
+                          <button class="btn btn-danger" onClick={()=>{openModal("delete_castle")}}>城を削除</button>
+                        </div>
                     </div>
   }else if(modalType=="delete_castle"){
-    modal_content = <div>
+    modal_content = <div class="delete-castle-modal">
                         <div class="progress-bar" style={{ width: progressPercentage + "%"}}></div>
                         {error_flash_content}
                         <h2>本当に城を削除してよろしいですか？</h2>
                         <div>城を削除するとその城の積み上げ, 追加した城の部品など全てのデータが削除されます</div>
                         <div>この操作は取り消すことができませんが, 本当に削除してよろしいですか？</div>
-                        <button class="btn btn-danger" onClick={()=>{destroyCastle()}}>城を削除する</button>
-                        <button class="btn btn-primary" onClick={()=>{openModal("edit_castle")}}>キャンセル</button>
+                        <div class="delete-castle-button-wrapper">
+                          <button class="btn btn-danger" onClick={()=>{destroyCastle()}}>城を削除する</button>
+                        </div>
+                        <div class="cancel-delete-castle-button-wrapper">
+                          <button class="btn btn-primary" onClick={()=>{openModal("edit_castle")}}>キャンセル</button>
+                        </div>
                     </div>
   }else if(modalType=="confirmation_to_destroy_model"){
     modal_content = <div>
@@ -1311,6 +1318,9 @@ function Castle(props){
         style={customStyles}
         contentLabel="Example Modal"
       >
+        <div class="close-modal-button-wrapper">
+          <button class="close-modal　btn-close btn btn-outline-secondary" onClick={closeModal}>×</button>
+        </div>
         {modal_content}
       </Modal>
     </div>

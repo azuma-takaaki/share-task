@@ -312,13 +312,22 @@ class Group extends React.Component {
                         <button class="btn btn-danger" onClick={this.deleteGroup}>このグループを削除する</button>
                       </div>
     }else if(this.state.modal_type=="create_castle"){
-      modal_content= <div class="react-modal">
+      modal_content= <div class="create-castle-modal">
                         <div class="progress-bar" style={{ width: this.state.progress_percentage + "%"}}></div>
                         <h2>城を建てる</h2>
                         <p></p>
-                        <p>城の名前</p>
-                        <input type="text" class="form-control" value={this.state.input_value} placeholder="城の名前(目標)" onChange={this.handleChange}/>
+                        <p class="castle-name-from-title">城の名前</p>
+                        <div class="castle-name-from-wrapper">
+                          <input type="text" class="form-control" value={this.state.input_value} placeholder="城の名前(目標)" onChange={this.handleChange}/>
+                          <div class="character-siro">城</div>
+                        </div>
                         <button class="btn btn-primary" class="btn btn-primary post-castle-data-button" onClick={this.createCastle}>城を建てる</button>
+                        <div class="input-example">
+                          <div>※入力例</div>
+                          <div>「 10kg痩せる 」と入力</div>
+                          <div class="arrow">↓</div>
+                          <div>「 10kg痩せる 城 」という名前になります</div>
+                        </div>
                       </div>
     }
 
@@ -358,17 +367,6 @@ class Group extends React.Component {
             {castles}
           </div>
 
-          <InputTaskModal ref={this.InputTaskModalRef} group_id={this.props.group.id} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
-
-          <div class="task-wrapper">
-            {this.state.group_tasks.map((task) => {
-              return (
-                  <Task id={task.id} content={task.content} updateTasks={() => this.getGroupInfo(this.props.group.id)}/>
-              )
-            })}
-          </div>
-
-
           <Modal
             isOpen={this.state.modalIsOpen}
             onAfterOpen={this.afterOpenModal}
@@ -376,6 +374,9 @@ class Group extends React.Component {
             style={customStyles}
             contentLabel="Example Modal"
           >
+            <div class="close-modal-button-wrapper">
+              <button class="close-modal　btn-close btn btn-outline-secondary" onClick={this.closeModal}>×</button>
+            </div>
             {error_flash_content}
             {modal_content}
           </Modal>
